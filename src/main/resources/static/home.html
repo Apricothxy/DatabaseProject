@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>首页</title>
+    <style>
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .info {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .user-id {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #555;
+        }
+
+    </style>
+</head>
+<body>
+<div class="info">
+    <h1>欢迎来到首页</h1>
+    <div class="user-id" id="userIdDisplay"></div>
+</div>
+
+<script>
+    const userId = localStorage.getItem('loggedInUserId');
+    const userIdDisplay = document.getElementById('userIdDisplay');
+    if(userId) {
+        userIdDisplay.textContent = '当前登录用户ID: ' + userId;
+    } else {
+        userIdDisplay.textContent = '未获取到用户ID，请重新登录。';
+    }
+</script>
+</body>
+</html>
