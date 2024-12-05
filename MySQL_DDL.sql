@@ -51,7 +51,7 @@ ALTER TABLE wxy_invoice ADD CONSTRAINT wxy_invoice_pk PRIMARY KEY ( invoice_id )
 CREATE TABLE wxy_package (
     package_id   INT NOT NULL,
     type         VARCHAR(50) NOT NULL,
-    price        INT NOT NULL,
+    price        DECIMAL(10, 2) NOT NULL,
     passenger_id INT
 );
 
@@ -81,7 +81,7 @@ CREATE TABLE wxy_passenger (
 ALTER TABLE wxy_passenger ADD CONSTRAINT wxy_passenger_pk PRIMARY KEY ( passenger_id );
 
 CREATE TABLE wxy_passenger_room (
-    price        INT NOT NULL COMMENT 'price of this room for this passenger',
+    price        DECIMAL(10, 2) NOT NULL COMMENT 'price of this room for this passenger',
     room_id      INT NOT NULL,
     passenger_id INT NOT NULL
 );
@@ -136,7 +136,7 @@ CREATE TABLE wxy_stateroom (
     bathroom_num     INT NOT NULL COMMENT 'bathroom number',
     balcony          INT NOT NULL COMMENT 'balcony number',
     cruise_id        INT NOT NULL COMMENT 'room belong to which cruise',
-    price_per_person INT NOT NULL COMMENT 'price of the stateroom',
+    price_per_person DECIMAL(10, 2) NOT NULL COMMENT 'price of the stateroom',
     position         VARCHAR(20) NOT NULL
 );
 

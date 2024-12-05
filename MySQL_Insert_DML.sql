@@ -5,7 +5,7 @@ show tables;
 INSERT INTO WXY_CRUISE (cruise_id) VALUES (1);
 
 INSERT INTO WXY_STATEROOM (ROOM_ID, TYPE, SIZE, BED_NUM, BATHROOM_NUM, BALCONY, PRICE_PER_PERSON, POSITION, cruise_id)
-VALUES (1, 'The Haven Suite', 1000, 6, 3, 2, 500, 'Forward', 1);
+VALUES (1, 'The Haven Suite', 1000, 6, 3, 2, 500.1, 'Forward', 1);
 
 INSERT INTO WXY_RESTAURANT (RESTAURANT_ID, TYPE, START_TIME, END_TIME, FLOOR, cruise_id)
 VALUES (1, 'Common Buffett', '2024-11-10 07:00:00', '2024-11-10  21:00:00', 6, 1);
@@ -47,4 +47,4 @@ INSERT INTO WXY_PASSENGER (PASSENGER_ID, FNAME, MNAME, LNAME, BIRTH_DATE, ADDRES
 VALUES (1, 'John', 'A', 'Doe', '1985-01-01', 'USA', 'CA', 'Los Angeles', '123 Main St', NULL, 'Male', 'American', 'john.doe1@example.com', '1234567890', 1, 1);
 
 INSERT INTO WXY_PASSENGER_ROOM (PASSENGER_ID, room_id, PRICE)
-VALUES (1, 1, 0);
+VALUES (1, 1, 1.1);
