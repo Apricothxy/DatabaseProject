@@ -20,6 +20,7 @@ public class CruiseSearchRepository {
     public List<CruiseSearch> findCruises(String startPortName, String endPortName, LocalDateTime startDateBegin, LocalDateTime startDateEnd, LocalDateTime endDateBegin, LocalDateTime endDateEnd) {
         String sql = """
         SELECT
+            tp_start.trip_id,
             c.cruise_name,
             tp_start.start_date AS start_time,
             tp_end.end_date AS end_time,
@@ -49,6 +50,7 @@ public class CruiseSearchRepository {
         return jdbcTemplate.query(sql, new Object[]{startPortName, endPortName, startDateBegin, startDateEnd, endDateBegin, endDateEnd},
                 (rs, rowNum) -> {
                     CruiseSearch result = new CruiseSearch();
+                    result.setTripId(rs.getInt("trip_id"));
                     result.setCruiseName(rs.getString("cruise_name"));
                     result.setStartTime(rs.getTimestamp("start_time").toLocalDateTime());
                     result.setEndTime(rs.getTimestamp("end_time").toLocalDateTime());

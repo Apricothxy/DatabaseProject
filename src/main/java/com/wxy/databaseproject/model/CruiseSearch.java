@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class CruiseSearch {
+    private Integer tripId;
     private String cruiseName;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
@@ -12,6 +13,14 @@ public class CruiseSearch {
     private String endPortName;
     private List<StopPortInfo> stopPorts;
     private BigDecimal pricePerPerson;
+
+    public Integer getTripId() {
+        return tripId;
+    }
+
+    public void setTripId(Integer tripId) {
+        this.tripId = tripId;
+    }
 
     public String getEndPortName() {
         return endPortName;
