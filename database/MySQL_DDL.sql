@@ -1,5 +1,12 @@
 use databaseproject;
 
+CREATE TABLE IF NOT EXISTs wxy_passenger_group (
+    group_id     INT NOT NULL,
+    passenger_id INT NOT NULL
+);
+
+ALTER TABLE wxy_passenger_group ADD CONSTRAINT wxy_passenger_group_pk PRIMARY KEY ( group_id, passenger_id );
+
 CREATE TABLE wxy_cruise (
     cruise_id   INT NOT NULL COMMENT 'cruise id',
     trip_id     INT NOT NULL,
@@ -72,7 +79,7 @@ CREATE TABLE wxy_passenger (
     nationality      VARCHAR(50) NOT NULL COMMENT 'nationality',
     email            VARCHAR(50) NOT NULL COMMENT 'email address',
     phone            VARCHAR(50) NOT NULL COMMENT 'phone number',
-    group_id         INT NOT NULL,
+    -- group_id         INT NOT NULL,
     user_id          INT
 );
 
@@ -182,6 +189,14 @@ CREATE TABLE wxy_user (
 
 # ALTER TABLE wxy_user ADD CONSTRAINT wxy_user_pk PRIMARY KEY ( user_id );
 
+ALTER TABLE wxy_passenger_group
+    ADD CONSTRAINT wxy_passenger_group_passenger_fk FOREIGN KEY ( passenger_id )
+        REFERENCES wxy_passenger ( passenger_id );
+
+ALTER TABLE wxy_passenger_group
+    ADD CONSTRAINT wxy_passenger_group_group_fk FOREIGN KEY ( group_id )
+        REFERENCES wxy_group ( group_id );
+
 ALTER TABLE wxy_cruise
     ADD CONSTRAINT wxy_cruise_wxy_trip_fk FOREIGN KEY ( trip_id )
         REFERENCES wxy_trip ( trip_id );
@@ -202,13 +217,10 @@ ALTER TABLE wxy_package
     ADD CONSTRAINT wxy_package_wxy_passenger_fk FOREIGN KEY ( passenger_id )
         REFERENCES wxy_passenger ( passenger_id );
 
-ALTER TABLE wxy_passenger
-    ADD CONSTRAINT wxy_passenger_wxy_group_fk FOREIGN KEY ( group_id )
-        REFERENCES wxy_group ( group_id );
-
-ALTER TABLE wxy_passenger
-    ADD CONSTRAINT wxy_passenger_wxy_user_fk FOREIGN KEY ( user_id )
-        REFERENCES wxy_user ( user_id );
+-- ALTER TABLE wxy_passenger
+--     ADD CONSTRAINT wxy_passenger_wxy_group_fk FOREIGN KEY ( group_id )
+--         REFERENCES wxy_group ( group_oice_fk FOREIGN KEY ( invoice_id )
+--         REFERENCES wxy_invoice ( invoice_id );
 
 ALTER TABLE wxy_payment
     ADD CONSTRAINT wxy_payment_wxy_invoice_fk FOREIGN KEY ( invoice_id )
@@ -239,4 +251,6 @@ ALTER TABLE wxy_trip_port
         REFERENCES wxy_trip ( trip_id );
 
 
-
+ALTER TABLE wxy_passenger
+    ADD CONSTRAINT wxy_passenger_wxy_user_fk FOREIGN KEY ( user_id )
+        REFERENCES wxy_user ( user_id );
