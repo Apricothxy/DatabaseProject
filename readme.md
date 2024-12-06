@@ -48,6 +48,7 @@
     ```json
     [
         {
+            "tripId": 1,
             "cruiseName": "Cruise A",
             "startTime": "2024-12-05T10:00:00",
             "endTime": "2024-12-10T15:00:00",
@@ -68,6 +69,7 @@
             "pricePerPerson": 299.99
         },
         {
+            "tripId": 2,
             "cruiseName": "Cruise B",
             "startTime": "2024-12-07T08:00:00",
             "endTime": "2024-12-14T18:00:00",
