@@ -1,54 +1,418 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>首页</title>
+    <title>Home Page(Rename Later)</title>
     <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            font-family: "Microsoft YaHei", sans-serif;
-            background: #f0f0f0;
+            font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+            background: #f7f9fc;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             flex-direction: column;
-        }
-
-        .info {
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        h1 {
             color: #333;
+            font-size: 16px; /* Larger font size */
+            height: 100vh;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: #409eff;
+            color: #fff;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .menu-btn {
+            font-size: 24px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: #fff;
+        }
+
+        .title {
+            font-size: 1.25rem; /* ~20px */
+            font-weight: 500;
+        }
+
+        /* Side Menu (initially hidden) */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -220px;
+            width: 220px;
+            height: 100vh;
+            background: #fff;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            transition: left 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            z-index: 9999;
+        }
+
+        .side-menu.open {
+            left: 0;
+        }
+
+        .side-menu h2 {
+            font-size: 1.125rem;
+            margin-bottom: 20px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .side-menu a {
+            text-decoration: none;
+            color: #333;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            cursor: pointer;
+            display: block;
+            transition: color 0.3s;
+        }
+
+        .side-menu a:hover {
+            color: #409eff;
+        }
+
+        /* Content Area */
+        .content {
+            flex: 1;
+            padding: 40px 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .section {
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-sizing: border-box;
+        }
+
+        .section h2 {
+            margin-top: 0;
+            color: #333;
+            font-size: 1.25rem;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        /* Search section */
+        .search-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .search-row label {
+            width: 100%;
+            font-size: 0.875rem;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .search-row input[type="text"],
+        .search-row input[type="date"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            width: 100%;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease;
+        }
+
+        .search-row input[type="text"]:focus,
+        .search-row input[type="date"]:focus {
+            border-color: #409eff;
+            outline: none;
+        }
+
+        .search-flex {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            position: relative;
+        }
+
+        .swap-btn {
+            background: #409eff;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 0 10px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+            flex-shrink: 0;
+        }
+
+        .swap-btn:hover {
+            background: #66b1ff;
+        }
+
+        .dates-row {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .days-count-container {
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Days or Error display styling */
+        .days-count {
+            font-size: 0.875rem;
+            color: #fff;
+            white-space: nowrap;
+            padding: 13px 10px;
+            border-radius: 6px;
+        }
+
+        .days-count.normal {
+            background: #409eff; /* Blue background for normal scenario */
+        }
+
+        .days-count.error {
+            background: #e74c3c; /* Red background for error scenario */
+        }
+
+        /* Search button */
+        .search-btn {
+            background: #409eff;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .search-btn:hover {
+            background: #66b1ff;
         }
 
         .user-id {
-            margin-top: 20px;
-            font-size: 1.2em;
+            font-size: 0.875rem;
             color: #555;
+            word-break: break-all;
+            margin-bottom: 10px;
+        }
+
+        .logout-btn {
+            display: inline-block;
+            background: #409eff;
+            color: #fff;
+            padding: 10px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background 0.3s ease;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background: #66b1ff;
         }
 
     </style>
 </head>
 <body>
-<div class="info">
-    <h1>欢迎来到首页</h1>
-    <div class="user-id" id="userIdDisplay"></div>
+
+<div class="top-bar">
+    <button class="menu-btn" id="menuBtn">≡</button>
+    <div class="title">Home Page (Rename Later)</div>
+</div>
+
+<div class="side-menu" id="sideMenu">
+    <h2>Menu</h2>
+    <a id="accountLink">Account</a>
+    <a id="companionsLink">Companions</a>
+    <a id="ordersLink">My Orders</a>
+</div>
+
+<div class="content">
+
+    <div class="section">
+        <h2>Search for a Trip</h2>
+        <div class="search-row">
+            <label for="departureInput">Departure & Arrival</label>
+            <div class="search-flex">
+                <input type="text" id="departureInput" placeholder="Departure Location" />
+                <button class="swap-btn" id="swapBtn">⇆</button>
+                <input type="text" id="arrivalInput" placeholder="Arrival Location" />
+            </div>
+        </div>
+
+        <div class="search-row dates-row" style="display:flex; gap:10px; align-items:flex-end;">
+            <div style="flex:1; display:flex; flex-direction:column; justify-content:flex-end;">
+                <label for="depDateInput" style="margin-bottom:5px;">Departure Date</label>
+                <input type="date" id="depDateInput" placeholder="YYYY-MM-DD" />
+            </div>
+
+            <div style="display:flex; flex-direction:column; justify-content:flex-end;">
+                <div class="days-count-container" id="daysCountContainer" style="margin-bottom:0; display:none;">
+                    <span class="days-count" id="daysCount"></span>
+                </div>
+            </div>
+
+            <div style="flex:1; display:flex; flex-direction:column; justify-content:flex-end;">
+                <label for="arrDateInput" style="margin-bottom:5px;">Arrival Date</label>
+                <input type="date" id="arrDateInput" placeholder="YYYY-MM-DD" />
+            </div>
+        </div>
+
+        <button class="search-btn" id="searchBtn">Search</button>
+    </div>
+
+    <div class="section">
+        <h2>Welcome Back</h2>
+        <div class="user-id" id="userIdDisplay"></div>
+        <a class="logout-btn" id="logoutBtn">Logout</a>
+    </div>
+
 </div>
 
 <script>
+    // If no loggedInUserId, redirect to index page
     const userId = localStorage.getItem('loggedInUserId');
-    const userIdDisplay = document.getElementById('userIdDisplay');
-    if(userId) {
-        userIdDisplay.textContent = '当前登录用户ID: ' + userId;
-    } else {
-        userIdDisplay.textContent = '未获取到用户ID，请重新登录。';
+    if(!userId) {
+        window.location.href = 'index.html';
     }
+
+    const userIdDisplay = document.getElementById('userIdDisplay');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const departureInput = document.getElementById('departureInput');
+    const arrivalInput = document.getElementById('arrivalInput');
+    const depDateInput = document.getElementById('depDateInput');
+    const arrDateInput = document.getElementById('arrDateInput');
+    const swapBtn = document.getElementById('swapBtn');
+    const daysCount = document.getElementById('daysCount');
+    const daysCountContainer = document.getElementById('daysCountContainer');
+    const searchBtn = document.getElementById('searchBtn');
+    const menuBtn = document.getElementById('menuBtn');
+    const sideMenu = document.getElementById('sideMenu');
+
+    // Display user ID
+    userIdDisplay.textContent = 'Current logged-in user ID: ' + userId;
+
+    // Logout
+    logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('loggedInUserId');
+        window.location.href = 'index.html';
+    });
+
+    // Toggle menu
+    menuBtn.addEventListener('click', () => {
+        sideMenu.classList.toggle('open');
+    });
+
+    // Hide menu when click outside
+    document.addEventListener('click', (e) => {
+        if (sideMenu.classList.contains('open')) {
+            const isClickInside = sideMenu.contains(e.target) || e.target === menuBtn;
+            if (!isClickInside) {
+                sideMenu.classList.remove('open');
+            }
+        }
+    });
+
+    // Swap departure and arrival
+    swapBtn.addEventListener('click', () => {
+        const temp = departureInput.value;
+        departureInput.value = arrivalInput.value;
+        arrivalInput.value = temp;
+    });
+
+    // Calculate number of days between departure and arrival
+    function updateDaysCount() {
+        const depDate = depDateInput.value;
+        const arrDate = arrDateInput.value;
+
+        if (!depDate || !arrDate) {
+            // No full date selection
+            daysCountContainer.style.display = 'none';
+            return;
+        }
+
+        const dep = new Date(depDate);
+        const arr = new Date(arrDate);
+        const diffTime = arr - dep;
+
+        if (diffTime <= 0) {
+            // Error scenario
+            daysCount.textContent = 'Arrival must be later than departure';
+            daysCount.classList.remove('normal');
+            daysCount.classList.add('error');
+            daysCountContainer.style.display = 'flex';
+        } else {
+            // Normal scenario
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            daysCount.textContent = `${diffDays} Day(s)`;
+            daysCount.classList.remove('error');
+            daysCount.classList.add('normal');
+            daysCountContainer.style.display = 'flex';
+        }
+    }
+
+    depDateInput.addEventListener('change', updateDaysCount);
+    arrDateInput.addEventListener('change', updateDaysCount);
+
+    // Search button triggers /api/search
+    searchBtn.addEventListener('click', async () => {
+        const departure = departureInput.value.trim();
+        const arrival = arrivalInput.value.trim();
+        const depDate = depDateInput.value;
+        const arrDate = arrDateInput.value;
+
+        const formData = new URLSearchParams();
+        formData.append('departure', departure);
+        formData.append('arrival', arrival);
+        formData.append('departureDate', depDate);
+        formData.append('arrivalDate', arrDate);
+
+        try {
+            const response = await fetch('/api/search', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData
+            });
+            const result = await response.json();
+            console.log(result); // For debug
+        } catch (error) {
+            console.error('Search request failed:', error);
+        }
+    });
 </script>
 </body>
 </html>

@@ -24,13 +24,12 @@ public class UserController {
     @PostMapping("/register")
     public String register(@RequestParam String username, @RequestParam String password) {
         boolean success = userService.register(username, password);
-        return success ? "注册成功" : "注册失败，用户名可能已存在或数据不合法";
+        return success ? "Register Success" : "Register Fail, Username exists or illegal";
     }
 
     @PostMapping("/login")
     public ResponseEntity<Map<String,Object>> login(@RequestParam String username, @RequestParam String password) {
         boolean success = userService.login(username, password);
-        System.out.println("login" + username + password);
         Map<String, Object> response = new HashMap<>();
         if (success) {
             User user = userRepository.findByUsername(username);
@@ -39,7 +38,7 @@ public class UserController {
             return ResponseEntity.ok(response);
         } else {
             response.put("status", "fail");
-            response.put("message", "用户名或密码错误");
+            response.put("message", "Username or password incorrect");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }

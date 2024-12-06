@@ -20,7 +20,7 @@ public class UserService {
         }
         User user = new User();
         user.setUsername(username);
-        user.setPassword(password); // 实际中需加密
+        user.setPassword(password); // TODO: hash password
         int rows = userRepository.save(user);
         return rows > 0;
     }

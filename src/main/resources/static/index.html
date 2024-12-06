@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>用户注册与登录示例</title>
     <style>
         body {
-            font-family: "Microsoft YaHei", sans-serif;
-            background: linear-gradient(to bottom right, #4facfe, #00f2fe);
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            background: #f5f7fa;
+            margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -16,78 +17,103 @@
 
         .container {
             background: #fff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.2);
-            width: 300px;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            width: 320px;
             text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .container:hover {
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
         }
 
         h1 {
             margin-bottom: 20px;
             color: #333;
+            font-size: 24px;
+            letter-spacing: 1px;
         }
 
         form {
             display: flex;
             flex-direction: column;
             margin-bottom: 20px;
+            align-items: center;
         }
 
         input[type="text"], input[type="password"] {
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: 1px solid #dcdfe6;
+            font-size: 14px;
+            transition: border-color 0.2s ease;
+        }
+
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: #409eff;
+            outline: none;
         }
 
         button {
-            padding: 10px;
+            width: 100%;
+            padding: 12px;
             border: none;
-            border-radius: 5px;
-            background: #4facfe;
+            border-radius: 6px;
+            background: #409eff;
             color: #fff;
             font-size: 16px;
             cursor: pointer;
             margin-bottom: 10px;
+            font-weight: 500;
+            transition: background 0.3s ease;
         }
 
         button:hover {
-            background: #00d2fe;
+            background: #66b1ff;
         }
 
         .toggle-link {
-            color: #0066cc;
+            color: #409eff;
             cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .toggle-link:hover {
             text-decoration: underline;
-            margin-top: 10px;
         }
 
         .message {
             margin-top: 15px;
+            font-size: 14px;
             font-weight: bold;
             color: #333;
         }
-
     </style>
 </head>
 <body>
 <div class="container">
-    <h1 id="form-title">用户注册</h1>
+    <h1 id="form-title">用户登录</h1>
 
-    <form id="register-form">
+    <form id="register-form" style="display:none;">
         <input type="text" id="reg-username" placeholder="用户名" required>
         <input type="password" id="reg-password" placeholder="密码" required>
         <button type="submit">注册</button>
     </form>
 
-    <form id="login-form" style="display:none;">
+    <form id="login-form">
         <input type="text" id="login-username" placeholder="用户名" required>
         <input type="password" id="login-password" placeholder="密码" required>
         <button type="submit">登录</button>
     </form>
 
-    <div class="toggle-link" id="toggle-form">已有账户？点此登录</div>
+    <a class="toggle-link" id="toggle-form">还没有账户？点击注册</a>
     <div class="message" id="message"></div>
 </div>
 
@@ -99,19 +125,19 @@
     const message = document.getElementById('message');
 
     toggleLink.addEventListener('click', () => {
-        if (registerForm.style.display === 'none') {
-            // 切换到注册
-            registerForm.style.display = 'block';
-            loginForm.style.display = 'none';
-            formTitle.textContent = '用户注册';
-            toggleLink.textContent = '已有账户？点此登录';
-            message.textContent = '';
-        } else {
+        if (loginForm.style.display === 'none') {
             // 切换到登录
-            registerForm.style.display = 'none';
             loginForm.style.display = 'block';
+            registerForm.style.display = 'none';
             formTitle.textContent = '用户登录';
             toggleLink.textContent = '还没有账户？点击注册';
+            message.textContent = '';
+        } else {
+            // 切换到注册
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'block';
+            formTitle.textContent = '用户注册';
+            toggleLink.textContent = '已有账户？点此登录';
             message.textContent = '';
         }
     });
@@ -128,7 +154,7 @@
         formData.append('username', username);
         formData.append('password', password);
 
-        const res = await fetch('http://localhost:8088/api/register', {
+        const res = await fetch('/api/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: formData
@@ -150,7 +176,7 @@
         formData.append('username', username);
         formData.append('password', password);
 
-        const res = await fetch('http://localhost:8088/api/login', {
+        const res = await fetch('/api/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: formData
@@ -158,9 +184,7 @@
 
         const json = await res.json();
         if(json.status === 'success') {
-            // 登录成功，将用户ID存入localStorage
             localStorage.setItem('loggedInUserId', json.userId);
-            // 跳转到首页
             window.location.href = 'home.html';
         } else {
             message.textContent = json.message || '登录失败';

@@ -13,7 +13,6 @@ public class User {
         this.password = password;
     }
 
-    // getters and setters ...
     public Integer getId() {
         return id;
     }
