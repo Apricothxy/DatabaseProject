@@ -24,7 +24,7 @@ public class UserRepository {
     };
 
     public int save(User user) {
-        String sql = "INSERT INTO users (password, membership, user_name) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO wxy_user (password, membership, user_name) VALUES (?, ?, ?)";
         return jdbcTemplate.update(sql,
                 user.getPassword(),
                 user.getMembership(),
@@ -33,7 +33,7 @@ public class UserRepository {
 
 
     public User findByUsername(String userName) {
-        String sql = "SELECT user_id, password, membership, user_name FROM users WHERE user_name = ?";
+        String sql = "SELECT user_id, password, membership, user_name FROM wxy_user WHERE user_name = ?";
         return jdbcTemplate.query(sql, new Object[]{userName}, userRowMapper)
                 .stream()
                 .findFirst()
@@ -41,7 +41,7 @@ public class UserRepository {
     }
 
     public User findByUserID(Integer userID) {
-        String sql = "SELECT user_id, password, membership, user_name FROM users WHERE user_id = ?";
+        String sql = "SELECT user_id, password, membership, user_name FROM wxy_user WHERE user_id = ?";
         return jdbcTemplate.query(sql, new Object[]{userID}, userRowMapper)
                 .stream()
                 .findFirst()
