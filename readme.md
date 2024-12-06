@@ -22,13 +22,13 @@
     ```json
     [  
     	{
-            status: "success"
-            userID: userid
+            "status": "success"
+            "userID": userid
         }
         OR
         {
-            status: "fail"
-            message: message
+            "status": "fail"
+            "message": message
         }
     ]
     ```
