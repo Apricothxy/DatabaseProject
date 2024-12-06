@@ -121,9 +121,60 @@
 
 - **获取旅行详情**
   
-  - 方法：`GET`(TBD)
+  - 方法：`GET`
+  
   - URL：`/trips/{tripId}`
+  
   - 描述：获取特定旅行的详细信息。
+  
+  - 输入：tripid
+  
+  - 返回值：
+  
+    ```json
+    {
+        "cruiseId": 1,
+        "cruiseName": "Black Pearl",
+        "entertainments": [
+            {
+                "entertainmentId": 1,
+                "type": "Theaters"
+            },
+            {
+                "entertainmentId": 2,
+                "type": "casino"
+            }
+        ],
+        "restaurants": [
+            {
+                "restaurantId": 1,
+                "type": "Common Buffett"
+            }
+        ],
+        "staterooms": [
+            {
+                "roomId": 1,
+                "type": "The Haven Suite",
+                "size": 1000,
+                "bathroomNum": 3,
+                "bedNum": 6,
+                "balcony": 2,
+                "position": "Forward",
+                "pricePerPerson": 500.1
+            },
+            {
+                "roomId": 2,
+                "type": "family balcony",
+                "size": 1100,
+                "bathroomNum": 4,
+                "bedNum": 7,
+                "balcony": 2,
+                "position": "Forward",
+                "pricePerPerson": 1500.1
+            }
+        ]
+    }
+    ```
   
 - **创建预订**
   - 方法：`POST`(TBD)
