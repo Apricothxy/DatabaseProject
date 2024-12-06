@@ -33,5 +33,5 @@ build/
 ### VS Code ###
 .vscode/
 
-# Include DatabaseProjectApplication.java explicitly
-!src/main/java/com/wxy/databaseproject/DatabaseProjectApplication.java
+# Include application config
+!src/main/resources/application.properties

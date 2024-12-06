@@ -173,13 +173,14 @@ ALTER TABLE wxy_trip_port ADD CONSTRAINT wxy_trip_port_pk PRIMARY KEY ( port_id,
                                                                         trip_id );
 
 CREATE TABLE wxy_user (
-    user_id    INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    user_id    INT AUTO_INCREMENT NOT NULL,
     password   VARCHAR(50) NOT NULL,
     membership VARCHAR(50) NOT NULL,
-    user_name  VARCHAR(50) NOT NULL
+    user_name  VARCHAR(50) NOT NULL,
+    PRIMARY KEY (user_id)
 );
 
-ALTER TABLE wxy_user ADD CONSTRAINT wxy_user_pk PRIMARY KEY ( user_id );
+# ALTER TABLE wxy_user ADD CONSTRAINT wxy_user_pk PRIMARY KEY ( user_id );
 
 ALTER TABLE wxy_cruise
     ADD CONSTRAINT wxy_cruise_wxy_trip_fk FOREIGN KEY ( trip_id )

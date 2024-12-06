@@ -1,5 +1,6 @@
 show databases;
 
+create database databaseproject;
 drop database databaseproject;
 create database databaseproject;
 
