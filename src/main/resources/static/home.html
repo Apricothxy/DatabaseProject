@@ -495,7 +495,11 @@
             const tripCard = document.createElement('div');
             tripCard.className = 'trip-card';
             tripCard.addEventListener('click', () => {
-                window.location.href = 'tripDetail.html?tripId=' + trip.tripId;
+                window.location.href = 'tripDetail.html?tripId=' + encodeURIComponent(trip.tripId)
+                    + '&startTime=' + encodeURIComponent(trip.startTime)
+                    + '&endTime=' + encodeURIComponent(trip.endTime)
+                    + '&startPortName=' + encodeURIComponent(trip.startPortName)
+                    + '&endPortName=' + encodeURIComponent(trip.endPortName);
             });
 
             const title = document.createElement('h3');

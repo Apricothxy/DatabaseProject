@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Trip Detail</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+            background: #f7f9fc;
+            display: flex;
+            flex-direction: column;
+            color: #333;
+            font-size: 16px;
+            height: 100vh;
+        }
+
+        /* Colors */
+        :root {
+            --primary: #6C2C92;    /* NYU Purple */
+            --primary-hover: #8B5FBF;
+            --error: #e74c3c;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: var(--primary);
+            color: #fff;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .top-bar .left-items {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .menu-btn {
+            font-size: 24px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: #fff;
+        }
+
+        .title {
+            font-size: 1.25rem;
+            font-weight: 500;
+        }
+
+        /* User info on top right */
+        .right-items {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-id {
+            font-size: 0.875rem;
+            color: #fff;
+            word-break: break-all;
+        }
+
+        .logout-btn {
+            display: inline-block;
+            background: var(--primary-hover);
+            color: #fff;
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background 0.3s ease;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background: var(--primary);
+        }
+
+        /* Side Menu (initially hidden) */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -220px;
+            width: 220px;
+            height: 100vh;
+            background: #fff;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            transition: left 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            z-index: 9999;
+        }
+
+        .side-menu.open {
+            left: 0;
+        }
+
+        .side-menu h2 {
+            font-size: 1.125rem;
+            margin-bottom: 20px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .side-menu a {
+            text-decoration: none;
+            color: #333;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            cursor: pointer;
+            display: block;
+            transition: color 0.3s;
+        }
+
+        .side-menu a:hover {
+            color: var(--primary);
+        }
+
+        /* Content Area */
+        .content {
+            flex: 1;
+            padding: 40px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .section {
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .section h2 {
+            margin-top: 0;
+            color: #333;
+            font-size: 1.25rem;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .info-item {
+            padding: 5px 0;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .room-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .room-card h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        .room-info p {
+            margin: 5px 0;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .room-price {
+            margin-top: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+<div class="top-bar">
+    <div class="left-items">
+        <button class="menu-btn" id="menuBtn">≡</button>
+        <div class="title">Trip Detail</div>
+    </div>
+    <div class="right-items">
+        <span class="user-id" id="userIdDisplay"></span>
+        <a class="logout-btn" id="logoutBtn">Logout</a>
+    </div>
+</div>
+
+<div class="side-menu" id="sideMenu">
+    <h2>Menu</h2>
+    <a id="accountLink">Account</a>
+    <a id="companionsLink">Companions</a>
+    <a id="ordersLink">My Orders</a>
+</div>
+
+<div class="content">
+    <!-- Cruise Detail Section -->
+    <div class="section">
+        <h2>Cruise Detail</h2>
+        <div style="margin-bottom:10px;">
+            <strong>Cruise Name: </strong><span id="cruiseNameDisplay">Loading...</span>
+        </div>
+        <div style="margin-bottom:10px;">
+            <strong>Itinerary: </strong><span id="startEndInfo">Loading...</span>
+        </div>
+    </div>
+
+    <!-- Entertainments Section -->
+    <div class="section">
+        <h2>Entertainments</h2>
+        <div id="entertainmentsContainer">Loading...</div>
+    </div>
+
+    <!-- Restaurants Section -->
+    <div class="section">
+        <h2>Restaurants</h2>
+        <div id="restaurantsContainer">Loading...</div>
+    </div>
+
+    <!-- Staterooms Section -->
+    <div class="section">
+        <h2>Staterooms</h2>
+        <div id="stateroomsContainer">Loading...</div>
+    </div>
+</div>
+
+<script>
+    // Check if user is logged in
+    const userId = localStorage.getItem('loggedInUserId');
+    if (!userId) {
+        window.location.href = 'index.html';
+    }
+
+    // Extract tripId from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const tripId = urlParams.get('tripId');
+    if (!tripId) {
+        // If no tripId is provided, redirect to home
+        window.location.href = 'home.html';
+    }
+
+    const userIdDisplay = document.getElementById('userIdDisplay');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const menuBtn = document.getElementById('menuBtn');
+    const sideMenu = document.getElementById('sideMenu');
+
+    const cruiseNameDisplay = document.getElementById('cruiseNameDisplay');
+    const startEndInfo = document.getElementById('startEndInfo');
+    const entertainmentsContainer = document.getElementById('entertainmentsContainer');
+    const restaurantsContainer = document.getElementById('restaurantsContainer');
+    const stateroomsContainer = document.getElementById('stateroomsContainer');
+
+    // Optional: If passed from previous page:
+    const startTime = urlParams.get('startTime');
+    const endTime = urlParams.get('endTime');
+    const startPortName = urlParams.get('startPortName');
+    const endPortName = urlParams.get('endPortName');
+
+    // Display user ID
+    userIdDisplay.textContent = 'Welcome Back, User ID: ' + userId;
+
+    // Logout
+    logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('loggedInUserId');
+        window.location.href = 'index.html';
+    });
+
+    // Toggle menu
+    menuBtn.addEventListener('click', () => {
+        sideMenu.classList.toggle('open');
+    });
+
+    // Hide menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (sideMenu.classList.contains('open')) {
+            const isClickInside = sideMenu.contains(e.target) || e.target === menuBtn;
+            if (!isClickInside) {
+                sideMenu.classList.remove('open');
+            }
+        }
+    });
+
+    // Fetch trip details
+    async function fetchTripDetail(id) {
+        try {
+            const response = await fetch(`/api/tripdetail/${id}`, { method: 'GET' });
+            if (!response.ok) {
+                console.error('Trip detail not found or error occurred.');
+                return;
+            }
+            const detail = await response.json();
+            displayTripDetail(detail);
+        } catch (error) {
+            console.error('Error fetching trip detail:', error);
+        }
+    }
+
+    function displayTripDetail(detail) {
+        // Display cruise name
+        cruiseNameDisplay.textContent = detail.cruiseName || 'No cruise name available';
+
+        // Display start/end info if available
+        if (startPortName && endPortName && startTime && endTime) {
+            startEndInfo.textContent = `From ${startPortName} (${startTime}) to ${endPortName} (${endTime})`;
+        } else {
+            startEndInfo.textContent = 'No start/end info available.';
+        }
+
+        // Display entertainments
+        entertainmentsContainer.innerHTML = '';
+        if (Array.isArray(detail.entertainments) && detail.entertainments.length > 0) {
+            detail.entertainments.forEach(ent => {
+                const entItem = document.createElement('div');
+                entItem.className = 'info-item';
+                entItem.textContent = `${ent.type}`;
+                entertainmentsContainer.appendChild(entItem);
+            });
+        } else {
+            entertainmentsContainer.textContent = 'No entertainments available.';
+        }
+
+        // Display restaurants
+        restaurantsContainer.innerHTML = '';
+        if (Array.isArray(detail.restaurants) && detail.restaurants.length > 0) {
+            detail.restaurants.forEach(res => {
+                const resItem = document.createElement('div');
+                resItem.className = 'info-item';
+                resItem.textContent = `${res.type}`;
+                restaurantsContainer.appendChild(resItem);
+            });
+        } else {
+            restaurantsContainer.textContent = 'No restaurants available.';
+        }
+
+        // Display staterooms
+        stateroomsContainer.innerHTML = '';
+        if (Array.isArray(detail.staterooms) && detail.staterooms.length > 0) {
+            detail.staterooms.forEach(room => {
+                const roomCard = document.createElement('div');
+                roomCard.className = 'room-card';
+
+                const roomTitle = document.createElement('h3');
+                roomTitle.textContent = room.type;
+                roomCard.appendChild(roomTitle);
+
+                const roomInfo = document.createElement('div');
+                roomInfo.className = 'room-info';
+                roomInfo.innerHTML = `
+                    <p><strong>Size:</strong> ${room.size} sq.ft</p>
+                    <p><strong>Bathrooms:</strong> ${room.bathroomNum}</p>
+                    <p><strong>Beds:</strong> ${room.bedNum}</p>
+                    <p><strong>Balconies:</strong> ${room.balcony}</p>
+                    <p><strong>Position:</strong> ${room.position}</p>
+                `;
+                roomCard.appendChild(roomInfo);
+
+                const price = document.createElement('div');
+                price.className = 'room-price';
+                price.textContent = `Price per person: $${room.pricePerPerson}`;
+                roomCard.appendChild(price);
+
+                stateroomsContainer.appendChild(roomCard);
+            });
+        } else {
+            stateroomsContainer.textContent = 'No staterooms available.';
+        }
+    }
+
+    // Fetch detail on load
+    fetchTripDetail(tripId);
+</script>
+</body>
+</html>
