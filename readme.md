@@ -87,11 +87,27 @@
   
 - **获取用户信息**
   
-  - 方法：`GET`(TBD)
+  - 方法：`GET`
+  
   - URL：`/users/{userId}`
+  
   - 描述：根据用户ID获取用户信息。
   
+  - 输入：userID
+  
+  - 返回值：
+  
+    ```json
+    {
+        "id": 1,
+        "username": "test",
+        "password": "123",
+        "membership": "bronze"
+    }
+    ```
+  
 - **创建乘客同行人**
+  
   - 方法：`POST`(TBD)
   - URL：`/addpassengers`
   - 描述：创建新的乘客信息。

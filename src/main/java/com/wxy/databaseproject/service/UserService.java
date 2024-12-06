@@ -20,6 +20,7 @@ public class UserService {
         }
         User user = new User();
         user.setUsername(username);
+        user.setMembership("bronze");
         user.setPassword(password); // TODO: hash password
         int rows = userRepository.save(user);
         return rows > 0;
@@ -29,5 +30,9 @@ public class UserService {
         User user = userRepository.findByUsername(username);
         if (user == null) return false;
         return user.getPassword().equals(password);
+    }
+
+    public User getUserById(Integer id) {
+        return userRepository.findByUserID(id);
     }
 }
