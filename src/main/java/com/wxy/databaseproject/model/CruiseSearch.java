@@ -12,7 +12,6 @@ public class CruiseSearch {
     private String startPortName;
     private String endPortName;
     private List<StopPortInfo> stopPorts;
-    private BigDecimal pricePerPerson;
 
     public Integer getTripId() {
         return tripId;
@@ -68,14 +67,6 @@ public class CruiseSearch {
 
     public void setStopPorts(List<StopPortInfo> stopPorts) {
         this.stopPorts = stopPorts;
-    }
-
-    public BigDecimal getPricePerPerson() {
-        return pricePerPerson;
-    }
-
-    public void setPricePerPerson(BigDecimal pricePerPerson) {
-        this.pricePerPerson = pricePerPerson;
     }
 
 

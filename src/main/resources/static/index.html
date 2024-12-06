@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>用户注册与登录示例</title>
+    <title>User Registration & Login Example</title>
     <style>
         body {
             font-family: "Helvetica Neue", Arial, sans-serif;
@@ -55,7 +55,7 @@
         }
 
         input[type="text"]:focus, input[type="password"]:focus {
-            border-color: #409eff;
+            border-color: #6C2C92;
             outline: none;
         }
 
@@ -64,7 +64,7 @@
             padding: 12px;
             border: none;
             border-radius: 6px;
-            background: #409eff;
+            background: #6C2C92;
             color: #fff;
             font-size: 16px;
             cursor: pointer;
@@ -74,11 +74,11 @@
         }
 
         button:hover {
-            background: #66b1ff;
+            background: #8B5FBF;
         }
 
         .toggle-link {
-            color: #409eff;
+            color: #6C2C92;
             cursor: pointer;
             text-decoration: none;
             font-size: 14px;
@@ -99,21 +99,21 @@
 </head>
 <body>
 <div class="container">
-    <h1 id="form-title">用户登录</h1>
+    <h1 id="form-title">User Login</h1>
 
     <form id="register-form" style="display:none;">
-        <input type="text" id="reg-username" placeholder="用户名" required>
-        <input type="password" id="reg-password" placeholder="密码" required>
-        <button type="submit">注册</button>
+        <input type="text" id="reg-username" placeholder="Username" required>
+        <input type="password" id="reg-password" placeholder="Password" required>
+        <button type="submit">Register</button>
     </form>
 
     <form id="login-form">
-        <input type="text" id="login-username" placeholder="用户名" required>
-        <input type="password" id="login-password" placeholder="密码" required>
-        <button type="submit">登录</button>
+        <input type="text" id="login-username" placeholder="Username" required>
+        <input type="password" id="login-password" placeholder="Password" required>
+        <button type="submit">Login</button>
     </form>
 
-    <a class="toggle-link" id="toggle-form">还没有账户？点击注册</a>
+    <a class="toggle-link" id="toggle-form">No account yet? Click here to register</a>
     <div class="message" id="message"></div>
 </div>
 
@@ -126,18 +126,18 @@
 
     toggleLink.addEventListener('click', () => {
         if (loginForm.style.display === 'none') {
-            // 切换到登录
+            // Switch to Login
             loginForm.style.display = 'block';
             registerForm.style.display = 'none';
-            formTitle.textContent = '用户登录';
-            toggleLink.textContent = '还没有账户？点击注册';
+            formTitle.textContent = 'User Login';
+            toggleLink.textContent = 'No account yet? Click here to register';
             message.textContent = '';
         } else {
-            // 切换到注册
+            // Switch to Registration
             loginForm.style.display = 'none';
             registerForm.style.display = 'block';
-            formTitle.textContent = '用户注册';
-            toggleLink.textContent = '已有账户？点此登录';
+            formTitle.textContent = 'User Registration';
+            toggleLink.textContent = 'Already have an account? Click here to login';
             message.textContent = '';
         }
     });
@@ -147,7 +147,7 @@
         const username = document.getElementById('reg-username').value.trim();
         const password = document.getElementById('reg-password').value.trim();
         if(!username || !password) {
-            message.textContent = '用户名或密码不能为空';
+            message.textContent = 'Username or password cannot be empty';
             return;
         }
         const formData = new URLSearchParams();
@@ -168,7 +168,7 @@
         const username = document.getElementById('login-username').value.trim();
         const password = document.getElementById('login-password').value.trim();
         if(!username || !password) {
-            message.textContent = '用户名或密码不能为空';
+            message.textContent = 'Username or password cannot be empty';
             return;
         }
 
@@ -187,7 +187,7 @@
             localStorage.setItem('loggedInUserId', json.userId);
             window.location.href = 'home.html';
         } else {
-            message.textContent = json.message || '登录失败';
+            message.textContent = json.message || 'Login failed';
         }
     });
 </script>
