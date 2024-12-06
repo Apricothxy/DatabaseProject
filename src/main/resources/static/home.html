@@ -336,7 +336,10 @@
     menuBtn.addEventListener('click', () => {
         sideMenu.classList.toggle('open');
     });
-
+    //click account to go to the account position
+    document.getElementById('accountLink').addEventListener('click', () => {
+        window.location.href = 'account.html';
+    });
     // Hide menu when click outside
     document.addEventListener('click', (e) => {
         if (sideMenu.classList.contains('open')) {
@@ -353,7 +356,6 @@
         departureInput.value = arrivalInput.value;
         arrivalInput.value = temp;
     });
-
     // Calculate number of days between departure and arrival
     function updateDaysCount() {
         const depDate = depDateInput.value;
