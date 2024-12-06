@@ -91,7 +91,7 @@
   
   - 方法：`GET`
   
-  - URL：`/users/{userId}`
+  - URL：`/api/users/{userId}`
   
   - 描述：根据用户ID获取用户信息。
   
@@ -123,7 +123,7 @@
   
   - 方法：`GET`
   
-  - URL：`/trips/{tripId}`
+  - URL：`/api/tripdetail/{tripId}`
   
   - 描述：获取特定旅行的详细信息。
   
