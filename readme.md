@@ -20,15 +20,17 @@
   - 返回值：
   
     ```json
-    JSON {
-    	status: "success"
-    	userID: userid
-    }
-    or
-    JSON {
-        status: "fail"
-    	message: message
-    }
+    [  
+    	{
+            status: "success"
+            userID: userid
+        }
+        OR
+        {
+            status: "fail"
+            message: message
+        }
+    ]
     ```
   
 - **获取旅行列表**
