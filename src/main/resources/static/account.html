@@ -262,6 +262,7 @@
                 <input type="text" id="confirmUsername" />
             </div>
             <button class="submit-btn" id="submitUsernameChange">Submit</button>
+            <span id="usernameMessage" class="message" style="margin-left: 10px; color: #333;"></span>
         </div>
 
         <!-- Change Password Page -->
@@ -280,6 +281,7 @@
                 <input type="password" id="confirmPassword" />
             </div>
             <button class="submit-btn" id="submitPasswordChange">Submit</button>
+            <span id="passwordMessage" class="message" style="margin-left: 10px; color: #333;"></span>
         </div>
     </div>
 </div>
@@ -345,93 +347,94 @@
         });
 
 
-    // 修改用户名提交事件
     document.getElementById('submitUsernameChange').addEventListener('click', () => {
         const newUsername = document.getElementById('newUsername').value.trim();
         const confirmUsername = document.getElementById('confirmUsername').value.trim();
+        const messageSpan = document.getElementById('usernameMessage'); // 获取显示消息的元素
+
+        // 清空之前的消息
+        messageSpan.textContent = '';
 
         if (!newUsername || !confirmUsername) {
-            alert('Please fill out both username fields.');
+            messageSpan.textContent = 'Please fill out both username fields.';
+            messageSpan.style.color = 'red';
             return;
         }
 
         if (newUsername !== confirmUsername) {
-            alert('Usernames do not match.');
+            messageSpan.textContent = 'Usernames do not match.';
+            messageSpan.style.color = 'red';
             return;
         }
 
+        // 构造请求 URL
+        const url = `/api/user/cname?userid=${encodeURIComponent(userId)}&newusername=${encodeURIComponent(newUsername)}`;
+
         // 发起修改用户名请求
-        fetch('/api/user/cname/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                userid: userId,
-                newusername: newUsername
-            })
+        fetch(url, {
+            method: 'POST'
         })
-            .then(response => response.json())
+            .then(response => response.text()) // 获取后端返回的纯文本
             .then(result => {
-                if (result.success) {
-                    alert('Username changed successfully!');
-                    userData.username = newUsername; // 更新内存中的数据
-                    document.getElementById('usernameDisplay').textContent = newUsername; // 同步更新概览页面的用户名显示
-                    document.querySelector('.menu-item[data-page="overview"]').click(); // 返回概览页
-                } else {
-                    alert('Failed to change username: ' + (result.error || 'Unknown error'));
-                }
+                // 显示成功或失败消息
+                messageSpan.textContent = result;
+                messageSpan.style.color = 'green'; // 成功时显示绿色
             })
             .catch(error => {
                 console.error('Error changing username:', error);
-                alert('An error occurred while changing username.');
+                messageSpan.textContent = 'An error occurred while changing username.';
+                messageSpan.style.color = 'red'; // 错误时显示红色
             });
     });
 
 
+
     // 修改密码提交事件
     document.getElementById('submitPasswordChange').addEventListener('click', () => {
-        const oldPassword = document.getElementById('oldPassword').value.trim();
-        const newPassword = document.getElementById('newPassword').value.trim();
-        const confirmPassword = document.getElementById('confirmPassword').value.trim();
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const messageSpan = document.getElementById('passwordMessage'); // 获取消息显示的 DOM 元素
 
-        if (!newPassword || !confirmPassword) {
-            alert('Please fill out both password fields.');
-            return;
-        }
+        // 清空之前的消息
+        messageSpan.textContent = '';
 
-        if (newPassword !== confirmPassword) {
-            alert('Passwords do not match.');
-            return;
-        }
-
-        // 发起修改密码请求
-        fetch('/api/user/cpassword', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                userid: userId,
-                oldPassword: oldPassword,
-                newPassword: newPassword
+        if (newPassword === confirmPassword) {
+            fetch('/api/user/cpassword', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    userid: userId,
+                    oldPassword: oldPassword,
+                    newPassword: newPassword
+                })
             })
-        })
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    alert('Password changed successfully!');
-                    // 更新概览页显示的密码（此处仍然显示星号）
-                    document.getElementById('passwordDisplay').textContent = '*'.repeat(10);
-                    document.querySelector('.menu-item[data-page="overview"]').click(); // 返回概览页
-                } else {
-                    alert('Failed to change password: ' + (result.error || 'Unknown error'));
-                }
-            })
-            .catch(error => {
-                console.error('Error changing password:', error);
-                alert('An error occurred while changing password.');
-            });
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(err => {
+                            throw new Error(err);
+                        });
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    console.log('Response:', data);
+                    // 将后端返回的消息显示在按钮旁边
+                    messageSpan.textContent = data;
+                    messageSpan.style.color = 'green'; // 成功消息显示为绿色
+                })
+                .catch(error => {
+                    console.error('Error changing password:', error.message);
+                    // 显示错误消息
+                    messageSpan.textContent = error.message;
+                    messageSpan.style.color = 'red'; // 错误消息显示为红色
+                });
+        } else {
+            // 如果新密码和确认密码不一致，显示错误消息
+            messageSpan.textContent = 'Passwords do not match!';
+            messageSpan.style.color = 'red';
+        }
     });
 </script>
 </body>
