@@ -47,6 +47,11 @@ public class UserController {
         boolean success = userService.resetPassword(userid, oldPassword, newPassword);
         return success ? "Reset Password Success" : "Reset Fail, Incorrect Old Password";
     }
+    @PostMapping("/user/cname")
+    public String changeUserName(@RequestParam Integer userid, @RequestParam String newusername) {
+        boolean success = userService.resetUsername(userid, newusername);
+        return success ? "Reset Password Success" : "Reset Fail, invalid username";
+    }
     @GetMapping("/user/{userId}")
     public User getUserInfo(@PathVariable Integer userId) {
         User user = userService.getUserById(userId);
