@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
     <title>Home</title>
     <style>
         html, body {
@@ -11,7 +13,7 @@
         }
 
         body {
-            font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+            font-family: 'Libre Baskerville', serif;
             background: #f7f9fc;
             display: flex;
             flex-direction: column;
@@ -22,15 +24,15 @@
 
         /* Colors */
         :root {
-            --primary: #6C2C92;    /* NYU Purple */
-            --primary-hover: #8B5FBF;
+            --primary: #000000;    /* NYU Purple */
+            --primary-hover: #717171;
             --error: #e74c3c;
         }
 
         /* Top Bar */
         .top-bar {
-            background: var(--primary);
-            color: #fff;
+            background: #FFFFFF;
+            color: #000000;
             padding: 15px 20px;
             display: flex;
             align-items: center;
@@ -45,12 +47,31 @@
             gap: 20px;
         }
 
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header img {
+            height: 50px; /* Adjust the height for better scaling */
+            width: auto; /* Maintain aspect ratio */
+        }
+
+        .company-name {
+            font-size: 1rem; /* Smaller font for company name */
+            color: #000000;
+            font-weight: bold;
+            text-align: center;
+        }
+
+
         .menu-btn {
             font-size: 24px;
             cursor: pointer;
             border: none;
             background: none;
-            color: #fff;
+            color: #000000;
         }
 
         .title {
@@ -67,13 +88,14 @@
 
         .user-id {
             font-size: 0.875rem;
-            color: #fff;
+            color: #000000;
             word-break: break-all;
         }
 
         .logout-btn {
+            font-family: 'Manrope', sans-serif;
             display: inline-block;
-            background: var(--primary-hover);
+            background: var(--primary);
             color: #fff;
             padding: 8px 14px;
             border-radius: 6px;
@@ -85,15 +107,15 @@
         }
 
         .logout-btn:hover {
-            background: var(--primary);
+            background: var(--primary-hover);
         }
 
         /* Side Menu (initially hidden) */
         .side-menu {
             position: fixed;
             top: 0;
-            left: -220px;
-            width: 220px;
+            left: -400px;
+            width: 400px;
             height: 100vh;
             background: #fff;
             box-shadow: 2px 0 10px rgba(0,0,0,0.1);
@@ -110,16 +132,16 @@
         }
 
         .side-menu h2 {
-            font-size: 1.125rem;
+            font-size: 1.3rem;
             margin-bottom: 20px;
             color: #333;
-            font-weight: 500;
+            font-weight: bold;
         }
 
         .side-menu a {
             text-decoration: none;
             color: #333;
-            font-size: 1rem;
+            font-size: 1.2rem;
             margin-bottom: 15px;
             cursor: pointer;
             display: block;
@@ -134,7 +156,7 @@
         .content {
             flex: 1;
             padding: 40px 20px;
-            max-width: 600px;
+            max-width: 900px;
             margin: 0 auto;
             box-sizing: border-box;
             position: relative;
@@ -160,6 +182,7 @@
 
         /* Search section */
         .search-row {
+            font-family: 'Manrope', sans-serif;
             display: flex;
             flex-wrap: wrap;
             gap: 15px;
@@ -168,6 +191,7 @@
         }
 
         .search-row label {
+            font-family: 'Libre Baskerville', serif;
             width: 100%;
             font-size: 0.875rem;
             color: #555;
@@ -176,6 +200,7 @@
 
         .search-row input[type="text"],
         .search-row input[type="date"] {
+            font-family: 'Manrope', sans-serif;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 6px;
@@ -187,6 +212,7 @@
 
         .search-row input[type="text"]:focus,
         .search-row input[type="date"]:focus {
+            font-family: 'Manrope', sans-serif;
             border-color: var(--primary);
             outline: none;
         }
@@ -220,6 +246,7 @@
         }
 
         .dates-row {
+            font-family: 'Manrope', sans-serif;
             display: flex;
             flex-direction: row;
             gap: 10px;
@@ -234,6 +261,7 @@
 
         /* Days or Error display styling */
         .days-count {
+            font-family: 'Manrope', sans-serif;
             font-size: 0.875rem;
             color: #fff;
             white-space: nowrap;
@@ -251,6 +279,7 @@
 
         /* Search button */
         .search-btn {
+            font-family: 'Manrope', sans-serif;
             background: var(--primary);
             color: #fff;
             border: none;
@@ -310,7 +339,10 @@
 <div class="top-bar">
     <div class="left-items">
         <button class="menu-btn" id="menuBtn">≡</button>
-        <div class="title">Home</div>
+        <div class="header">
+            <img src="/images/logo.png" alt="Logo">
+            <div class="company-name">Nature International Cruise Excellence</div>
+        </div>
     </div>
     <div class="right-items">
         <span class="user-id" id="userIdDisplay"></span>
@@ -384,8 +416,27 @@
     const sideMenu = document.getElementById('sideMenu');
     const resultsContainer = document.getElementById('resultsContainer');
 
-    // Display user ID
-    userIdDisplay.textContent = 'Welcome Back, User ID: ' + userId;
+    async function fetchUsername() {
+        const apiUrl = '/api/user/' + userId;
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'GET',
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch user data');
+            }
+
+            const userData = await response.json();
+            userIdDisplay.textContent = `Welcome Back, ${userData.username}`;
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+            userIdDisplay.textContent = 'Welcome Back, User';
+        }
+    }
+
+    fetchUsername();
 
     // Logout
     logoutBtn.addEventListener('click', () => {
