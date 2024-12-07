@@ -355,6 +355,7 @@
       {
         "passengerId": 101,
         "stateroomId": 301,
+        "stateroomNum": 7,
         "packages": [
           { "packageType": xxx,
           	"packageNum" : 1
@@ -370,6 +371,7 @@
       {
         "passengerId": 102,
         "stateroomId": 302,
+        "stateroomNum": 7,
         "packages": [
           { "packageType": xxx,
           	"packageNum" : 1
