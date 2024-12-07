@@ -23,12 +23,12 @@
     [  
     	{
             "status": "success"
-            "userID": userid
+            "userID": ${userid}
         }
         OR
         {
             "status": "fail"
-            "message": message
+            "message": ${message}
         }
     ]
     ```
@@ -112,7 +112,9 @@
   
   - 方法：`POST`
   
-  - URL：`/passenger`
+  - URL：`/api/passenger`
+  
+  - 删除URL:  `/api/passenger/{passenger_id}`  Method: `DELETE`
   
   - 描述：创建新的乘客信息。
   
@@ -162,7 +164,7 @@
 
 - - 方法：`GET`
 
-  - URL:  `/passenger/user/{user_id}`
+  - URL:  `/api/passenger/user/{user_id}`
 
   - 返回值：
 
@@ -203,73 +205,19 @@
             "phone": "+1-234-567-890",
             "groupId": null,
             "userId": 1
-        },
-        {
-            "passengerId": 3,
-            "fname": "weizhen",
-            "mname": null,
-            "lname": "Wu",
-            "birthDate": "1990-01-01T00:00:00",
-            "addressCountry": "China",
-            "addressState": "NY",
-            "addressCity": "Los Angeles",
-            "addressStreet1": "343 Gold St",
-            "addressStreet2": null,
-            "gender": "Male",
-            "nationality": "China",
-            "email": "john.doe@example.com",
-            "phone": "+1-234-567-890",
-            "groupId": null,
-            "userId": 1
-        },
-        {
-            "passengerId": 4,
-            "fname": "test1",
-            "mname": null,
-            "lname": "Wu",
-            "birthDate": "1990-01-01T00:00:00",
-            "addressCountry": "China",
-            "addressState": "NY",
-            "addressCity": "Los Angeles",
-            "addressStreet1": "343 Gold St",
-            "addressStreet2": null,
-            "gender": "Male",
-            "nationality": "China",
-            "email": "john.doe@example.com",
-            "phone": "+1-234-567-890",
-            "groupId": null,
-            "userId": 1
-        },
-        {
-            "passengerId": 5,
-            "fname": "test2",
-            "mname": null,
-            "lname": "1234",
-            "birthDate": "1991-01-01T00:00:00",
-            "addressCountry": "China",
-            "addressState": "NY",
-            "addressCity": "Los Angeles",
-            "addressStreet1": "343 Gold St",
-            "addressStreet2": null,
-            "gender": "Male",
-            "nationality": "China",
-            "email": "john.doe@example.com",
-            "phone": "+1-234-567-890",
-            "groupId": null,
-            "userId": 1
         }
     ]
     ```
-
+  
 - **获取乘客信息**
 
   - 方法：`GET`
 
-  - URL：`/passenger/{id}`
+  - URL：`/api/passenger/{id}`
 
   - 描述：获取指定乘客的信息。
 
-  - 输入：passengerid
+  - 输入：passenger_id
 
   - 输出：
 
