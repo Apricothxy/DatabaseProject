@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Booking</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+            background: #f7f9fc;
+            display: flex;
+            flex-direction: column;
+            color: #333;
+            font-size: 16px;
+            height: 100vh;
+        }
+
+        :root {
+            --primary: #6C2C92;    /* NYU Purple */
+            --primary-hover: #8B5FBF;
+            --error: #e74c3c;
+        }
+
+        .top-bar {
+            background: var(--primary);
+            color: #fff;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .top-bar .left-items {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .title {
+            font-size: 1.25rem;
+            font-weight: 500;
+        }
+
+        .user-id {
+            font-size: 0.875rem;
+            color: #fff;
+            word-break: break-all;
+        }
+
+        .logout-btn {
+            display: inline-block;
+            background: var(--primary-hover);
+            color: #fff;
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background 0.3s ease;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background: var(--primary);
+        }
+
+        .content-wrapper {
+            flex: 1;
+            padding: 40px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .add-passenger-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .add-passenger-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .passenger-list .passenger-item {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .passenger-info {
+            max-width: 80%;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color:#fff;
+            border:none;
+            border-radius:6px;
+            padding:5px 10px;
+            font-size:0.9rem;
+            cursor:pointer;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+
+        .footer-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        #totalContainer {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .proceed-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .proceed-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top:0;left:0;right:0;bottom:0;
+            background: rgba(0,0,0,0.5);
+            display:none;
+            justify-content:center;
+            align-items:center;
+            z-index:9999;
+        }
+
+        .modal {
+            background:#fff;
+            border-radius:8px;
+            padding:20px;
+            width:300px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.1);
+            position:relative;
+        }
+
+        .modal h3 {
+            margin-top:0;
+            font-size:1.1rem;
+            margin-bottom:15px;
+            color:#333;
+        }
+
+        .modal-close {
+            position:absolute;
+            top:10px;right:10px;
+            cursor:pointer;
+            font-size:1.2rem;
+            color:#666;
+        }
+
+        .modal label {
+            font-size:0.9rem;
+            color:#333;
+            display:block;
+            margin-bottom:5px;
+        }
+
+        .modal select,
+        .modal input[type="checkbox"],
+        .modal input[type="radio"] {
+            margin-bottom:15px;
+        }
+
+        .modal-section {
+            margin-bottom:20px;
+        }
+
+        .modal .confirm-btn {
+            background: var(--primary);
+            color:#fff;
+            border:none;
+            border-radius:6px;
+            padding:8px 12px;
+            font-size:0.9rem;
+            cursor:pointer;
+            float:right;
+        }
+
+        .modal .confirm-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .package-item {
+            display:flex;
+            align-items:center;
+            gap:5px;
+            margin-bottom:10px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="top-bar">
+    <div class="left-items">
+        <div class="title">Booking</div>
+    </div>
+    <div class="right-items">
+        <span class="user-id" id="userIdDisplay"></span>
+        <a class="logout-btn" id="logoutBtn">Logout</a>
+    </div>
+</div>
+
+<div class="content-wrapper">
+    <h2>Trip Booking</h2>
+    <button class="add-passenger-btn" id="addPassengerBtn">Add Passenger with Plan</button>
+
+    <div class="passenger-list" id="passengerList"></div>
+
+    <div class="footer-area">
+        <div id="totalContainer"></div>
+        <button class="proceed-btn" id="proceedBtn">Proceed to Payment</button>
+    </div>
+</div>
+
+<!-- Modal for adding passenger -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="passengerModal">
+        <span class="modal-close" id="modalClose">×</span>
+        <h3>Add Passenger</h3>
+        <div class="modal-section">
+            <label for="passengerSelect">Select Passenger</label>
+            <select id="passengerSelect"></select>
+        </div>
+
+        <div class="modal-section">
+            <label>Select Stateroom</label>
+            <div id="stateroomOptions"></div>
+        </div>
+
+        <div class="modal-section">
+            <label>Select Packages (optional)</label>
+            <div class="package-item">
+                <input type="checkbox" value="Water and Non-Alcoholic" data-price="40" class="packageCheckbox">Water and Non-Alcoholic - $40/person/night
+            </div>
+            <div class="package-item">
+                <input type="checkbox" value="Unlimited Bar" data-price="80" class="packageCheckbox">Unlimited Bar (21+) - $80/person/night
+            </div>
+            <div class="package-item">
+                <input type="checkbox" value="Internet 200 minutes, 100 GB" data-price="150" class="packageCheckbox">Internet 200 minutes, 100 GB - $150/person/trip
+            </div>
+            <div class="package-item">
+                <input type="checkbox" value="Unlimited Internet" data-price="250" class="packageCheckbox">Unlimited Internet - $250/person/trip
+            </div>
+            <div class="package-item">
+                <input type="checkbox" value="Specialty dining" data-price="60" class="packageCheckbox">Specialty dining - $60/person/night
+            </div>
+        </div>
+
+        <button class="confirm-btn" id="confirmPassengerBtn">Confirm</button>
+    </div>
+</div>
+
+<script>
+    const userId = localStorage.getItem('loggedInUserId');
+    if(!userId) {
+        window.location.href = 'index.html';
+    }
+
+    const userIdDisplay = document.getElementById('userIdDisplay');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const addPassengerBtn = document.getElementById('addPassengerBtn');
+    const passengerList = document.getElementById('passengerList');
+    const proceedBtn = document.getElementById('proceedBtn');
+
+    const modalOverlay = document.getElementById('modalOverlay');
+    const passengerModal = document.getElementById('passengerModal');
+    const modalClose = document.getElementById('modalClose');
+    const passengerSelect = document.getElementById('passengerSelect');
+    const stateroomOptions = document.getElementById('stateroomOptions');
+    const confirmPassengerBtn = document.getElementById('confirmPassengerBtn');
+    const totalContainer = document.getElementById('totalContainer');
+
+    userIdDisplay.textContent = 'Welcome Back, User ID: ' + userId;
+
+    logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('loggedInUserId');
+        window.location.href = 'index.html';
+    });
+
+    // Get trip parameters from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const tripId = urlParams.get('tripId');
+    const startTime = urlParams.get('startTime');
+    const endTime = urlParams.get('endTime');
+    const startPortName = urlParams.get('startPortName');
+    const endPortName = urlParams.get('endPortName');
+
+    let staterooms = [];
+
+    async function fetchStaterooms(tripId) {
+        try {
+            const response = await fetch(`/api/tripdetail/${tripId}`);
+            if(response.ok) {
+                const detail = await response.json();
+                if(Array.isArray(detail.staterooms)) {
+                    staterooms = detail.staterooms;
+                } else {
+                    console.warn("No staterooms found in response");
+                }
+            } else {
+                console.error("Failed to fetch staterooms:", response.status);
+            }
+        } catch(err) {
+            console.error("Error fetching staterooms:", err);
+        }
+    }
+
+    function populateStaterooms() {
+        stateroomOptions.innerHTML = '';
+        staterooms.forEach(sr => {
+            const label = document.createElement('label');
+            label.style.display = 'block';
+            const radio = document.createElement('input');
+            radio.type = 'radio';
+            radio.name = 'stateroomSelect';
+            radio.value = sr.roomId;
+            label.appendChild(radio);
+            label.appendChild(document.createTextNode(`${sr.type} - $${sr.pricePerPerson}/person`));
+            stateroomOptions.appendChild(label);
+        });
+    }
+
+    (async () => {
+        if(tripId) {
+            await fetchStaterooms(tripId);
+            populateStaterooms();
+        } else {
+            console.error("No tripId provided, cannot fetch staterooms.");
+        }
+    })();
+
+    async function fetchPassengers(userId) {
+        try {
+            const res = await fetch(`/api/passenger/user/${userId}`);
+            if(!res.ok) {
+                console.error(`Failed to load passengers for user ${userId}. Status: ${res.status}`);
+                return [];
+            }
+            const data = await res.json();
+            if(!Array.isArray(data)) {
+                console.warn('Passengers data is not an array:', data);
+                return [];
+            }
+            return data;
+        } catch(err) {
+            console.error('Error fetching passengers:', err);
+            return [];
+        }
+    }
+
+    let passengersData = [];
+    let selectedPassengers = [];
+
+    async function openModal() {
+        if (passengersData.length === 0) {
+            passengersData = await fetchPassengers(userId);
+        }
+
+        if(!Array.isArray(passengersData)) {
+            passengersData = [];
+        }
+
+        passengerSelect.innerHTML = '';
+        passengersData.forEach(p => {
+            const opt = document.createElement('option');
+            opt.value = p.passengerId;
+            opt.textContent = `${p.fname} ${p.lname} (${p.email})`;
+            passengerSelect.appendChild(opt);
+        });
+
+        modalOverlay.style.display = 'flex';
+    }
+
+    function closeModal() {
+        modalOverlay.style.display = 'none';
+    }
+
+    modalClose.addEventListener('click', closeModal);
+    addPassengerBtn.addEventListener('click', openModal);
+
+    confirmPassengerBtn.addEventListener('click', () => {
+        const selectedPassengerId = parseInt(passengerSelect.value, 10);
+        const stateroomRadios = document.getElementsByName('stateroomSelect');
+        let selectedStateroomId = null;
+        for (let r of stateroomRadios) {
+            if (r.checked) {
+                selectedStateroomId = parseInt(r.value, 10);
+                break;
+            }
+        }
+
+        const packageCheckboxes = document.querySelectorAll('.packageCheckbox');
+        let selectedPackages = [];
+        let totalPackagePrice = 0;
+        packageCheckboxes.forEach(cb => {
+            if (cb.checked) {
+                selectedPackages.push({ packageType: cb.value, price: parseFloat(cb.getAttribute('data-price')) });
+            }
+        });
+
+        if (!selectedPassengerId || !selectedStateroomId) {
+            alert("Please select a passenger and a stateroom.");
+            return;
+        }
+
+        // Check if passenger is already chosen
+        const alreadyChosen = selectedPassengers.some(sp => sp.passengerId === selectedPassengerId);
+        if (alreadyChosen) {
+            alert("This passenger already has a plan. Each passenger can only have one plan.");
+            return;
+        }
+
+        selectedPassengers.push({
+            passengerId: selectedPassengerId,
+            stateroomId: selectedStateroomId,
+            packages: selectedPackages
+        });
+
+        updatePassengerList();
+        closeModal();
+    });
+
+    function updatePassengerList() {
+        passengerList.innerHTML = '';
+        selectedPassengers.forEach((sp, index) => {
+            const div = document.createElement('div');
+            div.className = 'passenger-item';
+
+            const pData = passengersData.find(p => p.passengerId === sp.passengerId);
+            const sData = staterooms.find(s => s.roomId === sp.stateroomId);
+            const pkgList = sp.packages.map(pkg => pkg.packageType).join(", ") || "No packages";
+
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'passenger-info';
+            infoDiv.innerHTML = `
+                <strong>Passenger:</strong> ${pData ? pData.fname + ' ' + pData.lname + ' (' + pData.email + ')' : 'Unknown'}<br>
+                <strong>Stateroom:</strong> ${sData ? sData.type : 'Unknown'}<br>
+                <strong>Packages:</strong> ${pkgList}
+            `;
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.addEventListener('click', () => {
+                // Remove this passenger plan
+                selectedPassengers.splice(index, 1);
+                updatePassengerList(); // Recalculate and update
+            });
+
+            div.appendChild(infoDiv);
+            div.appendChild(deleteBtn);
+
+            passengerList.appendChild(div);
+        });
+
+        updateTotalCost();
+    }
+
+    function updateTotalCost() {
+        let total = 0;
+        for (const sp of selectedPassengers) {
+            const sData = staterooms.find(s => s.roomId === sp.stateroomId);
+            const stateroomPrice = sData ? sData.pricePerPerson : 0;
+            let packagesPrice = 0;
+            for (const pkg of sp.packages) {
+                packagesPrice += pkg.price;
+            }
+            total += stateroomPrice + packagesPrice;
+        }
+
+        totalContainer.textContent = `Total: $${total.toFixed(2)}`;
+    }
+
+    proceedBtn.addEventListener('click', async () => {
+        // Map selectedPassengers to final JSON format needed
+        // Strip out price before sending:
+        const bookingData = selectedPassengers.map(sp => ({
+            passengerId: sp.passengerId,
+            stateroomId: sp.stateroomId,
+            packages: sp.packages.map(p => ({ packageType: p.packageType }))
+        }));
+
+        try {
+            const response = await fetch('/bookings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(bookingData)
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                // Expecting result like:
+                // [
+                //   {
+                //     "status": "success" or "fail",
+                //     "invoiceID": invoiceid or undefined,
+                //     "TotalPrice": totalprice or -1
+                //   }
+                // ]
+
+                if (Array.isArray(result) && result.length > 0) {
+                    const resData = result[0];
+                    if (resData.status === 'success') {
+                        // Store invoiceID and TotalPrice in localStorage
+                        localStorage.setItem('invoiceID', resData.invoiceID);
+                        localStorage.setItem('invoiceTotalPrice', resData.TotalPrice);
+
+                        alert('Booking successful! Redirecting to Payment...');
+                        const url = 'Payment.html?'
+                            + 'tripId=' + encodeURIComponent(tripId)
+                            + '&startTime=' + encodeURIComponent(startTime)
+                            + '&endTime=' + encodeURIComponent(endTime)
+                            + '&startPortName=' + encodeURIComponent(startPortName)
+                            + '&endPortName=' + encodeURIComponent(endPortName);
+                        window.location.href = url;
+                    } else {
+                        // Fail case
+                        alert('booking failed: ' + (resData.message || 'Unknown error'));
+                    }
+                } else {
+                    alert('booking failed: Invalid response format.');
+                }
+
+            } else {
+                console.error('Booking failed, status:', response.status);
+                alert('booking failed: Server error ' + response.status);
+            }
+        } catch (error) {
+            console.error('Error calling bookings API:', error);
+            alert('booking failed: Network error.');
+        }
+    });
+</script>
+</body>
+</html>
