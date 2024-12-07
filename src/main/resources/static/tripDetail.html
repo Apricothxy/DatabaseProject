@@ -301,7 +301,7 @@
     <div class="booking-panel">
         <div class="booking-panel-title">Ready to book?</div>
         <div class="booking-panel-note">Choose travel options for your group!</div>
-        <a class="book-now-btn" href="Payment.html">Book Now</a>
+        <a class="book-now-btn" href="booking.html">Book Now</a>
     </div>
 </div>
 
@@ -336,6 +336,18 @@
     const startPortName = urlParams.get('startPortName');
     const endPortName = urlParams.get('endPortName');
 
+    // event on book buttom
+    const bookNowBtn = document.querySelector('.book-now-btn');
+    bookNowBtn.addEventListener('click', (e) => {
+        e.preventDefault(); // Prevent default link navigation
+        const url = 'booking.html?'
+            + 'tripId=' + encodeURIComponent(tripId)
+            + '&startTime=' + encodeURIComponent(startTime)
+            + '&endTime=' + encodeURIComponent(endTime)
+            + '&startPortName=' + encodeURIComponent(startPortName)
+            + '&endPortName=' + encodeURIComponent(endPortName);
+        window.location.href = url;
+    });
     // Display user ID
     userIdDisplay.textContent = 'Welcome Back, User ID: ' + userId;
 
