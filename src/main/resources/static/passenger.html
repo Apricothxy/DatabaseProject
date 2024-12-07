@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
     <title>Passenger Management</title>
     <style>
         body {
-            font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+            font-family: 'Libre Baskerville', serif;
             background: #f7f9fc;
             margin: 0;
             padding: 0;
@@ -17,8 +19,8 @@
         }
 
         .top-bar {
-            background: #6C2C92;
-            color: #fff;
+            background: #FFFFFF;
+            color: #000000;
             padding: 15px 20px;
             display: flex;
             align-items: center;
@@ -32,16 +34,11 @@
         }
 
         .back-btn {
-            background: #fff;
-            color: #6C2C92;
+            background: none;
             border: none;
-            border-radius: 6px;
-            padding: 8px 14px;
+            color: #333;
+            font-size: 1.2rem;
             cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: background 0.3s ease;
-            text-decoration: none;
         }
 
         .back-btn:hover {
@@ -144,7 +141,7 @@
         }
 
         button[type="submit"] {
-            background: #6C2C92;
+            background: #000000;
             color: #fff;
             border: none;
             border-radius: 6px;
@@ -156,7 +153,7 @@
         }
 
         button[type="submit"]:hover {
-            background: #8B5FBF;
+            background: #717171;
         }
 
         .message {
@@ -164,6 +161,31 @@
             font-size: 0.9rem;
             font-weight: 500;
             color: #333;
+        }
+
+        .left-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .company-info {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Logo 和公司名称之间的间距 */
+        }
+
+        /* Logo 样式 */
+        .logo {
+            height: 40px; /* 固定高度 */
+            width: auto; /* 保持宽高比 */
+        }
+
+        /* 公司名称样式 */
+        .company-name {
+            font-size: 1rem;
+            color: #333; /* 黑色文字 */
+            font-weight: bold;
         }
 
         @media (max-width: 600px) {
@@ -179,8 +201,14 @@
 </head>
 <body>
 <div class="top-bar">
-    <div class="title">Passengers</div>
-    <button class="back-btn" id="backBtn">Back</button>
+    <div class="left-content">
+        <button class="back-btn" id="backBtn">←</button>
+        <div class="title">Passengers</div>
+    </div>
+    <div class="company-info">
+        <img src="/images/logo.png" alt="Company Logo" class="logo">
+        <span class="company-name">Nature International Cruise Excellence</span>
+    </div>
 </div>
 
 <div class="content">
@@ -208,7 +236,7 @@
             </div>
             <div style="width:100%;">
                 <label for="addressCountry">Country <span style="color:red">*</span></label>
-                <input type="text" id="addressCountry" placeholder="e.g. China" required>
+                <input type="text" id="addressCountry" placeholder="e.g. United States" required>
             </div>
             <div style="width:100%;">
                 <label for="addressState">State <span style="color:red">*</span></label>
@@ -220,7 +248,7 @@
             </div>
             <div style="width:100%;">
                 <label for="addressStreet1">Street Address1 <span style="color:red">*</span></label>
-                <input type="text" id="addressStreet1" placeholder="e.g. 343 Gold St" required>
+                <input type="text" id="addressStreet1" placeholder="e.g. 343 Silver St" required>
             </div>
             <div style="width:100%;">
                 <label for="addressStreet2">Street Address2 (optional)</label>
@@ -232,7 +260,7 @@
             </div>
             <div style="width:100%;">
                 <label for="nationality">Nationality <span style="color:red">*</span></label>
-                <input type="text" id="nationality" placeholder="e.g. China" required>
+                <input type="text" id="nationality" placeholder="e.g. Chinese" required>
             </div>
             <div style="width:100%;">
                 <label for="email">Email <span style="color:red">*</span></label>
@@ -294,7 +322,6 @@
             details.className = 'passenger-details';
 
             details.innerHTML = `
-                <span><strong>ID:</strong> ${p.passengerId}</span>
                 <span><strong>Name:</strong> ${p.fname} ${p.mname ? p.mname : ''} ${p.lname}</span>
                 <span><strong>Birth Date:</strong> ${p.birthDate}</span>
                 <span><strong>Email:</strong> ${p.email}</span>
@@ -358,7 +385,7 @@
         const formData = {
             fname,
             lname,
-            birthDate: birthDate + 'T00:00:00',
+            birthDate: birthDate,
             addressCountry,
             addressState,
             addressCity,
