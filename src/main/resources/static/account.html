@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
     <title>Account Detail</title>
     <style>
         body {
             margin:0;
-            font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+            font-family: 'Libre Baskerville', serif;
             background: #f7f9fc;
             color: #333;
             display: flex;
@@ -16,7 +18,7 @@
 
         /* Left Sidebar */
         .sidebar {
-            width: 240px;
+            width: 350px;
             background: #ffffff;
             border-right: 1px solid #e0e0e0;
             display:flex;
@@ -63,28 +65,60 @@
         }
 
         /* Top bar */
+        /* 顶上栏样式 */
         .top-bar {
-            display:flex;
-            align-items:center;
-            background: #6C2C92;
-            padding:15px 20px;
-            color:#fff;
-            position:relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* 左右对齐 */
+            background: #ffffff; /* 白色背景 */
+            padding: 15px 20px;
+            color: #333; /* 黑色文字 */
+            border-bottom: 1px solid #e0e0e0;
         }
 
+        /* 左侧内容对齐 */
+        .left-content {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* 按钮和标题之间的间距 */
+        }
+
+        /* 返回按钮样式 */
         .top-bar button.back-btn {
-            background:none;
-            border:none;
-            color:#fff;
-            font-size:1.2rem;
-            margin-right:15px;
-            cursor:pointer;
+            background: none;
+            border: none;
+            color: #333; /* 黑色 */
+            font-size: 1.2rem;
+            cursor: pointer;
         }
 
+        /* 标题样式 */
         .top-bar .title {
-            font-size:1.25rem;
-            font-weight:500;
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #333;
         }
+
+        /* 公司信息样式 */
+        .company-info {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Logo 和公司名称之间的间距 */
+        }
+
+        /* Logo 样式 */
+        .logo {
+            height: 40px; /* 固定高度 */
+            width: auto; /* 保持宽高比 */
+        }
+
+        /* 公司名称样式 */
+        .company-name {
+            font-size: 1rem;
+            color: #333; /* 黑色文字 */
+            font-weight: bold;
+        }
+
 
         .content-wrapper {
             padding: 40px;
@@ -141,9 +175,17 @@
 <div class="main-content">
     <!-- Top Bar -->
     <div class="top-bar">
-        <button class="back-btn" onclick="window.history.back()">←</button>
-        <div class="title">Account Detail</div>
+        <div class="left-content">
+            <button class="back-btn" onclick="window.history.back()">←</button>
+            <div class="title">Account Overview</div>
+        </div>
+        <div class="company-info">
+            <img src="/images/logo.png" alt="Company Logo" class="logo">
+            <span class="company-name">Nature International Cruise Excellence</span>
+        </div>
     </div>
+
+
 
     <!-- Content area -->
     <div class="content-wrapper">
