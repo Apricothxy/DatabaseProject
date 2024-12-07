@@ -48,8 +48,8 @@ public class UserController {
         return success ? "Reset Password Success" : "Reset Fail, Incorrect Old Password";
     }
     @PostMapping("/user/cname")
-    public String changeUserName(@RequestParam Integer userid, @RequestParam String newUserName) {
-        boolean success = userService.resetUsername(userid, newUserName);
+    public String changeUserName(@RequestParam Integer userid, @RequestParam String newusername) {
+        boolean success = userService.resetUsername(userid, newusername);
         return success ? "Reset Password Success" : "Reset Fail, invalid username";
     }
     @GetMapping("/user/{userId}")
