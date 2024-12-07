@@ -4,6 +4,8 @@ import com.wxy.databaseproject.model.Passenger;
 import com.wxy.databaseproject.repository.PassengerRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PassengerService {
     private final PassengerRepository passengerRepository;
@@ -16,9 +18,17 @@ public class PassengerService {
         return passengerRepository.findById(passengerId);
     }
 
+    public List<Passenger> getPassengerByUserId(Integer userId) {
+        return passengerRepository.findByUserId(userId);
+    }
+
     public Passenger createPassenger(Passenger passenger) {
         if (!isPassengerValid(passenger)) return null;
         return passengerRepository.createPassenger(passenger);
+    }
+
+    public String deletePassengerById(Integer passengerId) {
+        return passengerRepository.deletePassengerById(passengerId);
     }
 
     public boolean isPassengerValid(Passenger passenger) {

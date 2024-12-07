@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Passenger Management</title>
+    <style>
+        body {
+            font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+            background: #f7f9fc;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .top-bar {
+            background: #6C2C92;
+            color: #fff;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .title {
+            font-size: 1.25rem;
+            font-weight: 500;
+        }
+
+        .back-btn {
+            background: #fff;
+            color: #6C2C92;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 14px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background 0.3s ease;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background: #eee;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .passenger-list {
+            margin-bottom: 40px;
+        }
+
+        .passenger-item {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .passenger-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .passenger-details span {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+
+        .form-section {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .form-section h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.25rem;
+        }
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        label {
+            font-size: 0.9rem;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        select,
+        input[type="email"],
+        input[type="tel"] {
+            width: calc(50% - 10px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        button[type="submit"] {
+            background: #6C2C92;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 20px;
+            transition: background 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background: #8B5FBF;
+        }
+
+        .message {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        @media (max-width: 600px) {
+            input[type="text"],
+            input[type="date"],
+            select,
+            input[type="email"],
+            input[type="tel"] {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="top-bar">
+    <div class="title">Passengers</div>
+    <button class="back-btn" id="backBtn">Back</button>
+</div>
+
+<div class="content">
+    <h2>Your Passengers</h2>
+    <div class="passenger-list" id="passengerList"></div>
+
+    <div class="form-section">
+        <h3>Add a New Passenger</h3>
+        <form id="addPassengerForm">
+            <div style="width:100%;">
+                <label for="fname">First Name <span style="color:red">*</span></label>
+                <input type="text" id="fname" required>
+            </div>
+            <div style="width:100%;">
+                <label for="mname">Middle Name (optional)</label>
+                <input type="text" id="mname">
+            </div>
+            <div style="width:100%;">
+                <label for="lname">Last Name <span style="color:red">*</span></label>
+                <input type="text" id="lname" required>
+            </div>
+            <div style="width:100%;">
+                <label for="birthDate">Birth Date <span style="color:red">*</span></label>
+                <input type="date" id="birthDate" required>
+            </div>
+            <div style="width:100%;">
+                <label for="addressCountry">Country <span style="color:red">*</span></label>
+                <input type="text" id="addressCountry" placeholder="e.g. China" required>
+            </div>
+            <div style="width:100%;">
+                <label for="addressState">State <span style="color:red">*</span></label>
+                <input type="text" id="addressState" placeholder="e.g. NY" required>
+            </div>
+            <div style="width:100%;">
+                <label for="addressCity">City <span style="color:red">*</span></label>
+                <input type="text" id="addressCity" placeholder="e.g. Los Angeles" required>
+            </div>
+            <div style="width:100%;">
+                <label for="addressStreet1">Street Address1 <span style="color:red">*</span></label>
+                <input type="text" id="addressStreet1" placeholder="e.g. 343 Gold St" required>
+            </div>
+            <div style="width:100%;">
+                <label for="addressStreet2">Street Address2 (optional)</label>
+                <input type="text" id="addressStreet2" placeholder="Apt/Suite...">
+            </div>
+            <div style="width:100%;">
+                <label for="gender">Gender <span style="color:red">*</span></label>
+                <input type="text" id="gender" placeholder="Male/Female" required>
+            </div>
+            <div style="width:100%;">
+                <label for="nationality">Nationality <span style="color:red">*</span></label>
+                <input type="text" id="nationality" placeholder="e.g. China" required>
+            </div>
+            <div style="width:100%;">
+                <label for="email">Email <span style="color:red">*</span></label>
+                <input type="email" id="email" placeholder="john.doe@example.com" required>
+            </div>
+            <div style="width:100%;">
+                <label for="phone">Phone <span style="color:red">*</span></label>
+                <input type="tel" id="phone" placeholder="+1-234-567-890" required>
+            </div>
+            <button type="submit">Add Passenger</button>
+            <div class="message" id="message"></div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const userId = localStorage.getItem('loggedInUserId');
+    if(!userId) {
+        window.location.href = 'index.html';
+    }
+
+    const backBtn = document.getElementById('backBtn');
+    backBtn.addEventListener('click', () => {
+        window.location.href = 'home.html';
+    });
+
+    const passengerList = document.getElementById('passengerList');
+    const addPassengerForm = document.getElementById('addPassengerForm');
+    const message = document.getElementById('message');
+
+    async function fetchPassengers() {
+        passengerList.innerHTML = 'Loading...';
+        try {
+            const res = await fetch(`/api/passenger/user/${userId}`, { method: 'GET' });
+            if (!res.ok) {
+                passengerList.innerHTML = 'Failed to load passengers.';
+                return;
+            }
+            const data = await res.json();
+            displayPassengers(data);
+        } catch (err) {
+            passengerList.innerHTML = 'Failed to load passengers.';
+            console.error(err);
+        }
+    }
+
+    function displayPassengers(passengers) {
+        passengerList.innerHTML = '';
+        if (!Array.isArray(passengers) || passengers.length === 0) {
+            passengerList.textContent = 'No passengers found.';
+            return;
+        }
+
+        passengers.forEach(p => {
+            const item = document.createElement('div');
+            item.className = 'passenger-item';
+
+            const details = document.createElement('div');
+            details.className = 'passenger-details';
+
+            details.innerHTML = `
+                <span><strong>ID:</strong> ${p.passengerId}</span>
+                <span><strong>Name:</strong> ${p.fname} ${p.mname ? p.mname : ''} ${p.lname}</span>
+                <span><strong>Birth Date:</strong> ${p.birthDate}</span>
+                <span><strong>Email:</strong> ${p.email}</span>
+                <span><strong>Phone:</strong> ${p.phone}</span>
+            `;
+
+            item.appendChild(details);
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.addEventListener('click', async () => {
+                const confirmDelete = confirm(`Are you sure you want to delete passenger ID: ${p.passengerId}?`);
+                if (confirmDelete) {
+                    try {
+                        const res = await fetch(`/api/passenger/${p.passengerId}`, { method: 'DELETE' });
+                        if(res.ok) {
+                            fetchPassengers();
+                        } else {
+                            alert('Failed to delete passenger.');
+                        }
+                    } catch (error) {
+                        console.error(error);
+                        alert('Failed to delete passenger.');
+                    }
+                }
+            });
+
+            item.appendChild(deleteBtn);
+            passengerList.appendChild(item);
+        });
+    }
+
+    addPassengerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // 必填字段
+        const fname = document.getElementById('fname').value.trim();
+        const lname = document.getElementById('lname').value.trim();
+        const birthDate = document.getElementById('birthDate').value;
+        const addressCountry = document.getElementById('addressCountry').value.trim();
+        const addressState = document.getElementById('addressState').value.trim();
+        const addressCity = document.getElementById('addressCity').value.trim();
+        const addressStreet1 = document.getElementById('addressStreet1').value.trim();
+        const gender = document.getElementById('gender').value.trim();
+        const nationality = document.getElementById('nationality').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+
+        // 非必填字段
+        const mname = document.getElementById('mname').value.trim();
+        const addressStreet2 = document.getElementById('addressStreet2').value.trim();
+
+        // 简单校验必填项
+        if(!fname || !lname || !birthDate || !addressCountry || !addressState || !addressCity || !addressStreet1
+            || !gender || !nationality || !email || !phone) {
+            message.textContent = 'Please fill all required fields.';
+            return;
+        }
+
+        const formData = {
+            fname,
+            lname,
+            birthDate: birthDate + 'T00:00:00',
+            addressCountry,
+            addressState,
+            addressCity,
+            addressStreet1,
+            gender,
+            nationality,
+            email,
+            phone,
+            userId: Number(userId)
+        };
+
+        // 只有在非空时才加入 mname 和 addressStreet2
+        if(mname) formData.mname = mname;
+        if(addressStreet2) formData.addressStreet2 = addressStreet2;
+
+        try {
+            const res = await fetch('/api/passenger', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            if (!res.ok) {
+                message.textContent = 'Failed to add passenger. Please check input.';
+                return;
+            }
+
+            const data = await res.json();
+            if (data && data.passengerId) {
+                message.textContent = 'Passenger added successfully!';
+                // 清空表单
+                addPassengerForm.reset();
+                // 刷新列表
+                fetchPassengers();
+            } else {
+                message.textContent = 'Failed to add passenger.';
+            }
+        } catch (error) {
+            console.error(error);
+            message.textContent = 'Error occurred while adding passenger.';
+        }
+    });
+
+    // 初始加载乘客列表
+    fetchPassengers();
+</script>
+</body>
+</html>
+

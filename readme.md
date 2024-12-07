@@ -158,18 +158,121 @@
     }
     ```
   
+- **根据用户ID获取所有乘客信息**
+
+- - 方法：`GET`
+
+  - URL:  `/passenger/user/{user_id}`
+
+  - 返回值：
+
+    ```json
+    [
+        {
+            "passengerId": 1,
+            "fname": "John",
+            "mname": "A",
+            "lname": "Doe",
+            "birthDate": "1985-01-01T00:00:00",
+            "addressCountry": "USA",
+            "addressState": "CA",
+            "addressCity": "Los Angeles",
+            "addressStreet1": "123 Main St",
+            "addressStreet2": null,
+            "gender": "Male",
+            "nationality": "American",
+            "email": "john.doe1@example.com",
+            "phone": "1234567890",
+            "groupId": null,
+            "userId": 1
+        },
+        {
+            "passengerId": 2,
+            "fname": "Yuheng",
+            "mname": null,
+            "lname": "Wu",
+            "birthDate": "1990-01-01T00:00:00",
+            "addressCountry": "China",
+            "addressState": "NY",
+            "addressCity": "Los Angeles",
+            "addressStreet1": "343 Gold St",
+            "addressStreet2": null,
+            "gender": "Male",
+            "nationality": "China",
+            "email": "john.doe@example.com",
+            "phone": "+1-234-567-890",
+            "groupId": null,
+            "userId": 1
+        },
+        {
+            "passengerId": 3,
+            "fname": "weizhen",
+            "mname": null,
+            "lname": "Wu",
+            "birthDate": "1990-01-01T00:00:00",
+            "addressCountry": "China",
+            "addressState": "NY",
+            "addressCity": "Los Angeles",
+            "addressStreet1": "343 Gold St",
+            "addressStreet2": null,
+            "gender": "Male",
+            "nationality": "China",
+            "email": "john.doe@example.com",
+            "phone": "+1-234-567-890",
+            "groupId": null,
+            "userId": 1
+        },
+        {
+            "passengerId": 4,
+            "fname": "test1",
+            "mname": null,
+            "lname": "Wu",
+            "birthDate": "1990-01-01T00:00:00",
+            "addressCountry": "China",
+            "addressState": "NY",
+            "addressCity": "Los Angeles",
+            "addressStreet1": "343 Gold St",
+            "addressStreet2": null,
+            "gender": "Male",
+            "nationality": "China",
+            "email": "john.doe@example.com",
+            "phone": "+1-234-567-890",
+            "groupId": null,
+            "userId": 1
+        },
+        {
+            "passengerId": 5,
+            "fname": "test2",
+            "mname": null,
+            "lname": "1234",
+            "birthDate": "1991-01-01T00:00:00",
+            "addressCountry": "China",
+            "addressState": "NY",
+            "addressCity": "Los Angeles",
+            "addressStreet1": "343 Gold St",
+            "addressStreet2": null,
+            "gender": "Male",
+            "nationality": "China",
+            "email": "john.doe@example.com",
+            "phone": "+1-234-567-890",
+            "groupId": null,
+            "userId": 1
+        }
+    ]
+    ```
+
 - **获取乘客信息**
-  
+
   - 方法：`GET`
-  
+
   - URL：`/passenger/{id}`
-  
+
   - 描述：获取指定乘客的信息。
-  
+
   - 输入：passengerid
-  
+
   - 输出：
-  
+
     ```json
     {
         "passengerId": 1,
@@ -190,19 +293,19 @@
         "userId": 1
     }
     ```
-  
+
 - **获取旅行详情**
-  
+
   - 方法：`GET`
-  
+
   - URL：`/api/tripdetail/{tripId}`
-  
+
   - 描述：获取特定旅行的详细信息。
-  
+
   - 输入：tripid
-  
+
   - 返回值：
-  
+
     ```json
     {
         "cruiseId": 1,
@@ -247,12 +350,12 @@
         ]
     }
     ```
-  
+
 - **创建预订**
   - 方法：`POST`(TBD)
   - URL：`/bookings`
   - 描述：创建新的预订。
-  
+
 - **获取预订信息**
   - 方法：`GET`(TBD)
   - URL：`/bookings/{bookingId}`
@@ -262,7 +365,7 @@
   - 方法：`POST`(TBD)
   - URL：`/payments`
   - 描述：提交新的支付信息。
-  
+
 - **获取支付信息**
   - 方法：`GET`(TBD)
   - URL：`/payments/{paymentId}`

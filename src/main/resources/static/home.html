@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Home Page (Rename Later)</title>
+    <title>Home</title>
     <style>
         html, body {
             margin: 0;
@@ -310,7 +310,7 @@
 <div class="top-bar">
     <div class="left-items">
         <button class="menu-btn" id="menuBtn">≡</button>
-        <div class="title">Home Page (Rename Later)</div>
+        <div class="title">Home</div>
     </div>
     <div class="right-items">
         <span class="user-id" id="userIdDisplay"></span>
@@ -321,7 +321,7 @@
 <div class="side-menu" id="sideMenu">
     <h2>Menu</h2>
     <a id="accountLink">Account</a>
-    <a id="companionsLink">Companions</a>
+    <a id="passengerLink">Passengers</a>
     <a id="ordersLink">My Orders</a>
 </div>
 
@@ -401,6 +401,10 @@
     // Click account to go to the account page
     document.getElementById('accountLink').addEventListener('click', () => {
         window.location.href = 'account.html';
+    });
+
+    document.getElementById('passengerLink').addEventListener('click', () => {
+        window.location.href = 'passenger.html';
     });
 
     // Hide menu when clicking outside

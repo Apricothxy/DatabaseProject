@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public class PassengerRepository {
@@ -39,12 +40,22 @@ public class PassengerRepository {
     };
 
     public Passenger findById(Integer passengerId) {
-        System.out.println(passengerId);
         String sql = "SELECT * FROM wxy_passenger WHERE passenger_id = ?";
         return jdbcTemplate.query(sql, new Object[]{passengerId}, passengerRowMapper)
                 .stream()
                 .findFirst()
                 .orElse(null);
+    }
+
+    public List<Passenger> findByUserId(Integer userId) {
+        String sql = "SELECT * FROM wxy_passenger WHERE user_id = ?";
+        return jdbcTemplate.query(sql, new Object[]{userId}, passengerRowMapper);
+    }
+
+    public String deletePassengerById(Integer passengerId) {
+        String sql = "DELETE FROM wxy_passenger WHERE passenger_id = ?";
+        int count = jdbcTemplate.update(sql, passengerId);
+        return count > 0 ? "Delete Success" : "Delete Fail";
     }
 
     public Passenger createPassenger(Passenger p) {

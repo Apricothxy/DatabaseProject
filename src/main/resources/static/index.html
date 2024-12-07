@@ -126,19 +126,23 @@
 
     toggleLink.addEventListener('click', () => {
         if (loginForm.style.display === 'none') {
-            // Switch to Login
             loginForm.style.display = 'block';
             registerForm.style.display = 'none';
             formTitle.textContent = 'User Login';
             toggleLink.textContent = 'No account yet? Click here to register';
             message.textContent = '';
+
+            document.getElementById('login-username').value = '';
+            document.getElementById('login-password').value = '';
         } else {
-            // Switch to Registration
             loginForm.style.display = 'none';
             registerForm.style.display = 'block';
             formTitle.textContent = 'User Registration';
             toggleLink.textContent = 'Already have an account? Click here to login';
             message.textContent = '';
+
+            document.getElementById('reg-username').value = '';
+            document.getElementById('reg-password').value = '';
         }
     });
 
@@ -159,9 +163,20 @@
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: formData
         });
+
         const text = await res.text();
-        message.textContent = text;
+        message.textContent = text + '. Please login to continue';
+
+        if (text === 'Register Success') {
+            loginForm.style.display = 'block';
+            registerForm.style.display = 'none';
+            formTitle.textContent = 'User Login';
+            toggleLink.textContent = 'No account yet? Click here to register';
+            document.getElementById('login-username').value = '';
+            document.getElementById('login-password').value = '';
+        }
     });
+
 
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
