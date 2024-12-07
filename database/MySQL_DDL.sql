@@ -65,7 +65,7 @@ ALTER TABLE wxy_package ADD CHECK ( price >= 0 );
 ALTER TABLE wxy_package ADD CONSTRAINT wxy_package_pk PRIMARY KEY ( package_id );
 
 CREATE TABLE wxy_passenger (
-    passenger_id     INT NOT NULL COMMENT 'passenger id',
+    passenger_id     INT AUTO_INCREMENT NOT NULL COMMENT 'passenger id',
     fname            VARCHAR(50) NOT NULL COMMENT 'first name',
     mname            VARCHAR(50) COMMENT 'middle name',
     lname            VARCHAR(50) NOT NULL COMMENT 'last name',
@@ -80,10 +80,11 @@ CREATE TABLE wxy_passenger (
     email            VARCHAR(50) NOT NULL COMMENT 'email address',
     phone            VARCHAR(50) NOT NULL COMMENT 'phone number',
     -- group_id         INT NOT NULL,
-    user_id          INT
+    user_id          INT,
+    PRIMARY KEY (passenger_id)
 );
 
-ALTER TABLE wxy_passenger ADD CONSTRAINT wxy_passenger_pk PRIMARY KEY ( passenger_id );
+# ALTER TABLE wxy_passenger ADD CONSTRAINT wxy_passenger_pk PRIMARY KEY ( passenger_id );
 
 CREATE TABLE wxy_passenger_room (
     price        DECIMAL(10, 2) NOT NULL COMMENT 'price of this room for this passenger',
