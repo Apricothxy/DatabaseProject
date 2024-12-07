@@ -356,17 +356,27 @@
         "passengerId": 101,
         "stateroomId": 301,
         "packages": [
-          { "packageType": xxx },
-          { "packageType": xxx },
-          { "packageType": xxx }
+          { "packageType": xxx,
+          	"packageNum" : 1
+          },
+          { "packageType": xxx,
+          	"packageNum" : 1
+          },
+          { "packageType": xxx,
+          	"packageNum" : 1
+          }
         ]
       },
       {
         "passengerId": 102,
         "stateroomId": 302,
         "packages": [
-          { "packageType": xxx },
-          { "packageType": xxx }
+          { "packageType": xxx,
+          	"packageNum" : 1
+          },
+          { "packageType": xxx,
+          	"packageNum" : 1
+          }
         ]
       }
     ]
