@@ -31,7 +31,7 @@ public class UserService {
         if (user == null) return false;
         return user.getPassword().equals(password);
     }
-
+    // Reset
     public User getUserById(Integer id) {
         return userRepository.findByUserID(id);
     }

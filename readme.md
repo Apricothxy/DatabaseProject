@@ -33,18 +33,74 @@
     ]
     ```
   
+- **修改密码**
+  
+  - 方法：`POST`
+  
+  - URL：`/api/user/cpassword`
+  
+  - 描述：用户修改密码
+  
+  - 输入：userId, oldPassword, newPassword 
+  
+  - 返回值：
+  
+    ```json
+    [  
+    	{
+            "status": "success"
+            "userID": ${userid}
+        }
+        OR
+        {
+            "status": "fail"
+            "message": ${message}
+        }
+    ]
+    ```
+  
+    
+  
+  **修改用户名**
+  
+  - 方法：`POST`
+  
+  - URL：`/api/user/cname/`
+  
+  - 描述：用户修改用户名
+  
+  - 输入：userID,  newUsername
+  
+  - 返回值：
+  
+    ```json
+    [  
+    	{
+            "status": "success"
+            "userID": ${userid}
+        }
+        OR
+        {
+            "status": "fail"
+            "message": ${message}
+        }
+    ]
+    ```
+  
+    
+  
 - **获取旅行列表**
-  
+
   - 方法：`GET`
-  
+
   - URL：`/api/search`
-  
+
   - 描述：获取所有可用的旅行信息。
-  
+
   - 输入：startPortName, endPortName, startDate, endDate
-  
+
   - 返回值
-  
+
     ```json
     [
         {
@@ -86,19 +142,19 @@
         }
     ]
     ```
-  
+
 - **获取用户信息**
-  
+
   - 方法：`GET`
-  
+
   - URL：`/api/users/{userId}`
-  
+
   - 描述：根据用户ID获取用户信息。
-  
+
   - 输入：userID
-  
+
   - 返回值：
-  
+
     ```json
     {
         "id": 1,
@@ -107,19 +163,19 @@
         "membership": "bronze"
     }
     ```
-  
+
 - **创建乘客同行人**
-  
+
   - 方法：`POST`
-  
+
   - URL：`/api/passenger`
-  
+
   - 删除URL:  `/api/passenger/{passenger_id}`  Method: `DELETE`
-  
+
   - 描述：创建新的乘客信息。
-  
+
   - 输入：
-  
+
     ```json
     {
         "fname": "test1",
@@ -136,9 +192,9 @@
         "userId": 1
     }
     ```
-  
+
   - 输出：
-  
+
     ```json
     {
         "passengerId": 5,
@@ -159,7 +215,7 @@
         "userId": 1
     }
     ```
-  
+
 - **根据用户ID获取所有乘客信息**
 
 - - 方法：`GET`
@@ -208,7 +264,7 @@
         }
     ]
     ```
-  
+
 - **获取乘客信息**
 
   - 方法：`GET`
@@ -298,22 +354,22 @@
         ]
     }
     ```
-  
+
 - **创建预订**
-  
+
   - 方法：`POST`(TBD)
-  
+
   - URL：`/bookings`
-  
+
   - 描述：创建新的预订。
-  
+
     - 创建Group记录，创建passenger_group记录
     - 创建passenger_room记录，
     - update package中passenger记录
     - 创建invoice记录
-  
+
   - 输入：
-  
+
     ```json
     [
       {
@@ -336,9 +392,9 @@
     ]
     
     ```
-  
+
   - 返回值：
-  
+
     ```json
     [  
     	{
@@ -354,7 +410,7 @@
         }
     ]
     ```
-  
+
 - **获取预订信息**
   - 方法：`GET`(TBD)
   - URL：`/bookings/{bookingId}`
@@ -365,13 +421,13 @@
   - URL：`/api/payments`
   - 描述：提交新的支付信息。
   - 输入：invoice_id
-  
+
 - **获取支付信息**
-  
+
   - 方法：`GET`(TBD)
   - URL：`/payments/{paymentId}`
   - 描述：获取指定支付的详细信息。
-  
+
 - **获取发票信息**
   - 方法：`GET`(TBD)
   - URL：`/invoices/{invoiceId}`
