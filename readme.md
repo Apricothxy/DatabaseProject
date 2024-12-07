@@ -312,7 +312,32 @@
     - update package中passenger记录
     - 创建invoice记录
   
-  - 输入：{passengerID1, passengerID2,...}, {stareroomID1, stareroomID2...}, {package1, package2...}
+  - 输入：
+  
+    ```
+    [
+      {
+        "passengerId": 101,
+        "stateroomId": 301,
+        "packages": [
+          { "packageType": xxx },
+          { "packageType": xxx },
+          { "packageType": xxx }
+        ]
+      },
+      {
+        "passengerId": 102,
+        "stateroomId": 302,
+        "packages": [
+          { "packageType": xxx },
+          { "packageType": xxx }
+        ]
+      }
+    ]
+    
+    ```
+  
+    
   
   - 返回值：
   
