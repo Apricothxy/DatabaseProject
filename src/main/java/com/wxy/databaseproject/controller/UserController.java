@@ -42,11 +42,14 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }
-
+    @PostMapping("/user/cpassword")
+    public String changePassword(@RequestParam Integer userid, @RequestParam String oldPassword, @RequestParam String newPassword) {
+        boolean success = userService.resetPassword(userid, oldPassword, newPassword);
+        return success ? "Reset Password Success" : "Reset Fail, Incorrect Old Password";
+    }
     @GetMapping("/user/{userId}")
     public User getUserInfo(@PathVariable Integer userId) {
         User user = userService.getUserById(userId);
         return user;
     }
-
 }

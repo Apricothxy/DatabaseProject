@@ -48,4 +48,8 @@ public class UserRepository {
                 .orElse(null);
     }
     // reset
+    public int resetPasswordByUserID(Integer userid, String password) {
+        String sql = "UPDATE wxy_user SET password = ? WHERE user_id = ?";
+        return jdbcTemplate.update(sql, password, userid);
+    }
 }

@@ -41,22 +41,12 @@
   
   - 描述：用户修改密码
   
-  - 输入：userId, oldPassword, newPassword 
+  - 输入：userid, oldPassword, newPassword 
   
   - 返回值：
   
     ```json
-    [  
-    	{
-            "status": "success"
-            "userID": ${userid}
-        }
-        OR
-        {
-            "status": "fail"
-            "message": ${message}
-        }
-    ]
+    
     ```
   
     
@@ -69,22 +59,12 @@
   
   - 描述：用户修改用户名
   
-  - 输入：userID,  newUsername
+  - 输入：userid,  newusername
   
   - 返回值：
   
     ```json
-    [  
-    	{
-            "status": "success"
-            "userID": ${userid}
-        }
-        OR
-        {
-            "status": "fail"
-            "message": ${message}
-        }
-    ]
+    
     ```
   
     

@@ -32,6 +32,13 @@ public class UserService {
         return user.getPassword().equals(password);
     }
     // Reset
+    public boolean resetPassword(Integer userid, String oldPassword, String newPassword) {
+        User user = userRepository.findByUserID(userid);
+        if (user == null) return false;
+        if (!user.getPassword().equals(oldPassword)) return false;
+        int isSuccess = userRepository.resetPasswordByUserID(userid,newPassword);
+        return isSuccess != 0;
+    }
     public User getUserById(Integer id) {
         return userRepository.findByUserID(id);
     }
