@@ -44,6 +44,7 @@ public class UserController {
     }
     @PostMapping("/user/cpassword")
     public String changePassword(@RequestParam Integer userid, @RequestParam String oldPassword, @RequestParam String newPassword) {
+        System.out.println(userid + oldPassword + newPassword);
         boolean success = userService.resetPassword(userid, oldPassword, newPassword);
         return success ? "Reset Password Success" : "Reset Fail, Incorrect Old Password";
     }

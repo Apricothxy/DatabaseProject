@@ -269,7 +269,7 @@
         <div class="section" data-page="change-password" style="display: none;">
             <h2>Change Password</h2>
             <div class="form-row">
-                <label for="newPassword">Old Password</label>
+                <label for="oldPassword">Old Password</label>
                 <input type="password" id="oldPassword" />
             </div>
             <div class="form-row">
@@ -391,6 +391,7 @@
 
     // 修改密码提交事件
     document.getElementById('submitPasswordChange').addEventListener('click', () => {
+        const oldPassword = document.getElementById('oldPassword').value;
         const newPassword = document.getElementById('newPassword').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
         const messageSpan = document.getElementById('passwordMessage'); // 获取消息显示的 DOM 元素
