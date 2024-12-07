@@ -8,7 +8,7 @@
     <title>Account Detail</title>
     <style>
         body {
-            margin:0;
+            margin: 0;
             font-family: 'Libre Baskerville', serif;
             background: #f7f9fc;
             color: #333;
@@ -21,7 +21,7 @@
             width: 350px;
             background: #ffffff;
             border-right: 1px solid #e0e0e0;
-            display:flex;
+            display: flex;
             flex-direction: column;
             padding: 20px 0;
             box-sizing: border-box;
@@ -45,54 +45,45 @@
             transition: background 0.2s;
         }
 
-        .sidebar-menu a:hover {
+        .sidebar-menu a:hover, .sidebar-menu a.active {
             background: #f0f4fb;
             color: #333;
-        }
-
-        .sidebar-menu a.active {
-            background: #f0f4fb;
             font-weight: 500;
-            color: #333;
         }
 
         /* Main Content Area */
         .main-content {
-            flex:1;
-            display:flex;
+            flex: 1;
+            display: flex;
             flex-direction: column;
-            padding:0;
+            padding: 0;
         }
 
-        /* Top bar */
-        /* 顶上栏样式 */
+        /* Top Bar */
         .top-bar {
             display: flex;
             align-items: center;
-            justify-content: space-between; /* 左右对齐 */
-            background: #ffffff; /* 白色背景 */
+            justify-content: space-between;
+            background: #ffffff;
             padding: 15px 20px;
-            color: #333; /* 黑色文字 */
+            color: #333;
             border-bottom: 1px solid #e0e0e0;
         }
 
-        /* 左侧内容对齐 */
         .left-content {
             display: flex;
             align-items: center;
-            gap: 10px; /* 按钮和标题之间的间距 */
+            gap: 10px;
         }
 
-        /* 返回按钮样式 */
         .top-bar button.back-btn {
             background: none;
             border: none;
-            color: #333; /* 黑色 */
+            color: #333;
             font-size: 1.2rem;
             cursor: pointer;
         }
 
-        /* 标题样式 */
         .top-bar .title {
             font-size: 1.25rem;
             font-weight: 500;
@@ -119,27 +110,67 @@
             font-weight: bold;
         }
 
-
         .content-wrapper {
             padding: 40px;
-            flex:1;
-            display:flex;
-            flex-direction:column;
-            gap:30px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
         }
 
         .section {
-            background:#fff;
-            border-radius:8px;
-            border:1px solid #e0e0e0;
-            padding:20px;
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            padding: 20px;
         }
 
         .section h2 {
-            font-size:1.25rem;
-            margin:0 0 20px 0;
-            font-weight:500;
-            color:#333;
+            font-size: 1.25rem;
+            margin: 0 0 20px 0;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+        }
+
+        .form-row label {
+            color: #555;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .form-row input {
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            width: 100%;
+        }
+
+        .form-row input:focus {
+            border-color: #333;
+            outline: none;
+        }
+
+        .submit-btn {
+            padding: 10px 20px;
+            font-size: 1rem;
+            background: #333;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #555;
         }
 
         .info-row {
@@ -160,6 +191,11 @@
             font-size:1rem;
         }
 
+        .form-row input {
+            box-sizing: border-box;
+            padding-right: 20px;
+        }
+
     </style>
 </head>
 <body>
@@ -167,7 +203,9 @@
 <div class="sidebar">
     <div class="sidebar-title">Account Center</div>
     <div class="sidebar-menu">
-        <a href="#" class="active">Account Overview</a>
+        <a href="#" class="menu-item active" data-page="overview">Account Overview</a>
+        <a href="#" class="menu-item" data-page="change-username">Change Username</a>
+        <a href="#" class="menu-item" data-page="change-password">Change Password</a>
     </div>
 </div>
 
@@ -177,7 +215,7 @@
     <div class="top-bar">
         <div class="left-content">
             <button class="back-btn" onclick="window.history.back()">←</button>
-            <div class="title">Account Overview</div>
+            <div class="title" id="pageTitle">Account Overview</div>
         </div>
         <div class="company-info">
             <img src="/images/logo.png" alt="Company Logo" class="logo">
@@ -185,12 +223,10 @@
         </div>
     </div>
 
-
-
     <!-- Content area -->
-    <div class="content-wrapper">
-        <!-- Personal Information Section -->
-        <div class="section">
+    <div class="content-wrapper" id="contentWrapper">
+        <!-- Default Overview Page -->
+        <div class="section" data-page="overview">
             <h2>Personal Information</h2>
             <div class="info-row">
                 <div class="info-label">User Name</div>
@@ -202,18 +238,89 @@
             </div>
         </div>
 
-        <!-- Password Section -->
-        <div class="section">
+        <div class="section" data-page="overview">
             <h2>Password</h2>
             <div class="info-row">
                 <div class="info-label">Password</div>
                 <div class="info-value" id="passwordDisplay">******</div>
             </div>
         </div>
+
+        <!-- Change Username Page -->
+        <div class="section" data-page="change-username" style="display: none;">
+            <h2>Change Username</h2>
+            <div class="form-row">
+                <label for="currentUsername">Current Username</label>
+                <input type="text" id="currentUsername" disabled/>
+            </div>
+            <div class="form-row">
+                <label for="newUsername">New Username</label>
+                <input type="text" id="newUsername" />
+            </div>
+            <div class="form-row">
+                <label for="confirmUsername">Confirm Username</label>
+                <input type="text" id="confirmUsername" />
+            </div>
+            <button class="submit-btn" id="submitUsernameChange">Submit</button>
+        </div>
+
+        <!-- Change Password Page -->
+        <div class="section" data-page="change-password" style="display: none;">
+            <h2>Change Password</h2>
+            <div class="form-row">
+                <label for="newPassword">Old Password</label>
+                <input type="password" id="oldPassword" />
+            </div>
+            <div class="form-row">
+                <label for="newPassword">New Password</label>
+                <input type="password" id="newPassword" />
+            </div>
+            <div class="form-row">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" />
+            </div>
+            <button class="submit-btn" id="submitPasswordChange">Submit</button>
+        </div>
     </div>
 </div>
 
 <script>
+    let userData = null; // 全局变量，用于存储用户数据
+
+    // Page navigation logic
+    const menuItems = document.querySelectorAll('.menu-item');
+    const sections = document.querySelectorAll('.section');
+    const pageTitle = document.getElementById('pageTitle');
+
+    menuItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetPage = item.dataset.page;
+
+            // Update active menu
+            menuItems.forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+
+            // Show the target sections
+            sections.forEach(section => {
+                // 如果section的data-page匹配，则显示，否则隐藏
+                if (section.dataset.page === targetPage) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+
+            // Update page title
+            pageTitle.textContent = item.textContent;
+
+            // 当进入change-username页面时，如果有用户数据，则显示当前用户名
+            if (targetPage === 'change-username' && userData) {
+                document.getElementById('currentUsername').value = userData.username || '-';
+            }
+        });
+    });
+
     const userId = localStorage.getItem('loggedInUserId');
     if(!userId) {
         window.location.href = 'login.html';
@@ -221,19 +328,111 @@
 
     fetch('/api/user/' + userId)
         .then(response => response.json())
-        .then(userData => {
+        .then(data => {
+            userData = data; // 存储用户数据
+
             // Display username
             document.getElementById('usernameDisplay').textContent = userData.username || '-';
             // Display membership
             document.getElementById('membershipDisplay').textContent = userData.membership || '-';
 
             // Mask password
-            const maskedPassword = '*'.repeat(userData.password.length || 6);
+            const maskedPassword = '*'.repeat(10);
             document.getElementById('passwordDisplay').textContent = maskedPassword;
         })
         .catch(error => {
             console.error('Error fetching user info:', error);
         });
+
+
+    // 修改用户名提交事件
+    document.getElementById('submitUsernameChange').addEventListener('click', () => {
+        const newUsername = document.getElementById('newUsername').value.trim();
+        const confirmUsername = document.getElementById('confirmUsername').value.trim();
+
+        if (!newUsername || !confirmUsername) {
+            alert('Please fill out both username fields.');
+            return;
+        }
+
+        if (newUsername !== confirmUsername) {
+            alert('Usernames do not match.');
+            return;
+        }
+
+        // 发起修改用户名请求
+        fetch('/api/user/cname/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userid: userId,
+                newusername: newUsername
+            })
+        })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    alert('Username changed successfully!');
+                    userData.username = newUsername; // 更新内存中的数据
+                    document.getElementById('usernameDisplay').textContent = newUsername; // 同步更新概览页面的用户名显示
+                    document.querySelector('.menu-item[data-page="overview"]').click(); // 返回概览页
+                } else {
+                    alert('Failed to change username: ' + (result.error || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error changing username:', error);
+                alert('An error occurred while changing username.');
+            });
+    });
+
+
+    // 修改密码提交事件
+    document.getElementById('submitPasswordChange').addEventListener('click', () => {
+        const oldPassword = document.getElementById('oldPassword').value.trim();
+        const newPassword = document.getElementById('newPassword').value.trim();
+        const confirmPassword = document.getElementById('confirmPassword').value.trim();
+
+        if (!newPassword || !confirmPassword) {
+            alert('Please fill out both password fields.');
+            return;
+        }
+
+        if (newPassword !== confirmPassword) {
+            alert('Passwords do not match.');
+            return;
+        }
+
+        // 发起修改密码请求
+        fetch('/api/user/cpassword', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userid: userId,
+                oldPassword: oldPassword,
+                newPassword: newPassword
+            })
+        })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    alert('Password changed successfully!');
+                    // 更新概览页显示的密码（此处仍然显示星号）
+                    document.getElementById('passwordDisplay').textContent = '*'.repeat(10);
+                    document.querySelector('.menu-item[data-page="overview"]').click(); // 返回概览页
+                } else {
+                    alert('Failed to change password: ' + (result.error || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error changing password:', error);
+                alert('An error occurred while changing password.');
+            });
+    });
 </script>
 </body>
 </html>
