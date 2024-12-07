@@ -367,7 +367,7 @@
     // If no loggedInUserId, redirect to index page
     const userId = localStorage.getItem('loggedInUserId');
     if(!userId) {
-        window.location.href = 'index.html';
+        window.location.href = 'login.html';
     }
 
     const userIdDisplay = document.getElementById('userIdDisplay');
@@ -390,7 +390,7 @@
     // Logout
     logoutBtn.addEventListener('click', () => {
         localStorage.removeItem('loggedInUserId');
-        window.location.href = 'index.html';
+        window.location.href = 'login.html';
     });
 
     // Toggle menu

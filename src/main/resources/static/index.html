@@ -1,247 +1,230 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
-    <title>NICE</title>
+    <title>NICE - Shop</title>
     <style>
         body {
             font-family: 'Libre Baskerville', serif;
-            background: #f5f7fa;
             margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
-            padding-top: 60px; /* Reserve space for the fixed header */
+            padding: 0;
+            color: #333;
         }
 
         .header {
+            font-family: 'Libre Baskerville', serif;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background: #000000;
-            color: #fff;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
             padding: 10px 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             z-index: 1000;
         }
 
         .header img {
-            height: 40px;
+            height: 60px;
             margin-right: 10px;
         }
 
         .header .company-name {
             font-size: 20px;
             font-weight: bold;
-        }
-
-        .container {
-            background: #fff;
-            padding: 40px 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-            width: 320px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .container:hover {
-            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-        }
-
-        h1 {
-            margin-bottom: 20px;
             color: #333;
-            font-size: 24px;
-            letter-spacing: 1px;
         }
 
-        form {
+        .hero {
+            position: relative;
+            text-align: center;
+            margin: 100px auto 0; /* 避免被固定的header遮挡 */
+        }
+
+        .hero img {
+            max-width: 80%;
+            height: auto;
+            display: block;
+            margin: 0 auto; /* 确保图片水平居中 */
+        }
+
+        .featured-products {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .featured-products h2 {
+            font-size: 2rem;
+            margin-bottom: 40px;
+        }
+
+        .product-grid {
             display: flex;
-            flex-direction: column;
-            margin-bottom: 20px;
-            align-items: center;
+            justify-content: center;
+            gap: 40px;
         }
 
-        input[type="text"], input[type="password"] {
-            font-family: 'Manrope', sans-serif;
+        .product-item {
+            text-align: center;
+            width: 200px;
+        }
+
+        .product-item img {
             width: 100%;
-            box-sizing: border-box;
-            padding: 12px;
-            margin-bottom: 15px;
-            border-radius: 6px;
-            border: 1px solid #dcdfe6;
-            font-size: 14px;
-            transition: border-color 0.2s ease;
+            border-radius: 50%;
         }
 
-        input[type="text"]:focus, input[type="password"]:focus {
-            font-family: 'Manrope', sans-serif;
-            border-color: #717171;
-            outline: none;
-        }
-
-        button {
-            font-family: 'Manrope', sans-serif;
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 6px;
-            background: #000000;
-            color: #fff;
-            font-size: 16px;
-            cursor: pointer;
-            margin-bottom: 10px;
-            font-weight: 500;
-            transition: background 0.3s ease;
-        }
-
-        button:hover {
-            background: #717171;
-        }
-
-        .toggle-link {
-            color: #696969; 
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .toggle-link:hover {
+        .product-item h3 {
+            font-size: 1.2rem;
+            margin: 10px 0;
             text-decoration: underline;
         }
 
-        .message {
-            margin-top: 15px;
-            font-size: 14px;
-            font-weight: bold;
-            color: #333;
+        .product-item p {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .shop-all {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .shop-all button {
+            font-family: 'Libre Baskerville', serif;
+            background: black;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .shop-all button:hover {
+            background: #333;
+        }
+
+        footer {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            background: #f8f8f8;
+            font-size: 1rem;
+            align-items: center;
+        }
+
+        footer div {
+            flex: 1;
+            text-align: center;
+        }
+
+        footer .footer-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        footer .footer-logo img {
+            height: 50px; /* 小 Logo 高度 */
+            margin-bottom: 10px;
+        }
+
+        footer div p {
+            margin: 5px 0;
         }
     </style>
 </head>
 <body>
-<div class="header" style="background: #fff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
-    <img src="/images/logo.png" alt="Logo" style="height: 60px; margin-right: 10px;">
-    <div class="company-name" style="color: #333;">Nature International Cruise Excellence</div>
+
+<div class="header">
+    <img src="/images/logo.png" alt="Logo">
+    <div class="company-name">Nature International Cruise Excellence</div>
 </div>
 
-
-<div class="container">
-    <h1 id="form-title">NICE User Login</h1>
-
-    <form id="register-form" style="display:none;">
-        <input type="text" id="reg-username" placeholder="Username" required>
-        <input type="password" id="reg-password" placeholder="Password" required>
-        <button type="submit">Register</button>
-    </form>
-
-    <form id="login-form">
-        <input type="text" id="login-username" placeholder="Username" required>
-        <input type="password" id="login-password" placeholder="Password" required>
-        <button type="submit">Login</button>
-    </form>
-
-    <a class="toggle-link" id="toggle-form">No account yet? Click here to register</a>
-    <div class="message" id="message"></div>
+<div class="hero">
+    <img src="/images/main.png" alt="Hero Image">
 </div>
 
-<script>
-    const registerForm = document.getElementById('register-form');
-    const loginForm = document.getElementById('login-form');
-    const toggleLink = document.getElementById('toggle-form');
-    const formTitle = document.getElementById('form-title');
-    const message = document.getElementById('message');
+<div class="featured-products">
+    <h2>Featured Products</h2>
+    <div class="product-grid">
+        <div class="product-item">
+            <img src="/images/room.png" alt="Room's Guide">
+            <h3>The Haven Suit</h3>
+            <p>$998</p>
+        </div>
+        <div class="product-item">
+            <img src="/images/food.png" alt="Food Expedition">
+            <h3>Special Dining</h3>
+            <p>$60</p>
+        </div>
+        <div class="product-item">
+            <img src="/images/pool.png" alt="Pool Insights">
+            <h3>Outdoor Pool</h3>
+            <p>Free for Ticket Holders</p>
+        </div>
+    </div>
+    <div class="shop-all">
+        <button onclick="location.href='login.html'">Book Now</button>
+    </div>
+</div>
 
-    toggleLink.addEventListener('click', () => {
-        if (loginForm.style.display === 'none') {
-            loginForm.style.display = 'block';
-            registerForm.style.display = 'none';
-            formTitle.textContent = 'User Login';
-            toggleLink.textContent = 'No account yet? Click here to register';
-            message.textContent = '';
+<footer>
+    <div class="footer-logo">
+        <img src="/images/logo_tight.png" alt="Small Logo">
+        <p>Nature International Cruise Excellence</p>
+    </div>
+    <div>
+        <p>Location</p>
+        <p>New York University<br>New York, NY, United States</p>
+    </div>
+    <div>
+        <p>Contact</p>
+        <p>email@nyu.edu<br>(888) 888-8888</p>
+    </div>
+</footer>
 
-            document.getElementById('login-username').value = '';
-            document.getElementById('login-password').value = '';
-        } else {
-            loginForm.style.display = 'none';
-            registerForm.style.display = 'block';
-            formTitle.textContent = 'NICE Registration';
-            toggleLink.textContent = 'Already have an account? Click here to login';
-            message.textContent = '';
+<style>
+    footer {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+        background: #f8f8f8;
+        font-size: 1rem;
+        align-items: center;
+    }
 
-            document.getElementById('reg-username').value = '';
-            document.getElementById('reg-password').value = '';
-        }
-    });
+    footer div {
+        flex: 1;
+        text-align: center;
+    }
 
-    registerForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const username = document.getElementById('reg-username').value.trim();
-        const password = document.getElementById('reg-password').value.trim();
-        if(!username || !password) {
-            message.textContent = 'Username or password cannot be empty';
-            return;
-        }
-        const formData = new URLSearchParams();
-        formData.append('username', username);
-        formData.append('password', password);
+    footer .footer-logo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-        const res = await fetch('/api/register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: formData
-        });
+    footer .footer-logo img {
+        height: 60px; /* 增大 Logo 高度 */
+    }
 
-        const text = await res.text();
-        message.textContent = text + '. Please login to continue';
+    footer .footer-logo p {
+        font-size: 1.2rem; /* 放大公司名称字体 */
+        font-weight: bold; /* 加粗公司名称 */
+        margin: 0; /* 去除默认外边距 */
+    }
 
-        if (text === 'Register Success') {
-            loginForm.style.display = 'block';
-            registerForm.style.display = 'none';
-            formTitle.textContent = 'User Login';
-            toggleLink.textContent = 'No account yet? Click here to register';
-            document.getElementById('login-username').value = '';
-            document.getElementById('login-password').value = '';
-        }
-    });
+    footer div p {
+        margin: 5px 0;
+    }
+</style>
 
 
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const username = document.getElementById('login-username').value.trim();
-        const password = document.getElementById('login-password').value.trim();
-        if(!username || !password) {
-            message.textContent = 'Username or password cannot be empty';
-            return;
-        }
-
-        const formData = new URLSearchParams();
-        formData.append('username', username);
-        formData.append('password', password);
-
-        const res = await fetch('/api/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: formData
-        });
-
-        const json = await res.json();
-        if(json.status === 'success') {
-            localStorage.setItem('loggedInUserId', json.userId);
-            window.location.href = 'home.html';
-        } else {
-            message.textContent = json.message || 'Login failed';
-        }
-    });
-</script>
 </body>
 </html>

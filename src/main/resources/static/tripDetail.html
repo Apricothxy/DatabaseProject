@@ -309,7 +309,7 @@
     // Check if user is logged in
     const userId = localStorage.getItem('loggedInUserId');
     if (!userId) {
-        window.location.href = 'index.html';
+        window.location.href = 'login.html';
     }
 
     // Extract tripId from URL parameters
@@ -342,7 +342,7 @@
     // Logout
     logoutBtn.addEventListener('click', () => {
         localStorage.removeItem('loggedInUserId');
-        window.location.href = 'index.html';
+        window.location.href = 'login.html';
     });
 
     // No menuBtn now, so no toggling side menu is needed

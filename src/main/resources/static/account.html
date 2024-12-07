@@ -174,7 +174,7 @@
 <script>
     const userId = localStorage.getItem('loggedInUserId');
     if(!userId) {
-        window.location.href = 'index.html';
+        window.location.href = 'login.html';
     }
 
     fetch('/api/user/' + userId)
