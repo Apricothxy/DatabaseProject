@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
+    <title>NICE - Shop</title>
+    <style>
+        body {
+            font-family: 'Libre Baskerville', serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .header {
+            font-family: 'Libre Baskerville', serif;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            z-index: 1000;
+        }
+
+        .header img {
+            height: 60px;
+            margin-right: 10px;
+        }
+
+        .header .company-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .hero {
+            position: relative;
+            text-align: center;
+            margin: 100px auto 0; /* 避免被固定的header遮挡 */
+        }
+
+        .hero img {
+            max-width: 80%;
+            height: auto;
+            display: block;
+            margin: 0 auto; /* 确保图片水平居中 */
+        }
+
+        .featured-products {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .featured-products h2 {
+            font-size: 2rem;
+            margin-bottom: 40px;
+        }
+
+        .product-grid {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        .product-item {
+            text-align: center;
+            width: 200px;
+        }
+
+        .product-item img {
+            width: 100%;
+            border-radius: 50%;
+        }
+
+        .product-item h3 {
+            font-size: 1.2rem;
+            margin: 10px 0;
+            text-decoration: underline;
+        }
+
+        .product-item p {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .shop-all {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .shop-all button {
+            font-family: 'Libre Baskerville', serif;
+            background: black;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .shop-all button:hover {
+            background: #333;
+        }
+
+        footer {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            background: #f8f8f8;
+            font-size: 1rem;
+            align-items: center;
+        }
+
+        footer div {
+            flex: 1;
+            text-align: center;
+        }
+
+        footer .footer-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        footer .footer-logo img {
+            height: 50px; /* 小 Logo 高度 */
+            margin-bottom: 10px;
+        }
+
+        footer div p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <img src="/images/logo.png" alt="Logo">
+    <div class="company-name">Nature International Cruise Excellence</div>
+</div>
+
+<div class="hero">
+    <img src="/images/main.png" alt="Hero Image">
+</div>
+
+<div class="featured-products">
+    <h2>Featured Products</h2>
+    <div class="product-grid">
+        <div class="product-item">
+            <img src="/images/room.png" alt="Room's Guide">
+            <h3>The Haven Suit</h3>
+            <p>$998</p>
+        </div>
+        <div class="product-item">
+            <img src="/images/food.png" alt="Food Expedition">
+            <h3>Special Dining</h3>
+            <p>$60</p>
+        </div>
+        <div class="product-item">
+            <img src="/images/pool.png" alt="Pool Insights">
+            <h3>Outdoor Pool</h3>
+            <p>Free for Ticket Holders</p>
+        </div>
+    </div>
+    <div class="shop-all">
+        <button onclick="location.href='index.html'">Book Now</button>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-logo">
+        <img src="/images/logo_tight.png" alt="Small Logo">
+        <p>Nature International Cruise Excellence</p>
+    </div>
+    <div>
+        <p>Location</p>
+        <p>New York University<br>New York, NY, United States</p>
+    </div>
+    <div>
+        <p>Contact</p>
+        <p>email@nyu.edu<br>(888) 888-8888</p>
+    </div>
+</footer>
+
+<style>
+    footer {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+        background: #f8f8f8;
+        font-size: 1rem;
+        align-items: center;
+    }
+
+    footer div {
+        flex: 1;
+        text-align: center;
+    }
+
+    footer .footer-logo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    footer .footer-logo img {
+        height: 60px; /* 增大 Logo 高度 */
+    }
+
+    footer .footer-logo p {
+        font-size: 1.2rem; /* 放大公司名称字体 */
+        font-weight: bold; /* 加粗公司名称 */
+        margin: 0; /* 去除默认外边距 */
+    }
+
+    footer div p {
+        margin: 5px 0;
+    }
+</style>
+
+
+</body>
+</html>
