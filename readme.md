@@ -350,12 +350,42 @@
         ]
     }
     ```
-
+  
 - **创建预订**
+  
   - 方法：`POST`(TBD)
+  
   - URL：`/bookings`
+  
   - 描述：创建新的预订。
-
+  
+    - 创建Group记录，创建passenger_group记录
+    - 创建passenger_room记录，
+    - update package中passenger记录
+    - 创建invoice记录
+  
+  - 输入：{passengerID1, passengerID2,...}, {stareroomID1, stareroomID2...}, {package1, package2...}
+  
+  - 返回值：
+  
+    ```json
+    [  
+    	{
+            "status": "success"
+            "invoiceID": invoiceid
+    	    "TotalPrice": totalprice
+        }
+        OR
+        {
+            "status": "fail"
+            "message": message
+    	    "TotalPrice": -1
+        }
+    ]
+    ```
+  
+    
+  
 - **获取预订信息**
   - 方法：`GET`(TBD)
   - URL：`/bookings/{bookingId}`
@@ -365,7 +395,7 @@
   - 方法：`POST`(TBD)
   - URL：`/payments`
   - 描述：提交新的支付信息。
-
+  
 - **获取支付信息**
   - 方法：`GET`(TBD)
   - URL：`/payments/{paymentId}`
