@@ -31,12 +31,19 @@ public class UserService {
         if (user == null) return false;
         return user.getPassword().equals(password);
     }
-    // Reset
+    // Reset user password
     public boolean resetPassword(Integer userid, String oldPassword, String newPassword) {
         User user = userRepository.findByUserID(userid);
         if (user == null) return false;
         if (!user.getPassword().equals(oldPassword)) return false;
         int isSuccess = userRepository.resetPasswordByUserID(userid,newPassword);
+        return isSuccess != 0;
+    }
+    //Reset user name
+    public boolean resetUsername(Integer userid, String newUsername) {
+        User user = userRepository.findByUserID(userid);
+        if (user == null) return false;
+        int isSuccess = userRepository.resetUserNameByUserID(userid,newUsername);
         return isSuccess != 0;
     }
     public User getUserById(Integer id) {

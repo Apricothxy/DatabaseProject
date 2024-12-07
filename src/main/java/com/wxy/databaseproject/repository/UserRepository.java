@@ -47,9 +47,14 @@ public class UserRepository {
                 .findFirst()
                 .orElse(null);
     }
-    // reset
+    // reset password
     public int resetPasswordByUserID(Integer userid, String password) {
         String sql = "UPDATE wxy_user SET password = ? WHERE user_id = ?";
         return jdbcTemplate.update(sql, password, userid);
+    }
+    //rest username
+    public int resetUserNameByUserID(Integer userid, String userName) {
+        String sql = "UPDATE wxy_user SET user_name = ? WHERE user_id = ?";
+        return jdbcTemplate.update(sql, userName, userid);
     }
 }
