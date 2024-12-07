@@ -110,87 +110,15 @@
   
 - **创建乘客同行人**
   
-  - 方法：`POST`
-  
-  - URL：`/passenger`
-  
+  - 方法：`POST`(TBD)
+  - URL：`/addpassengers`
   - 描述：创建新的乘客信息。
   
-  - 输入：
-  
-    ```json
-    {
-        "fname": "test1",
-        "lname": "Wu",
-        "birthDate": "1990-01-01T00:00:00",
-        "addressCountry": "China",
-        "addressState": "NY",
-        "addressCity": "Los Angeles",
-        "addressStreet1": "343 Gold St",
-        "gender": "Male",
-        "nationality": "China",
-        "email": "john.doe@example.com",
-        "phone": "+1-234-567-890",
-        "userId": 1
-    }
-    ```
-  
-  - 输出：
-  
-    ```json
-    {
-        "passengerId": 5,
-        "fname": "test2",
-        "mname": null,
-        "lname": "1234",
-        "birthDate": "1991-01-01T00:00:00",
-        "addressCountry": "China",
-        "addressState": "NY",
-        "addressCity": "Los Angeles",
-        "addressStreet1": "343 Gold St",
-        "addressStreet2": null,
-        "gender": "Male",
-        "nationality": "China",
-        "email": "john.doe@example.com",
-        "phone": "+1-234-567-890",
-        "groupId": null,
-        "userId": 1
-    }
-    ```
-  
 - **获取乘客信息**
-  
-  - 方法：`GET`
-  
-  - URL：`/passenger/{id}`
-  
+  - 方法：`GET`(TBD)
+  - URL：`/passengers/{passengerId}`
   - 描述：获取指定乘客的信息。
-  
-  - 输入：passengerid
-  
-  - 输出：
-  
-    ```json
-    {
-        "passengerId": 1,
-        "fname": "John",
-        "mname": "A",
-        "lname": "Doe",
-        "birthDate": "1985-01-01T00:00:00",
-        "addressCountry": "USA",
-        "addressState": "CA",
-        "addressCity": "Los Angeles",
-        "addressStreet1": "123 Main St",
-        "addressStreet2": null,
-        "gender": "Male",
-        "nationality": "American",
-        "email": "john.doe1@example.com",
-        "phone": "1234567890",
-        "groupId": null,
-        "userId": 1
-    }
-    ```
-  
+
 - **获取旅行详情**
   
   - 方法：`GET`
@@ -249,9 +177,39 @@
     ```
   
 - **创建预订**
+  
   - 方法：`POST`(TBD)
+  
   - URL：`/bookings`
+  
   - 描述：创建新的预订。
+  
+    - 创建Group记录，创建passenger_group记录
+    - 创建passenger_room记录，
+    - update package中passenger记录
+    - 创建invoice记录
+  
+  - 输入：{passengerID1, passengerID2,...}, {stareroomID1, stareroomID2...}, {package1, package2...}
+  
+  - 返回值：
+  
+    ```json
+    [  
+    	{
+            "status": "success"
+            "invoiceID": invoiceid
+    	    "TotalPrice": totalprice
+        }
+        OR
+        {
+            "status": "fail"
+            "message": message
+    	    "TotalPrice": -1
+        }
+    ]
+    ```
+  
+    
   
 - **获取预订信息**
   - 方法：`GET`(TBD)
