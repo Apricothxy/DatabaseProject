@@ -314,7 +314,7 @@
   
   - 输入：
   
-    ```
+    ```json
     [
       {
         "passengerId": 101,
@@ -337,8 +337,6 @@
     
     ```
   
-    
-  
   - 返回值：
   
     ```json
@@ -357,8 +355,6 @@
     ]
     ```
   
-    
-  
 - **获取预订信息**
   - 方法：`GET`(TBD)
   - URL：`/bookings/{bookingId}`
@@ -366,14 +362,16 @@
 
 - **提交支付**
   - 方法：`POST`(TBD)
-  - URL：`/payments`
+  - URL：`/api/payments`
   - 描述：提交新的支付信息。
+  - 输入：invoice_id
   
 - **获取支付信息**
+  
   - 方法：`GET`(TBD)
   - URL：`/payments/{paymentId}`
   - 描述：获取指定支付的详细信息。
-
+  
 - **获取发票信息**
   - 方法：`GET`(TBD)
   - URL：`/invoices/{invoiceId}`
