@@ -21,7 +21,6 @@ public class CruiseSearchService {
 
         LocalDateTime endDateStart = endDate.atStartOfDay();
         LocalDateTime endDateEnd = endDate.atTime(23, 59, 59);
-
         return cruiseSearchRepository.findCruises(startPortName, endPortName, startDateBegin, startDateEnd, endDateStart, endDateEnd);
     }
 }

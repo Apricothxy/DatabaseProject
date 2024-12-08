@@ -2,6 +2,7 @@ package com.wxy.databaseproject.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CruiseSearch {
@@ -11,7 +12,7 @@ public class CruiseSearch {
     private LocalDateTime endTime;
     private String startPortName;
     private String endPortName;
-    private List<StopPortInfo> stopPorts;
+    private List<StopPortInfo> stopPorts = new ArrayList<>();
 
     public Integer getTripId() {
         return tripId;
@@ -98,5 +99,18 @@ public class CruiseSearch {
         public void setDepartureTime(LocalDateTime departureTime) {
             this.departureTime = departureTime;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "CruiseSearch{" +
+                "tripId=" + tripId +
+                ", cruiseName='" + cruiseName + '\'' +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", startPortName='" + startPortName + '\'' +
+                ", endPortName='" + endPortName + '\'' +
+                ", stopPorts=" + stopPorts +
+                '}';
     }
 }
