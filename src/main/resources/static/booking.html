@@ -524,7 +524,16 @@
         updatePassengerList();
         closeModal();
     });
-
+    function toggleProceedButtonVisibility() {
+        if (selectedPassengers.length > 0) {
+            proceedBtn.style.display = 'block'; // Show the button if there's at least one passenger plan
+        } else {
+            proceedBtn.style.display = 'none'; // Hide the button if no passenger plans
+        }
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        toggleProceedButtonVisibility(); // Check button visibility on page load
+    });
     function updatePassengerList() {
         passengerList.innerHTML = '';
         selectedPassengers.forEach((sp, index) => {
@@ -558,8 +567,8 @@
 
             passengerList.appendChild(div);
         });
-
         updateTotalCost();
+        toggleProceedButtonVisibility();
     }
 
     function updateTotalCost() {
