@@ -590,7 +590,11 @@
         const bookingData = selectedPassengers.map(sp => ({
             passengerId: sp.passengerId,
             stateroomId: sp.stateroomId,
-            packages: sp.packages.map(p => ({ packageType: p.packageType }))
+            stateroomNum: tripDays,
+            packages: sp.packages.map(p => ({
+                packageType: p.packageType,
+                packageNum: p.quantity
+            }))
         }));
 
         try {
