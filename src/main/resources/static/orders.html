@@ -181,23 +181,30 @@
                 return;
             }
 
-            data.forEach(order => {
+            for (const order of data) {
                 const div = document.createElement('div');
                 div.classList.add('order-item');
+                
+                const temres = await fetch('/api/trip/cruise/' + order.tripId);
+                const tripData = await temres.json();
 
-                // Display trip details, invoice info
                 const paid = order.paymentId && order.paymentId !== 'Fail';
-                div.innerHTML = `
-                    <h2>Trip ID: ${order.tripId}</h2>
-                    <div class="order-details">
-                        <strong>Group ID:</strong> ${order.groupId}<br>
-                        <strong>Invoice ID:</strong> ${order.invoiceId}<br>
-                        <strong>Invoice Amount:</strong> ${order.invoiceAmount}<br>
-                        <strong>Payment Status:</strong> ${paid ? 'Paid (Payment ID: '+order.paymentId+')' : 'Not Paid'}
-                    </div>
-                `;
 
-                // Passengers
+                div.innerHTML = `
+                <h2>Trip ID: ${order.tripId} - ${tripData.cruiseName}</h2>
+                <div class="order-details">
+                    <strong>Group ID:</strong> ${order.groupId}<br>
+                    <strong>Invoice ID:</strong> ${order.invoiceId}<br>
+                    <strong>Invoice Amount:</strong> ${order.invoiceAmount}<br>
+                    <strong>Payment Status:</strong> ${paid ? 'Paid' : 'Not Paid'}<br>
+                    <strong>Cruise Name:</strong> ${tripData.cruiseName}<br>
+                    <strong>Start Time:</strong> ${tripData.startTime}<br>
+                    <strong>End Time:</strong> ${tripData.endTime}<br>
+                    <strong>Start Port:</strong> ${tripData.startPortName}<br>
+                    <strong>End Port:</strong> ${tripData.endPortName}<br>
+                </div>
+            `;
+
                 if (Array.isArray(order.passengers)) {
                     const ul = document.createElement('ul');
                     ul.classList.add('passenger-list');
@@ -210,7 +217,6 @@
                     div.appendChild(ul);
                 }
 
-                // If not paid, show pay button
                 if (!paid) {
                     const payBtn = document.createElement('button');
                     payBtn.classList.add('pay-btn');
@@ -225,13 +231,14 @@
                 }
 
                 ordersList.appendChild(div);
-            });
+            }
 
         } catch (err) {
             console.error('Error loading orders', err);
             document.getElementById('message').textContent = 'Failed to load orders.';
         }
     }
+
 
     loadOrders();
 </script>
