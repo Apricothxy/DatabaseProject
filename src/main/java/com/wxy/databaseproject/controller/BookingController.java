@@ -22,12 +22,13 @@ public class BookingController {
     }
 
     @PostMapping("/bookings")
-    public ResponseEntity<Map<String, Object>> createBooking(
+    public ResponseEntity<List<Map<String, Object>>> createBooking(
             @RequestBody List<Map<String, Object>> bookingData) {
-        Map<String, Object> response = bookingService.createBooking(bookingData);
+        List<Map<String, Object>> response = bookingService.createBooking(bookingData);
+//        System.out.println("connected");
         System.out.println(response);
 
-        if ("success".equals(response.get("status"))) {
+        if ("success".equals(response.get(0).get("status"))) {
             return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
