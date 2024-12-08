@@ -5,6 +5,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 @Repository
 public class UserRepository {
@@ -56,5 +58,10 @@ public class UserRepository {
     public int resetUserNameByUserID(Integer userid, String userName) {
         String sql = "UPDATE wxy_user SET user_name = ? WHERE user_id = ?";
         return jdbcTemplate.update(sql, userName, userid);
+    }
+
+    public List<User> findAllUsers() {
+        String sql = "SELECT * FROM wxy_user";
+        return jdbcTemplate.query(sql, userRowMapper);
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -47,14 +48,21 @@ public class UserController {
         boolean success = userService.resetPassword(userid, oldPassword, newPassword);
         return success ? "Reset Password Success" : "Reset Fail, Incorrect Old Password";
     }
+
     @PostMapping("/user/cname")
     public String changeUserName(@RequestParam Integer userid, @RequestParam String newusername) {
         boolean success = userService.resetUsername(userid, newusername);
         return success ? "Reset Username Success" : "Reset Fail, invalid username";
     }
+
     @GetMapping("/user/{userId}")
     public User getUserInfo(@PathVariable Integer userId) {
         User user = userService.getUserById(userId);
         return user;
+    }
+
+    @GetMapping("/user/getall")
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 }

@@ -8,24 +8,24 @@ CREATE TABLE IF NOT EXISTs wxy_passenger_group (
 ALTER TABLE wxy_passenger_group ADD CONSTRAINT wxy_passenger_group_pk PRIMARY KEY ( group_id, passenger_id );
 
 CREATE TABLE wxy_cruise (
-    cruise_id   INT NOT NULL COMMENT 'cruise id',
+    cruise_id   INT AUTO_INCREMENT NOT NULL COMMENT 'cruise id',
     trip_id     INT NOT NULL,
-    cruise_name VARCHAR(100) NOT NULL
+    cruise_name VARCHAR(100) NOT NULL,
+    PRIMARY KEY (cruise_id)
 );
 
 CREATE UNIQUE INDEX wxy_cruise__idx ON wxy_cruise (trip_id ASC);
 
-ALTER TABLE wxy_cruise ADD CONSTRAINT wxy_cruise_pk PRIMARY KEY ( cruise_id );
-
 CREATE TABLE wxy_entertainment (
-    entertainment_id INT NOT NULL COMMENT 'entertainment id',
+    entertainment_id INT AUTO_INCREMENT NOT NULL COMMENT 'entertainment id',
     type             VARCHAR(20) NOT NULL COMMENT 'entertainment type',
     units_num        INTEGER NOT NULL COMMENT 'units number',
     floor_1          INTEGER NOT NULL COMMENT 'on which floor',
     floor_2          INTEGER COMMENT 'on which floor',
     floor_3          INTEGER COMMENT 'on which floor',
     age_limits       INT NOT NULL COMMENT 'age limits for passengers',
-    cruise_id        INT NOT NULL COMMENT 'on which cruise'
+    cruise_id        INT NOT NULL COMMENT 'on which cruise',
+    PRIMARY KEY (entertainment_id)
 );
 
 ALTER TABLE wxy_entertainment
@@ -33,7 +33,6 @@ ALTER TABLE wxy_entertainment
                           'night club', 'outdoor pool', 'sona room', 'steam room', 'tennis court',
                           'theaters', 'whirlpool', 'yoga room' ) );
 
-ALTER TABLE wxy_entertainment ADD CONSTRAINT wxy_entertainment_pk PRIMARY KEY ( entertainment_id );
 
 CREATE TABLE wxy_group (
     group_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -124,12 +123,13 @@ CREATE TABLE wxy_port (
 ALTER TABLE wxy_port ADD CONSTRAINT wxy_port_pk PRIMARY KEY ( port_id );
 
 CREATE TABLE wxy_restaurant (
-    restaurant_id INT NOT NULL COMMENT 'resturant id',
+    restaurant_id INT AUTO_INCREMENT NOT NULL COMMENT 'resturant id',
     type          VARCHAR(20) NOT NULL COMMENT 'resurant type',
     start_time    DATETIME NOT NULL COMMENT 'resturant service start time',
     end_time      DATETIME NOT NULL COMMENT 'resturant service end time',
     floor         INTEGER NOT NULL COMMENT 'resturant on which floor',
-    cruise_id     INT NOT NULL COMMENT 'returant belong to which cruise'
+    cruise_id     INT NOT NULL COMMENT 'returant belong to which cruise',
+    PRIMARY KEY (restaurant_id)
 );
 
 ALTER TABLE wxy_restaurant
@@ -137,10 +137,9 @@ ALTER TABLE wxy_restaurant
                           'Pool Bar', 'Round Clock Cafe', 'Stout Bar', 'Tokyo Ramen Japanese' ) );
 
 
-ALTER TABLE wxy_restaurant ADD CONSTRAINT wxy_restaurant_pk PRIMARY KEY ( restaurant_id );
 
 CREATE TABLE wxy_stateroom (
-    room_id          INT NOT NULL COMMENT 'stateroom id',
+    room_id          INT AUTO_INCREMENT NOT NULL COMMENT 'stateroom id',
     type             VARCHAR(20) NOT NULL COMMENT 'room type',
     `SIZE`           INT NOT NULL COMMENT 'room size',
     bed_num          INT NOT NULL COMMENT 'bed number',
@@ -148,7 +147,8 @@ CREATE TABLE wxy_stateroom (
     balcony          INT NOT NULL COMMENT 'balcony number',
     cruise_id        INT NOT NULL COMMENT 'room belong to which cruise',
     price_per_person DECIMAL(10, 2) NOT NULL COMMENT 'price of the stateroom',
-    position         VARCHAR(20) NOT NULL
+    position         VARCHAR(20) NOT NULL,
+    PRIMARY KEY (room_id)
 );
 
 ALTER TABLE wxy_stateroom
@@ -160,8 +160,6 @@ ALTER TABLE wxy_stateroom ADD CHECK ( price_per_person >= 0 );
 ALTER TABLE wxy_stateroom
     ADD CHECK ( position IN ( 'After', 'Forward', 'Left', 'Right' ) );
 
-
-ALTER TABLE wxy_stateroom ADD CONSTRAINT wxy_stateroom_pk PRIMARY KEY ( room_id );
 
 CREATE TABLE wxy_trip (
     trip_id    INT NOT NULL COMMENT 'trip id',

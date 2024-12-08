@@ -4,6 +4,8 @@ import com.wxy.databaseproject.model.User;
 import com.wxy.databaseproject.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -48,5 +50,9 @@ public class UserService {
     }
     public User getUserById(Integer id) {
         return userRepository.findByUserID(id);
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAllUsers();
     }
 }
