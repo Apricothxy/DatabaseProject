@@ -99,7 +99,10 @@
 
         .product-item {
             text-align: center;
-            width: 200px;
+            width: 300px;
+            margin-left: 50px;
+            margin-right: 50px;
+            margin-bottom: 20px;
         }
 
         .product-item img {
@@ -206,6 +209,18 @@
             <h3>Unlimited Bar</h3>
             <p>$80</p>
         </div>
+    </div>
+    <div class="product-grid">
+        <div class="product-item">
+            <img src="/images/gym.png" alt="Gym Insights">
+            <h3>Gym</h3>
+            <p>Free for Ticket Holders</p>
+        </div>
+        <div class="product-item">
+            <img src="/images/casino.png" alt="Casino Insights">
+            <h3>Casino</h3>
+            <p>Free for Ticket Holders</p>
+        </div>
         <div class="product-item">
             <img src="/images/pool.png" alt="Pool Insights">
             <h3>Outdoor Pool</h3>
@@ -213,7 +228,7 @@
         </div>
     </div>
     <div class="shop-all">
-        <button onclick="location.href='login.html'">Book Now</button>
+        <button onclick="location.href='login.html'">Book Ticket Now</button>
     </div>
 </div>
 
@@ -249,8 +264,7 @@
     window.onload = () => {
         typeWriter();
     };
-
-    // 点击 Explore 按钮，平滑滚动到 .featured-products
+    
     document.getElementById('exploreButton').addEventListener('click', function() {
         document.querySelector('.featured-products').scrollIntoView({ behavior: 'smooth' });
     });
