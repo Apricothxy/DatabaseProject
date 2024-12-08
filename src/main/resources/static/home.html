@@ -562,11 +562,13 @@
 
             const infoStartEnd = document.createElement('div');
             infoStartEnd.className = 'trip-info';
-            infoStartEnd.textContent = `From: ${trip.startPortName} To: ${trip.endPortName}`;
+            infoStartEnd.textContent = `From: ${trip.startPortName} | To: ${trip.endPortName}`;
+
+            const formatTime = (timeStr) => timeStr.replace('T', ' ').slice(0, 16);
 
             const infoDates = document.createElement('div');
             infoDates.className = 'trip-info';
-            infoDates.textContent = `Start: ${trip.startTime} | End: ${trip.endTime}`;
+            infoDates.textContent = `Start: ${formatTime(trip.startTime)} | End: ${formatTime(trip.endTime)}`;
 
 
             tripCard.appendChild(title);
