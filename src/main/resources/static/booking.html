@@ -681,38 +681,29 @@
 
             let result;
             try {
-                // 尝试解析返回的 JSON，即使 status 非200
                 result = await response.json();
             } catch (err) {
-                // 如果无法解析 JSON 则置空
                 result = null;
             }
 
             if (response.ok) {
-                // 请求成功状态
                 if (Array.isArray(result) && result.length > 0) {
                     const resData = result[0];
                     if (resData.status === 'success') {
                         localStorage.setItem('invoiceID', resData.invoiceID);
                         localStorage.setItem('invoiceTotalPrice', resData.TotalPrice);
 
-                        alert('Booking successful! Redirecting to Payment...');
-                        const url = 'Payment.html?'
-                            + 'tripId=' + encodeURIComponent(tripId)
-                            + '&startTime=' + encodeURIComponent(startTime)
-                            + '&endTime=' + encodeURIComponent(endTime)
-                            + '&startPortName=' + encodeURIComponent(startPortName)
-                            + '&endPortName=' + encodeURIComponent(endPortName);
+                        const url = 'payment.html?'
+                            + '&invoiceId=' + encodeURIComponent(resData.invoiceID)
+                            + '&totalPrice=' + encodeURIComponent(resData.TotalPrice);
                         window.location.href = url;
                     } else {
-                        // 当 status 为 fail 时，显示具体错误消息
                         alert('booking failed: ' + (resData.message || 'Unknown error'));
                     }
                 } else {
                     alert('booking failed: Invalid response format.');
                 }
             } else {
-                // 请求非成功状态，如400、500等
                 if (Array.isArray(result) && result.length > 0 && result[0].message) {
                     alert('booking failed: ' + result[0].message);
                 } else {
