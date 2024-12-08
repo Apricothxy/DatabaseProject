@@ -507,4 +507,113 @@
     ]
     ```
   
+  
+  ### Admin
+  
+  **获取trip信息**
+  
+  - 方法：`GET`
+  
+  - URL：`/api/trip/getall`
+  
+  - 描述：获取全部的trip信息。
+  
+  - 输入：无
+  
+  - 返回值
+  
+    ```json
+    {
+      "trips": [
+        {
+          "tripId": 1,
+          "cruiseId": 101,
+          "cruiseName": "Caribbean Explorer",
+          "startPort": {
+            "portName": "Miami",
+            "startDate": "2024-01-04T12:00:00Z",
+            "endDate": "2024-01-04T12:00:00Z"
+          },
+          "endPort": {
+            "portName": "Cozumel",
+            "startDate": "2024-01-12T08:00:00Z",
+            "endDate": "2024-01-12T08:00:00Z"
+          },
+          "stopPort": [
+            {
+              "portName": "Key West",
+              "startDate": "2024-01-05T10:00:00Z",
+              "endDate": "2024-01-05T20:00:00Z"
+            },
+            {
+              "portName": "Cayman Islands",
+              "startDate": "2024-01-06T09:00:00Z",
+              "endDate": "2024-01-06T18:00:00Z"
+            }
+          ]
+        },
+        {
+          "tripId": 2,
+          "cruiseId": 104,
+          "cruiseName": "Baltic Highlights",
+          "startPort": {
+            "portName": "Copenhagen",
+            "startDate": "2024-04-01T10:00:00Z",
+            "endDate": "2024-04-01T10:00:00Z"
+          },
+          "endPort": {
+            "portName": "Stockholm",
+            "startDate": "2024-04-07T07:00:00Z",
+            "endDate": "2024-04-07T07:00:00Z"
+          },
+          "stopPort": []
+        }
+      ]
+    }
     
+    ```
+  
+    
+
+**添加一个trip**
+
+- 方法：`POST`
+
+- URL：`/api/trip/add`
+
+- 描述：添加一个trip
+
+- 输入：
+
+  ```json
+  
+  "cruiseId": 105,
+  "startPort": {
+    "portId": 201,
+    "startDate": "2024-05-01T10:00:00Z",
+    "endDate": "2024-05-01T10:00:00Z"
+  },
+  "endPort": {
+    "portId": 202,
+    "startDate": "2024-05-10T09:00:00Z",
+    "endDate": "2024-05-10T09:00:00Z"
+  },
+  "stopPort": [
+    {
+      "portId": 203,
+      "startDate": "2024-05-02T07:00:00Z",
+      "endDate": "2024-05-02T18:00:00Z"
+    },
+    {
+      "portId": 204,
+      "startDate": "2024-05-03T08:00:00Z",
+      "endDate": "2024-05-03T16:00:00Z"
+    }
+  ]
+  ```
+
+  
+
+- 返回值
+
+  success ?
