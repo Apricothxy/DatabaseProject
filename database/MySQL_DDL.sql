@@ -36,14 +36,14 @@ ALTER TABLE wxy_entertainment
 ALTER TABLE wxy_entertainment ADD CONSTRAINT wxy_entertainment_pk PRIMARY KEY ( entertainment_id );
 
 CREATE TABLE wxy_group (
-    group_id INT NOT NULL COMMENT 'group id',
+    group_id INT AUTO_INCREMENT PRIMARY KEY,
     trip_id  INT NOT NULL COMMENT 'trip group belong to'
 );
 
-ALTER TABLE wxy_group ADD CONSTRAINT wxy_group_pk PRIMARY KEY ( group_id );
+-- ALTER TABLE wxy_group ADD CONSTRAINT wxy_group_pk PRIMARY KEY ( group_id );
 
 CREATE TABLE wxy_invoice (
-    invoice_id   VARCHAR(8) NOT NULL COMMENT 'invoice id',
+    invoice_id   INT AUTO_INCREMENT PRIMARY KEY,
     amount       DECIMAL(10, 2) NOT NULL COMMENT 'amount in us dollar',
     invoice_date DATETIME NOT NULL COMMENT 'date of the invoice',
     group_id     INT NOT NULL
@@ -51,10 +51,10 @@ CREATE TABLE wxy_invoice (
 
 CREATE UNIQUE INDEX wxy_invoice__idx ON wxy_invoice (group_id ASC );
 
-ALTER TABLE wxy_invoice ADD CONSTRAINT wxy_invoice_pk PRIMARY KEY ( invoice_id );
+-- ALTER TABLE wxy_invoice ADD CONSTRAINT wxy_invoice_pk PRIMARY KEY ( invoice_id );
 
 CREATE TABLE wxy_package (
-    package_id   INT NOT NULL,
+    package_id   INT AUTO_INCREMENT PRIMARY KEY,
     type         VARCHAR(50) NOT NULL,
     price        DECIMAL(10, 2) NOT NULL,
     passenger_id INT
@@ -62,7 +62,11 @@ CREATE TABLE wxy_package (
 
 ALTER TABLE wxy_package ADD CHECK ( price >= 0 );
 
-ALTER TABLE wxy_package ADD CONSTRAINT wxy_package_pk PRIMARY KEY ( package_id );
+-- ALTER TABLE wxy_package ADD CONSTRAINT wxy_package_pk PRIMARY KEY ( package_id );
+
+ALTER TABLE wxy_package
+    ADD CHECK ( type IN ( 'Water and Non-Alcoholic', 'Unlimited Bar', 'Internet 200 minutes', 
+                           'Unlimited internet', 'Specialty dining' ) );
 
 CREATE TABLE wxy_passenger (
     passenger_id     INT AUTO_INCREMENT NOT NULL COMMENT 'passenger id',
@@ -101,7 +105,7 @@ CREATE TABLE wxy_payment (
     amount     DECIMAL(10, 2) NOT NULL COMMENT 'amount in us dollar',
     `DATE`     DATETIME NOT NULL COMMENT 'payment data',
     method     VARCHAR(50) NOT NULL COMMENT 'payment method',
-    invoice_id VARCHAR(8) NOT NULL COMMENT 'invoice the payment for'
+    invoice_id INT NOT NULL COMMENT 'invoice the payment for'
 );
 
 ALTER TABLE wxy_payment ADD CONSTRAINT wxy_payment_pk PRIMARY KEY ( payment_id );
