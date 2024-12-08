@@ -5,8 +5,10 @@ import com.wxy.databaseproject.model.Trip;
 import com.wxy.databaseproject.repository.TripRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -79,7 +81,13 @@ public class TripService {
         LocalDateTime startDate = LocalDateTime.parse(startPortStartStr, formatter);
         LocalDateTime endDate = LocalDateTime.parse(endPortEndStr, formatter);
         // Calculate the nights_num as the difference in days between the endPort end date and startPort start date
-        long nights = java.time.Duration.between(startDate, endDate).toDays();
+        LocalDate start = startDate.toLocalDate();
+        LocalDate end = endDate.toLocalDate();
+        long nights = ChronoUnit.DAYS.between(start, end);
+//        System.out.println(startDate);
+//        System.out.println(endDate);
+//        System.out.println(nights);
+
         if (nights < 0) {
             nights = 0;  // If end date is before start date, default to 0 or handle error as needed
         }
@@ -113,7 +121,7 @@ public class TripService {
         if (createdTrip.getTripId() == null || createdTrip.getTripId() <= 0) {
             return false;
         }
-        tripRepository.updateCruiseTripId(createdTrip.getTripId(), cruiseId);
+        tripRepository.updateCruiseTripId(cruiseId,createdTrip.getTripId());
         return true;
     }
 

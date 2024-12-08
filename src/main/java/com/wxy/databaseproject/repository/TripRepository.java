@@ -79,7 +79,7 @@ public class TripRepository {
                 insertTripPort(trip.getTripId(), sp, "stop_port");
             }
         }
-
+//        System.out.println("New trip ID "+ trip.getTripId());
         return trip;
     }
 
@@ -128,6 +128,7 @@ public class TripRepository {
     }
 
     public void updateCruiseTripId(int cruiseId, int tripId) {
+//        System.out.println("cruse: "+tripId);
         String sql = "UPDATE wxy_cruise SET trip_id = ? WHERE cruise_id = ?";
         jdbcTemplate.update(sql, tripId, cruiseId);
     }
