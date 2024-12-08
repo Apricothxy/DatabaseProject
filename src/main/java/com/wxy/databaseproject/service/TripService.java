@@ -3,6 +3,7 @@ package com.wxy.databaseproject.service;
 import com.wxy.databaseproject.model.OrderTripInfo;
 import com.wxy.databaseproject.model.Port;
 import com.wxy.databaseproject.model.Trip;
+import com.wxy.databaseproject.model.validCruisePort;
 import com.wxy.databaseproject.repository.TripRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,9 @@ public class TripService {
     public TripService(TripRepository tripRepository) {
         this.tripRepository = tripRepository;
     }
-
+    public validCruisePort getAvailableCruisePort() {
+        return tripRepository.getAvailableData();
+    }
     /**
      * Get all trip information.
      * Corresponds to GET /api/trip/getall

@@ -3,12 +3,14 @@ package com.wxy.databaseproject.repository;
 import com.wxy.databaseproject.model.OrderTripInfo;
 import com.wxy.databaseproject.model.Port;
 import com.wxy.databaseproject.model.Trip;
+import com.wxy.databaseproject.model.validCruisePort;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-
+import java.util.List;
+import java.util.Map;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -162,5 +164,20 @@ public class TripRepository {
 //        System.out.println("cruse: "+tripId);
         String sql = "UPDATE wxy_cruise SET trip_id = ? WHERE cruise_id = ?";
         jdbcTemplate.update(sql, tripId, cruiseId);
+    }
+
+    public validCruisePort getAvailableData() {
+        // Query a single cruise without trip_id
+        String cruiseSql = "SELECT cruise_id, cruise_name FROM wxy_cruise WHERE trip_id IS NULL LIMIT 1";
+        Map<String, Object> cruiseRow = jdbcTemplate.queryForMap(cruiseSql);
+        int cruiseId = ((Number) cruiseRow.get("cruise_id")).intValue();
+        String cruiseName = (String) cruiseRow.get("cruise_name");
+
+        // Query all ports
+        String portsSql = "SELECT port_id, port_name FROM wxy_port";
+        List<Map<String, Object>> ports = jdbcTemplate.queryForList(portsSql);
+
+        // Return the data in a single object
+        return new validCruisePort(cruiseId, cruiseName, ports);
     }
 }
