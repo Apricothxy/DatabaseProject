@@ -126,12 +126,38 @@
             font-weight: bold;
             color: #333;
         }
+
+        .header-right {
+            display: flex;
+            align-items: center; /* 垂直居中对齐内容 */
+            margin-left: auto;
+            padding-right: 40px;
+        }
+
+        .admin-btn {
+            background: #000000;
+            color: #ffffff;
+            padding: 8px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+        .admin-btn:hover {
+            background: #717171;
+        }
     </style>
 </head>
 <body>
 <div class="header" style="background: #fff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
     <img src="/images/logo.png" alt="Logo" style="height: 60px; margin-right: 10px;">
     <div class="company-name" style="color: #333;">Nature International Cruise Excellence</div>
+    <div class="header-right">
+        <a href="admin_login.html" class="admin-btn">Administrator Login</a>
+    </div>
 </div>
 
 
