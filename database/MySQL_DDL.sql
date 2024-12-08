@@ -162,11 +162,11 @@ ALTER TABLE wxy_stateroom
 
 
 CREATE TABLE wxy_trip (
-    trip_id    INT NOT NULL COMMENT 'trip id',
-    nights_num INTEGER NOT NULL COMMENT 'total number of nights'
+    trip_id    INT AUTO_INCREMENT NOT NULL COMMENT 'trip id',
+    nights_num INTEGER NOT NULL COMMENT 'total number of nights',
+    PRIMARY KEY (trip_id)
 );
 
-ALTER TABLE wxy_trip ADD CONSTRAINT wxy_trip_pk PRIMARY KEY ( trip_id );
 
 CREATE TABLE wxy_trip_port (
     trip_id    INT NOT NULL COMMENT 'trip id',
