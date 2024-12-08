@@ -3,6 +3,7 @@ package com.wxy.databaseproject.repository;
 import com.wxy.databaseproject.model.OrderTripInfo;
 import com.wxy.databaseproject.model.Port;
 import com.wxy.databaseproject.model.Trip;
+import com.wxy.databaseproject.model.validCruisePort;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -165,7 +166,7 @@ public class TripRepository {
         jdbcTemplate.update(sql, tripId, cruiseId);
     }
 
-    public AvaliavleCruisePort getAvailableData() {
+    public validCruisePort getAvailableData() {
         // Query a single cruise without trip_id
         String cruiseSql = "SELECT cruise_id, cruise_name FROM wxy_cruise WHERE trip_id IS NULL LIMIT 1";
         Map<String, Object> cruiseRow = jdbcTemplate.queryForMap(cruiseSql);
@@ -177,41 +178,6 @@ public class TripRepository {
         List<Map<String, Object>> ports = jdbcTemplate.queryForList(portsSql);
 
         // Return the data in a single object
-        return new AvaliavleCruisePort(cruiseId, cruiseName, ports);
-    }
-    public static class AvaliavleCruisePort {
-        private int cruiseId;
-        private String cruiseName;
-        private List<Map<String, Object>> ports;
-
-        public AvaliavleCruisePort(int cruiseId, String cruiseName, List<Map<String, Object>> ports) {
-            this.cruiseId = cruiseId;
-            this.cruiseName = cruiseName;
-            this.ports = ports;
-        }
-
-        public int getCruiseId() {
-            return cruiseId;
-        }
-
-        public void setCruiseId(int cruiseId) {
-            this.cruiseId = cruiseId;
-        }
-
-        public String getCruiseName() {
-            return cruiseName;
-        }
-
-        public void setCruiseName(String cruiseName) {
-            this.cruiseName = cruiseName;
-        }
-
-        public List<Map<String, Object>> getPorts() {
-            return ports;
-        }
-
-        public void setPorts(List<Map<String, Object>> ports) {
-            this.ports = ports;
-        }
+        return new validCruisePort(cruiseId, cruiseName, ports);
     }
 }

@@ -2,6 +2,7 @@ package com.wxy.databaseproject.controller;
 
 import com.wxy.databaseproject.model.OrderTripInfo;
 import com.wxy.databaseproject.model.Trip;
+import com.wxy.databaseproject.model.validCruisePort;
 import com.wxy.databaseproject.service.TripService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,7 +58,11 @@ public class TripController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
-
+    @GetMapping("/trip/getValidCruisePort")
+    public ResponseEntity<validCruisePort> getAvailableCruisePort() {
+        validCruisePort data = tripService.getAvailableCruisePort();
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
     /**
      * This inner class maps the JSON input for the POST /api/trip/add request.
      */
