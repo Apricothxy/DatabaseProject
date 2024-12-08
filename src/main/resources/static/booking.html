@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
     <title>Booking</title>
     <style>
         html, body {
@@ -11,7 +13,7 @@
         }
 
         body {
-            font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+            font-family: 'Libre Baskerville', serif;
             background: #f7f9fc;
             display: flex;
             flex-direction: column;
@@ -21,14 +23,14 @@
         }
 
         :root {
-            --primary: #6C2C92;    /* NYU Purple */
-            --primary-hover: #8B5FBF;
+            --primary: #FFFFFF;    /* NYU Purple */
+            --primary-hover: #717171;
             --error: #e74c3c;
         }
 
         .top-bar {
             background: var(--primary);
-            color: #fff;
+            color: #000000;
             padding: 15px 20px;
             display: flex;
             align-items: center;
@@ -50,13 +52,15 @@
 
         .user-id {
             font-size: 0.875rem;
-            color: #fff;
+            color: #000000;
             word-break: break-all;
         }
 
         .logout-btn {
+            margin-left: 10px;
+            font-family: 'Manrope', sans-serif;
             display: inline-block;
-            background: var(--primary-hover);
+            background: #000000;
             color: #fff;
             padding: 8px 14px;
             border-radius: 6px;
@@ -89,7 +93,8 @@
         }
 
         .add-passenger-btn {
-            background: var(--primary);
+            font-family: 'Manrope', sans-serif;
+            background: #000000;
             color: #fff;
             border: none;
             border-radius: 6px;
@@ -148,7 +153,7 @@
         }
 
         .proceed-btn {
-            background: var(--primary);
+            background: #000000;
             color: #fff;
             border: none;
             border-radius: 6px;
@@ -173,10 +178,11 @@
         }
 
         .modal {
+            font-family: 'Manrope', sans-serif;
             background:#fff;
             border-radius:8px;
             padding:20px;
-            width:300px;
+            width:600px;
             box-shadow:0 2px 10px rgba(0,0,0,0.1);
             position:relative;
         }
@@ -214,7 +220,7 @@
         }
 
         .modal .confirm-btn {
-            background: var(--primary);
+            background: #000000;
             color:#fff;
             border:none;
             border-radius:6px;
@@ -229,22 +235,62 @@
         }
 
         .package-item {
-            display:flex;
-            align-items:center;
-            gap:5px;
-            margin-bottom:10px;
+            display: flex;
+            justify-content: space-between; /* 两端对齐 */
+            align-items: center; /* 垂直居中 */
+            margin-bottom: 15px;
         }
 
         .package-item label {
-            margin-bottom:0;
-            font-size:0.9rem;
-            color:#333;
+            flex: 1; /* 占用左侧空间 */
+            margin-right: 10px; /* 留出右侧间距 */
         }
+
+        .package-item input[type="number"] {
+            font-family: 'Manrope', sans-serif;
+            width: 100px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            text-align: right; /* 输入内容靠右对齐 */
+            box-sizing: border-box; /* 包括内边距和边框 */
+        }
+
+
+        .back-btn {
+            cursor: pointer;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .back-btn:hover {
+            color: var(--primary-hover);
+        }
+
+
+        .modal-section select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            background-color: #fff;
+            appearance: none; /* 移除浏览器默认样式 */
+        }
+
+        .modal-section select {
+            cursor: pointer; /* 鼠标悬停时显示手型 */
+        }
+
     </style>
 </head>
 <body>
 <div class="top-bar">
     <div class="left-items">
+        <span class="back-btn" onclick="window.history.back()">←</span>
         <div class="title">Booking</div>
     </div>
     <div class="right-items">
@@ -271,17 +317,17 @@
         <span class="modal-close" id="modalClose">×</span>
         <h3>Add Passenger</h3>
         <div class="modal-section">
-            <label for="passengerSelect">Select Passenger</label>
+            <label for="passengerSelect"><b>Select Passenger</b></label>
             <select id="passengerSelect"></select>
         </div>
 
         <div class="modal-section">
-            <label>Select Stateroom</label>
+            <label><b>Select Stateroom</b></label>
             <div id="stateroomOptions"></div>
         </div>
 
         <div class="modal-section">
-            <label>Select Packages (optional)</label>
+            <label><b>Select Packages (optional)</b></label>
             <!-- We will dynamically show per-night or per-trip limits -->
             <div class="package-item">
                 <label>Water and Non-Alcoholic ($40/person/night):</label>
@@ -329,7 +375,27 @@
     const confirmPassengerBtn = document.getElementById('confirmPassengerBtn');
     const totalContainer = document.getElementById('totalContainer');
 
-    userIdDisplay.textContent = 'Welcome Back, User ID: ' + userId;
+    async function fetchUsername() {
+        const apiUrl = '/api/user/' + userId;
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'GET',
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch user data');
+            }
+
+            const userData = await response.json();
+            userIdDisplay.textContent = `Welcome Back, ${userData.username}`;
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+            userIdDisplay.textContent = 'Welcome Back, User';
+        }
+    }
+
+    fetchUsername();
 
     logoutBtn.addEventListener('click', () => {
         localStorage.removeItem('loggedInUserId');
@@ -615,38 +681,29 @@
 
             let result;
             try {
-                // 尝试解析返回的 JSON，即使 status 非200
                 result = await response.json();
             } catch (err) {
-                // 如果无法解析 JSON 则置空
                 result = null;
             }
 
             if (response.ok) {
-                // 请求成功状态
                 if (Array.isArray(result) && result.length > 0) {
                     const resData = result[0];
                     if (resData.status === 'success') {
                         localStorage.setItem('invoiceID', resData.invoiceID);
                         localStorage.setItem('invoiceTotalPrice', resData.TotalPrice);
 
-                        alert('Booking successful! Redirecting to Payment...');
-                        const url = 'Payment.html?'
-                            + 'tripId=' + encodeURIComponent(tripId)
-                            + '&startTime=' + encodeURIComponent(startTime)
-                            + '&endTime=' + encodeURIComponent(endTime)
-                            + '&startPortName=' + encodeURIComponent(startPortName)
-                            + '&endPortName=' + encodeURIComponent(endPortName);
+                        const url = 'payment.html?'
+                            + '&invoiceId=' + encodeURIComponent(resData.invoiceID)
+                            + '&totalPrice=' + encodeURIComponent(resData.TotalPrice);
                         window.location.href = url;
                     } else {
-                        // 当 status 为 fail 时，显示具体错误消息
                         alert('booking failed: ' + (resData.message || 'Unknown error'));
                     }
                 } else {
                     alert('booking failed: Invalid response format.');
                 }
             } else {
-                // 请求非成功状态，如400、500等
                 if (Array.isArray(result) && result.length > 0 && result[0].message) {
                     alert('booking failed: ' + result[0].message);
                 } else {

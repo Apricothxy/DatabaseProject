@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
     <title>NICE - Shop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Libre Baskerville', serif;
@@ -38,17 +38,47 @@
             color: #333;
         }
 
+        /* 全屏 hero 区域 */
         .hero {
             position: relative;
             text-align: center;
-            margin: 100px auto 0; /* 避免被固定的header遮挡 */
+            height: 100vh;
+            width: 100%;
+            background: url("/images/cruise.jpg") no-repeat center center;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; /* 保持Explore按钮在底部 */
+            align-items: center;
         }
 
-        .hero img {
-            max-width: 80%;
-            height: auto;
-            display: block;
-            margin: 0 auto; /* 确保图片水平居中 */
+        .hero-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 5rem;
+            color: #FF7C3E;
+            text-align: center;
+            width: 80%;
+            max-width: 1600px;
+        }
+
+        .explore-button {
+            margin-bottom: 50px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            background: black;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Libre Baskerville', serif;
+            transition: background 0.3s;
+        }
+
+        .explore-button:hover {
+            background: #333;
         }
 
         .featured-products {
@@ -69,7 +99,10 @@
 
         .product-item {
             text-align: center;
-            width: 200px;
+            width: 300px;
+            margin-left: 50px;
+            margin-right: 50px;
+            margin-bottom: 20px;
         }
 
         .product-item img {
@@ -98,7 +131,7 @@
             background: black;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 20px 30px;
             font-size: 1rem;
             border-radius: 5px;
             cursor: pointer;
@@ -130,8 +163,13 @@
         }
 
         footer .footer-logo img {
-            height: 50px; /* 小 Logo 高度 */
-            margin-bottom: 10px;
+            height: 60px; /* 增大 Logo 高度 */
+        }
+
+        footer .footer-logo p {
+            font-size: 1.2rem; /* 放大公司名称字体 */
+            font-weight: bold; /* 加粗公司名称 */
+            margin: 0; /* 去除默认外边距 */
         }
 
         footer div p {
@@ -146,10 +184,13 @@
     <div class="company-name">Nature International Cruise Excellence</div>
 </div>
 
+<!-- Hero Section -->
 <div class="hero">
-    <img src="/images/main.png" alt="Hero Image">
+    <div class="hero-text" id="heroText"></div>
+    <button class="explore-button" id="exploreButton">Explore</button>
 </div>
 
+<!-- Featured Products Section -->
 <div class="featured-products">
     <h2>Featured Products</h2>
     <div class="product-grid">
@@ -164,13 +205,30 @@
             <p>$60</p>
         </div>
         <div class="product-item">
+            <img src="/images/bar.png" alt="Bar Insights">
+            <h3>Unlimited Bar</h3>
+            <p>$80</p>
+        </div>
+    </div>
+    <div class="product-grid">
+        <div class="product-item">
+            <img src="/images/gym.png" alt="Gym Insights">
+            <h3>Gym</h3>
+            <p>Free for Ticket Holders</p>
+        </div>
+        <div class="product-item">
+            <img src="/images/casino.png" alt="Casino Insights">
+            <h3>Casino</h3>
+            <p>Free for Ticket Holders</p>
+        </div>
+        <div class="product-item">
             <img src="/images/pool.png" alt="Pool Insights">
             <h3>Outdoor Pool</h3>
             <p>Free for Ticket Holders</p>
         </div>
     </div>
     <div class="shop-all">
-        <button onclick="location.href='login.html'">Book Now</button>
+        <button onclick="location.href='login.html'">Book Ticket Now</button>
     </div>
 </div>
 
@@ -181,7 +239,7 @@
     </div>
     <div>
         <p>Location</p>
-        <p>New York University<br>New York, NY, United States</p>
+        <p>6 MetroTech Center<br>New York University<br>New York, NY, United States</p>
     </div>
     <div>
         <p>Contact</p>
@@ -189,42 +247,28 @@
     </div>
 </footer>
 
-<style>
-    footer {
-        display: flex;
-        justify-content: space-between;
-        padding: 20px;
-        background: #f8f8f8;
-        font-size: 1rem;
-        align-items: center;
+<script>
+    // 打字机效果代码
+    const text = "Explore Unforgettable Trips.";
+    const heroTextElement = document.getElementById('heroText');
+    let index = 0;
+
+    function typeWriter() {
+        if (index < text.length) {
+            heroTextElement.textContent += text.charAt(index);
+            index++;
+            setTimeout(typeWriter, 65);
+        }
     }
 
-    footer div {
-        flex: 1;
-        text-align: center;
-    }
-
-    footer .footer-logo {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    footer .footer-logo img {
-        height: 60px; /* 增大 Logo 高度 */
-    }
-
-    footer .footer-logo p {
-        font-size: 1.2rem; /* 放大公司名称字体 */
-        font-weight: bold; /* 加粗公司名称 */
-        margin: 0; /* 去除默认外边距 */
-    }
-
-    footer div p {
-        margin: 5px 0;
-    }
-</style>
-
+    window.onload = () => {
+        typeWriter();
+    };
+    
+    document.getElementById('exploreButton').addEventListener('click', function() {
+        document.querySelector('.featured-products').scrollIntoView({ behavior: 'smooth' });
+    });
+</script>
 
 </body>
 </html>

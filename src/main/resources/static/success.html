@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Success</title>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Libre Baskerville', serif;
+            margin: 0;
+            background: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .header {
+            background: #fff;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .header img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .header .company-name {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+            font-family: 'Libre Baskerville', serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .content h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .home-btn {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .home-btn:hover {
+            background: #333;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <img src="/images/logo.png" alt="Logo">
+    <div class="company-name">Nature International Cruise Excellence</div>
+</div>
+
+<div class="content">
+    <h1>Payment Successful! Thank you for your purchase.</h1>
+    <h1> </h1>
+    <button class="home-btn" id="home-btn">Return to Home</button>
+</div>
+
+<script>
+    document.getElementById('home-btn').addEventListener('click', () => {
+        window.location.href = 'home.html';
+    });
+</script>
+</body>
+</html>

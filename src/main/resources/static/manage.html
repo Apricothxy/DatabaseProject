@@ -264,7 +264,29 @@
         .passenger-list li strong {
             font-weight: 700;
         }
+        /**/
+        .trip-management-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
 
+        .add-trip-btn {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .add-trip-btn:hover {
+            background: #333;
+        }
+        /**/
         .form-section-title {
             font-family: 'Manrope', sans-serif;
             font-weight: bold;
@@ -387,17 +409,23 @@
         </div>
 
         <div class="section" id="itinerary-management">
-            <h3>Trip Management</h3>
-            <div class="itinerary-list">
-                <div class="itinerary-item">
-                    Trip ID: IT001 | Route: Caribbean Cruise | Date: 2024-01-05 to 2024-01-12
-                </div>
-                <div class="itinerary-item">
-                    Trip ID: IT002 | Route: Mediterranean Cruise | Date: 2024-02-10 to 2024-02-17
-                </div>
-                <div class="itinerary-item">
-                    Trip ID: IT003 | Route: Alaskan Glacier Tour | Date: 2024-03-15 to 2024-03-22
-                </div>
+            <div class="trip-management-header">
+                <h3>Trip Management</h3>
+                <button class="add-trip-btn">Add Trip</button>
+            </div>
+            <div class="table-container">
+                <table id="trip-table">
+                    <thead>
+                    <tr>
+                        <th>Trip ID</th>
+                        <th>Route</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                    </tr>
+                    </thead>
+                    <tbody id="trip-tbody">
+                    </tbody>
+                </table>
             </div>
         </div>
 

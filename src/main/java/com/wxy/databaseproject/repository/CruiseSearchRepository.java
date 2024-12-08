@@ -5,8 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class CruiseSearchRepository {
@@ -46,24 +50,39 @@ public class CruiseSearchRepository {
     """;
 
         return jdbcTemplate.query(sql, new Object[]{startPortName, endPortName, startDateBegin, startDateEnd, endDateBegin, endDateEnd},
-                (rs, rowNum) -> {
-                    CruiseSearch result = new CruiseSearch();
-                    result.setTripId(rs.getInt("trip_id"));
-                    result.setCruiseName(rs.getString("cruise_name"));
-                    result.setStartTime(rs.getTimestamp("start_time").toLocalDateTime());
-                    result.setEndTime(rs.getTimestamp("end_time").toLocalDateTime());
-                    result.setStartPortName(rs.getString("start_port_name"));
-                    result.setEndPortName(rs.getString("end_port_name"));
+                (ResultSet rs) -> {
+                    Map<Integer, CruiseSearch> map = new HashMap<>();
 
-                    if (rs.getString("stop_port_name") != null) {
-                        CruiseSearch.StopPortInfo stopInfo = new CruiseSearch.StopPortInfo();
-                        stopInfo.setPortName(rs.getString("stop_port_name"));
-                        stopInfo.setArrivalTime(rs.getTimestamp("stop_start_date").toLocalDateTime());
-                        stopInfo.setDepartureTime(rs.getTimestamp("stop_end_date").toLocalDateTime());
-                        result.getStopPorts().add(stopInfo);
+                    while (rs.next()) {
+                        int tripId = rs.getInt("trip_id");
+                        CruiseSearch cruiseSearch = map.get(tripId);
+                        if (cruiseSearch == null) {
+                            cruiseSearch = new CruiseSearch();
+                            cruiseSearch.setTripId(tripId);
+                            cruiseSearch.setCruiseName(rs.getString("cruise_name"));
+                            cruiseSearch.setStartTime(rs.getTimestamp("start_time").toLocalDateTime());
+                            cruiseSearch.setEndTime(rs.getTimestamp("end_time").toLocalDateTime());
+                            cruiseSearch.setStartPortName(rs.getString("start_port_name"));
+                            cruiseSearch.setEndPortName(rs.getString("end_port_name"));
+                            map.put(tripId, cruiseSearch);
+                        }
+
+                        String stopPortName = rs.getString("stop_port_name");
+                        if (stopPortName != null) {
+                            CruiseSearch.StopPortInfo stopInfo = new CruiseSearch.StopPortInfo();
+                            stopInfo.setPortName(stopPortName);
+                            stopInfo.setArrivalTime(rs.getTimestamp("stop_start_date").toLocalDateTime());
+                            stopInfo.setDepartureTime(rs.getTimestamp("stop_end_date").toLocalDateTime());
+                            cruiseSearch.getStopPorts().add(stopInfo);
+                        }
                     }
-                    return result;
-                });
+
+                    return new ArrayList<>(map.values());
+                }
+        );
     }
 
 }
+
+
+
