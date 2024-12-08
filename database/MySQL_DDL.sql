@@ -64,8 +64,8 @@ ALTER TABLE wxy_package ADD CHECK ( price >= 0 );
 -- ALTER TABLE wxy_package ADD CONSTRAINT wxy_package_pk PRIMARY KEY ( package_id );
 
 ALTER TABLE wxy_package
-    ADD CHECK ( type IN ( 'Water and Non-Alcoholic', 'Unlimited Bar', 'Internet 200 minutes', 
-                           'Unlimited internet', 'Specialty dining' ) );
+    ADD CHECK ( type IN ( 'Water and Non-Alcoholic', 'Unlimited Bar', 'Internet 200 minutes, 100 GB', 
+                           'Unlimited Internet', 'Specialty dining' ) );
 
 CREATE TABLE wxy_passenger (
     passenger_id     INT AUTO_INCREMENT NOT NULL COMMENT 'passenger id',

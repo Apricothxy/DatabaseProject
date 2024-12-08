@@ -339,7 +339,7 @@
 
   - 方法：`POST`(TBD)
 
-  - URL：`/bookings`
+  - URL：`/api/bookings`
 
   - 描述：创建新的预订。
 
@@ -405,10 +405,7 @@
     ]
     ```
 
-- **获取预订信息**
-  - 方法：`GET`(TBD)
-  - URL：`/bookings/{bookingId}`
-  - 描述：获取指定预订的详细信息。
+  
 
 - **提交支付**
   - 方法：`POST`
@@ -445,13 +442,69 @@
     
     
   
-- **获取支付信息**
-
-  - 方法：`GET`(TBD)
-  - URL：`/payments/{paymentId}`
-  - 描述：获取指定支付的详细信息。
-
-- **获取发票信息**
-  - 方法：`GET`(TBD)
-  - URL：`/invoices/{invoiceId}`
+  
+  
+- **获取发票/支付信息**
+  
+  - 方法：`GET`
+  
+  - URL：`/invoices/{user_id}`
+  
   - 描述：获取指定发票的详细信息。
+  
+  - 输入：
+  
+    ```
+    user_id
+    ```
+  
+    
+  
+  - 返回值：
+  
+    ```
+    [
+    	{
+    		"tripId": 1
+    		"groupId":1
+    		"invoiceId": 3 
+    		"invoiceAmout": 2000.0
+    		(String)"paymentId": "5"
+    		"panssgers"[
+    			{
+    				"passengerId"
+    				"passengerFName"
+    				"passengerLName"
+    			},
+    			{
+    				"passengerId"
+    				"passengerFName"
+    				"passengerLName"
+    			},
+    		]
+    	},
+    	{
+    		"tripId": 2
+    		"groupId":1
+    		"invoiceId": 4
+    		"invoiceAmout": 1000.0
+    		(String)"paymentId": "Fail"
+    		"panssgers"[
+    			{
+    				"passengerId"
+    				"passengerFName"
+    				"passengerLName"
+    			},
+    			{
+    				"passengerId"S
+    				"passengerFName"
+    				"passengerLName"
+    			},
+    		]
+    	}
+    	
+    	
+    ]
+    ```
+  
+    
