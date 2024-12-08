@@ -272,6 +272,60 @@
             margin-bottom: 10px;
             font-size: 16px;
         }
+
+        .add-button {
+            background: #666;
+            color: #fff;
+            padding: 5px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        .add-button:hover {
+            background: #444;
+        }
+
+        .item-block {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        .password-eye {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* 在已有的CSS中添加或修改以下部分 */
+
+        select.restaurant-type,
+        select.stateroom-type,
+        select.stateroom-position,
+        select.ent-type {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        select.restaurant-type:focus,
+        select.stateroom-type:focus,
+        select.stateroom-position:focus,
+        select.ent-type:focus {
+            outline: none;
+            border-color: #aaa;
+        }
+
+
     </style>
 </head>
 <body>
@@ -290,8 +344,6 @@
         <h2>Dashboard</h2>
         <div class="tab active" data-target="user-management">User Management</div>
         <div class="tab" data-target="itinerary-management">Trip Management</div>
-        <!-- Remove the old Cruise Status tab -->
-        <!-- Add the new Cruise Management tab -->
         <div class="tab" data-target="cruise-management">Cruise Management</div>
     </div>
 
@@ -345,7 +397,7 @@
                 <table id="cruise-table">
                     <thead>
                     <tr>
-                        <th>Cruise ID</th>
+                        <th>#</th>
                         <th>Cruise Name</th>
                     </tr>
                     </thead>
@@ -391,28 +443,17 @@
         <h4>Add Cruise</h4>
         <input type="text" id="cruise-input-name" placeholder="Cruise Name" required>
 
-        <div class="form-section-title">Restaurant</div>
-        <input type="text" id="restaurant-type" placeholder="Type">
-        <input type="text" id="restaurant-start" placeholder="Start Time (e.g. 2024-01-01T06:00:00)">
-        <input type="text" id="restaurant-end" placeholder="End Time (e.g. 2024-01-01T22:00:00)">
-        <input type="number" id="restaurant-floor" placeholder="Floor">
+        <div class="form-section-title">Restaurants</div>
+        <div id="restaurants-container"></div>
+        <button class="add-button" id="add-restaurant-btn">Add Another Restaurant</button>
 
-        <div class="form-section-title">Stateroom</div>
-        <input type="text" id="stateroom-type" placeholder="Type (e.g. inside stateroom)">
-        <input type="number" id="stateroom-size" placeholder="Size">
-        <input type="number" id="stateroom-bed" placeholder="Bed Number">
-        <input type="number" id="stateroom-bathroom" placeholder="Bathroom Number">
-        <input type="number" id="stateroom-balcony" placeholder="Balcony (0 or 1)">
-        <input type="number" step="0.01" id="stateroom-price" placeholder="Price per person">
-        <input type="text" id="stateroom-position" placeholder="Position (e.g. After)">
+        <div class="form-section-title">Staterooms</div>
+        <div id="staterooms-container"></div>
+        <button class="add-button" id="add-stateroom-btn">Add Another Stateroom</button>
 
         <div class="form-section-title">Entertainment</div>
-        <input type="text" id="ent-type" placeholder="Type (e.g. casino)">
-        <input type="number" id="ent-units" placeholder="Units Number">
-        <input type="number" id="ent-floor1" placeholder="Floor 1 (or leave blank)" >
-        <input type="number" id="ent-floor2" placeholder="Floor 2 (or blank)">
-        <input type="number" id="ent-floor3" placeholder="Floor 3 (or blank)">
-        <input type="number" id="ent-age" placeholder="Age limits">
+        <div id="entertainments-container"></div>
+        <button class="add-button" id="add-entertainment-btn">Add Another Entertainment</button>
 
         <div class="message" id="cruise-modal-message"></div>
         <div style="margin-top:10px;">
@@ -423,6 +464,112 @@
 </div>
 
 <script>
+    // Adjusted password eye icon size via CSS:
+    // .password-eye {
+    //     width:16px;
+    //     height:16px;
+    // }
+
+    // For restaurant type (select):
+    // Values: 'Common Buffett', 'Italian Specialty', 'La carte continental', 'Mexican Specialty', 'Ming Work Chinese',
+    // 'Pool Bar', 'Round Clock Cafe', 'Stout Bar', 'Tokyo Ramen Japanese'
+
+    function addRestaurantBlock() {
+        const div = document.createElement('div');
+        div.classList.add('item-block');
+        div.innerHTML = `
+            <select class="restaurant-type">
+                <option value="">Select Restaurant Type</option>
+                <option value="Common Buffett">Common Buffett</option>
+                <option value="Italian Specialty">Italian Specialty</option>
+                <option value="La carte continental">La carte continental</option>
+                <option value="Mexican Specialty">Mexican Specialty</option>
+                <option value="Ming Work Chinese">Ming Work Chinese</option>
+                <option value="Pool Bar">Pool Bar</option>
+                <option value="Round Clock Cafe">Round Clock Cafe</option>
+                <option value="Stout Bar">Stout Bar</option>
+                <option value="Tokyo Ramen Japanese">Tokyo Ramen Japanese</option>
+            </select>
+            <input type="text" class="restaurant-start" placeholder="Start Time (e.g. 2024-01-01T06:00:00)">
+            <input type="text" class="restaurant-end" placeholder="End Time (e.g. 2024-01-01T22:00:00)">
+            <input type="number" class="restaurant-floor" placeholder="Floor">
+        `;
+        document.getElementById('restaurants-container').appendChild(div);
+    }
+
+    // For stateroom type and position (select):
+    // Types: 'club balcony suite', 'family balcony', 'family large balcony', 'inside stateroom', 'oceanview window',
+    // 'studio stateroom', 'the haven suite'
+    // Positions: 'After', 'Forward', 'Left', 'Right'
+
+    function addStateroomBlock() {
+        const div = document.createElement('div');
+        div.classList.add('item-block');
+        div.innerHTML = `
+            <select class="stateroom-type">
+                <option value="">Select Stateroom Type</option>
+                <option value="club balcony suite">club balcony suite</option>
+                <option value="family balcony">family balcony</option>
+                <option value="family large balcony">family large balcony</option>
+                <option value="inside stateroom">inside stateroom</option>
+                <option value="oceanview window">oceanview window</option>
+                <option value="studio stateroom">studio stateroom</option>
+                <option value="the haven suite">the haven suite</option>
+            </select>
+            <input type="number" class="stateroom-size" placeholder="Size">
+            <input type="number" class="stateroom-bed" placeholder="Bed Number">
+            <input type="number" class="stateroom-bathroom" placeholder="Bathroom Number">
+            <input type="number" class="stateroom-balcony" placeholder="Balcony (0 or 1)">
+            <input type="number" step="0.01" class="stateroom-price" placeholder="Price per person">
+            <select class="stateroom-position">
+                <option value="">Select Position</option>
+                <option value="After">After</option>
+                <option value="Forward">Forward</option>
+                <option value="Left">Left</option>
+                <option value="Right">Right</option>
+            </select>
+        `;
+        document.getElementById('staterooms-container').appendChild(div);
+    }
+
+    // For entertainment type (select):
+    // Types: 'casino', 'children play', 'gym', 'indoor pool', 'library',
+    // 'night club', 'outdoor pool', 'sona room', 'steam room', 'tennis court',
+    // 'theaters', 'whirlpool', 'yoga room'
+
+    function addEntertainmentBlock() {
+        const div = document.createElement('div');
+        div.classList.add('item-block');
+        div.innerHTML = `
+            <select class="ent-type">
+                <option value="">Select Entertainment Type</option>
+                <option value="casino">casino</option>
+                <option value="children play">children play</option>
+                <option value="gym">gym</option>
+                <option value="indoor pool">indoor pool</option>
+                <option value="library">library</option>
+                <option value="night club">night club</option>
+                <option value="outdoor pool">outdoor pool</option>
+                <option value="sona room">sona room</option>
+                <option value="steam room">steam room</option>
+                <option value="tennis court">tennis court</option>
+                <option value="theaters">theaters</option>
+                <option value="whirlpool">whirlpool</option>
+                <option value="yoga room">yoga room</option>
+            </select>
+            <input type="number" class="ent-units" placeholder="Units Number">
+            <input type="number" class="ent-floor1" placeholder="Floor 1 (or leave blank)">
+            <input type="number" class="ent-floor2" placeholder="Floor 2 (or blank)">
+            <input type="number" class="ent-floor3" placeholder="Floor 3 (or blank)">
+            <input type="number" class="ent-age" placeholder="Age limits">
+        `;
+        document.getElementById('entertainments-container').appendChild(div);
+    }
+
+    // The rest of the JS code that was previously included remains the same,
+    // ensuring that now we have select elements for restricted fields instead of text inputs.
+    // The addRestaurantBlock(), addStateroomBlock(), addEntertainmentBlock() functions are shown above
+    // replaced in the final code snippet.
     const tabs = document.querySelectorAll('.tab');
     const sections = document.querySelectorAll('.section');
 
@@ -452,13 +599,15 @@
         const cruiseTbody = document.getElementById('cruise-tbody');
         cruiseTbody.innerHTML = '';
         try {
+            // /api/cruise/getall returns List<String> of cruise names
             const res = await fetch('/api/cruise/getall');
             const data = await res.json();
-            data.forEach(c => {
+            let index = 1;
+            data.forEach(name => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${c.cruise_id}</td>
-                    <td>${c.cruise_name}</td>
+                    <td>${index++}</td>
+                    <td>${name}</td>
                 `;
                 cruiseTbody.appendChild(tr);
             });
@@ -477,42 +626,55 @@
     addCruiseBtn.addEventListener('click', () => {
         cruiseModalMessage.textContent = '';
         addCruiseModalOverlay.style.display = 'flex';
+        clearCruiseForm();
+        addRestaurantBlock();
+        addStateroomBlock();
+        addEntertainmentBlock();
     });
 
     closeCruiseModalBtn.addEventListener('click', () => {
         addCruiseModalOverlay.style.display = 'none';
     });
 
+    // Dynamic add restaurant
+    const restaurantsContainer = document.getElementById('restaurants-container');
+    const addRestaurantBtn = document.getElementById('add-restaurant-btn');
+    addRestaurantBtn.addEventListener('click', () => {
+        addRestaurantBlock();
+    });
+
+
+    // Dynamic add stateroom
+    const stateroomsContainer = document.getElementById('staterooms-container');
+    const addStateroomBtn = document.getElementById('add-stateroom-btn');
+    addStateroomBtn.addEventListener('click', () => {
+        addStateroomBlock();
+    });
+
+
+    // Dynamic add entertainment
+    const entertainmentsContainer = document.getElementById('entertainments-container');
+    const addEntertainmentBtn = document.getElementById('add-entertainment-btn');
+    addEntertainmentBtn.addEventListener('click', () => {
+        addEntertainmentBlock();
+    });
+
+
+    function clearCruiseForm() {
+        document.getElementById('cruise-input-name').value = '';
+        restaurantsContainer.innerHTML = '';
+        stateroomsContainer.innerHTML = '';
+        entertainmentsContainer.innerHTML = '';
+    }
+
     submitCruiseBtn.addEventListener('click', async () => {
         const cruiseName = document.getElementById('cruise-input-name').value.trim();
-
-        const rType = document.getElementById('restaurant-type').value.trim();
-        const rStart = document.getElementById('restaurant-start').value.trim();
-        const rEnd = document.getElementById('restaurant-end').value.trim();
-        const rFloor = document.getElementById('restaurant-floor').value.trim();
-
-        const sType = document.getElementById('stateroom-type').value.trim();
-        const sSize = document.getElementById('stateroom-size').value.trim();
-        const sBed = document.getElementById('stateroom-bed').value.trim();
-        const sBath = document.getElementById('stateroom-bathroom').value.trim();
-        const sBal = document.getElementById('stateroom-balcony').value.trim();
-        const sPrice = document.getElementById('stateroom-price').value.trim();
-        const sPos = document.getElementById('stateroom-position').value.trim();
-
-        const eType = document.getElementById('ent-type').value.trim();
-        const eUnits = document.getElementById('ent-units').value.trim();
-        const eF1 = document.getElementById('ent-floor1').value.trim();
-        const eF2 = document.getElementById('ent-floor2').value.trim();
-        const eF3 = document.getElementById('ent-floor3').value.trim();
-        const eAge = document.getElementById('ent-age').value.trim();
-
         if(!cruiseName) {
             cruiseModalMessage.style.color = 'red';
             cruiseModalMessage.textContent = 'Cruise Name is required.';
             return;
         }
 
-        // Prepare JSON
         const payload = {
             "cruise_name": cruiseName,
             "restaurants": [],
@@ -520,45 +682,72 @@
             "entertainment": []
         };
 
-        // Add one restaurant if provided
-        if(rType && rStart && rEnd && rFloor) {
-            payload.restaurants.push({
-                "type": rType,
-                "start_time": rStart,
-                "end_time": rEnd,
-                "floor": parseInt(rFloor)
-            });
-        }
+        // Collect restaurants
+        const restaurantBlocks = restaurantsContainer.querySelectorAll('.item-block');
+        restaurantBlocks.forEach(block => {
+            const rType = block.querySelector('.restaurant-type').value.trim();
+            const rStart = block.querySelector('.restaurant-start').value.trim();
+            const rEnd = block.querySelector('.restaurant-end').value.trim();
+            const rFloor = block.querySelector('.restaurant-floor').value.trim();
+            if(rType && rStart && rEnd && rFloor) {
+                payload.restaurants.push({
+                    "type": rType,
+                    "start_time": rStart,
+                    "end_time": rEnd,
+                    "floor": parseInt(rFloor)
+                });
+            }
+        });
 
-        // Add one stateroom if provided
-        if(sType && sSize && sBed && sBath && sBal && sPrice && sPos) {
-            payload.staterooms.push({
-                "type": sType,
-                "size": parseInt(sSize),
-                "bed_num": parseInt(sBed),
-                "bathroom_num": parseInt(sBath),
-                "balcony": parseInt(sBal),
-                "price_per_person": parseFloat(sPrice),
-                "position": sPos
-            });
-        }
+        // Collect staterooms
+        const stateroomBlocks = stateroomsContainer.querySelectorAll('.item-block');
+        stateroomBlocks.forEach(block => {
+            const sType = block.querySelector('.stateroom-type').value.trim();
+            const sSize = block.querySelector('.stateroom-size').value.trim();
+            const sBed = block.querySelector('.stateroom-bed').value.trim();
+            const sBath = block.querySelector('.stateroom-bathroom').value.trim();
+            const sBal = block.querySelector('.stateroom-balcony').value.trim();
+            const sPrice = block.querySelector('.stateroom-price').value.trim();
+            const sPos = block.querySelector('.stateroom-position').value.trim();
 
-        // Add one entertainment if provided
-        // floor_1, floor_2, floor_3 can be null if empty
-        const floor_1 = eF1 ? parseInt(eF1) : null;
-        const floor_2 = eF2 ? parseInt(eF2) : null;
-        const floor_3 = eF3 ? parseInt(eF3) : null;
+            if(sType && sSize && sBed && sBath && sBal && sPrice && sPos) {
+                payload.staterooms.push({
+                    "type": sType,
+                    "size": parseInt(sSize),
+                    "bed_num": parseInt(sBed),
+                    "bathroom_num": parseInt(sBath),
+                    "balcony": parseInt(sBal),
+                    "price_per_person": parseFloat(sPrice),
+                    "position": sPos
+                });
+            }
+        });
 
-        if(eType && eUnits && eAge) {
-            payload.entertainment.push({
-                "type": eType,
-                "units_num": parseInt(eUnits),
-                "floor_1": floor_1,
-                "floor_2": floor_2,
-                "floor_3": floor_3,
-                "age_limits": parseInt(eAge)
-            });
-        }
+        // Collect entertainment
+        const entBlocks = entertainmentsContainer.querySelectorAll('.item-block');
+        entBlocks.forEach(block => {
+            const eType = block.querySelector('.ent-type').value.trim();
+            const eUnits = block.querySelector('.ent-units').value.trim();
+            const eF1 = block.querySelector('.ent-floor1').value.trim();
+            const eF2 = block.querySelector('.ent-floor2').value.trim();
+            const eF3 = block.querySelector('.ent-floor3').value.trim();
+            const eAge = block.querySelector('.ent-age').value.trim();
+
+            if(eType && eUnits && eAge) {
+                const floor_1 = eF1 ? parseInt(eF1) : null;
+                const floor_2 = eF2 ? parseInt(eF2) : null;
+                const floor_3 = eF3 ? parseInt(eF3) : null;
+
+                payload.entertainment.push({
+                    "type": eType,
+                    "units_num": parseInt(eUnits),
+                    "floor_1": floor_1,
+                    "floor_2": floor_2,
+                    "floor_3": floor_3,
+                    "age_limits": parseInt(eAge)
+                });
+            }
+        });
 
         const res = await fetch('/api/cruise/add', {
             method: 'POST',
@@ -602,10 +791,9 @@
         try {
             const res = await fetch('/api/user/getall');
             const data = await res.json();
+            const maskedPassword = '**********';
             data.forEach(user => {
                 const tr = document.createElement('tr');
-
-                const maskedPassword = '**********';
 
                 tr.innerHTML = `
                     <td>${user.id}</td>
@@ -617,7 +805,6 @@
                     <td>${user.membership}</td>
                 `;
 
-                // Show passenger info on row click except on eye click
                 tr.addEventListener('click', (e) => {
                     if(e.target.classList.contains('password-eye')) {
                         return;
@@ -625,7 +812,6 @@
                     loadPassengerData(user.id);
                 });
 
-                // Password eye click toggle
                 const passwordEye = tr.querySelector('.password-eye');
                 const passwordTextSpan = tr.querySelector('.password-text');
 
@@ -633,10 +819,8 @@
                     e.stopPropagation();
                     const currentText = passwordTextSpan.textContent;
                     if(currentText === maskedPassword) {
-                        // Show real password
                         passwordTextSpan.textContent = passwordEye.getAttribute('data-password');
                     } else {
-                        // Hide password again
                         passwordTextSpan.textContent = maskedPassword;
                     }
                 });
@@ -730,9 +914,7 @@
         if(text === 'Register Success') {
             modalMessage.style.color = 'green';
             modalMessage.textContent = 'Register Success';
-            // Reload user list
             loadUserData();
-            // Close modal after a short delay
             setTimeout(() => {
                 addUserModalOverlay.style.display = 'none';
             }, 1000);

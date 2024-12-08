@@ -9,6 +9,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+import java.util.List;
 
 @Repository
 public class CruiseRepository {
@@ -47,6 +48,11 @@ public class CruiseRepository {
         String sql = "INSERT INTO wxy_entertainment (type, units_num, floor_1, floor_2, floor_3, age_limits, cruise_id) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, e.getType(), e.getUnits_num(), e.getFloor_1(), e.getFloor_2(), e.getFloor_3(), e.getAge_limits(), cruiseId);
+    }
+
+    public List<String> getAllCruiseName() {
+        String sql = "SELECT cruise_name FROM wxy_cruise";
+        return jdbcTemplate.queryForList(sql, String.class);
     }
 
 }

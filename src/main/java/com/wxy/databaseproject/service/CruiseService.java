@@ -4,6 +4,7 @@ import com.wxy.databaseproject.model.AddCruiseRequest;
 import com.wxy.databaseproject.model.AddCruiseRequest.*;
 import com.wxy.databaseproject.repository.CruiseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,5 +43,9 @@ public class CruiseService {
         }
 
         return "Add Cruise Success";
+    }
+
+    public List<String> getCruise() {
+        return cruiseRepository.getAllCruiseName();
     }
 }
