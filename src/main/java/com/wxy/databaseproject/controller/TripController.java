@@ -61,6 +61,7 @@ public class TripController {
     @GetMapping("/trip/getValidCruisePort")
     public ResponseEntity<validCruisePort> getAvailableCruisePort() {
         validCruisePort data = tripService.getAvailableCruisePort();
+        System.out.println(data);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
     /**

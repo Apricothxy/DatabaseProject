@@ -345,6 +345,8 @@
             border-color: #aaa;
         }
 
+
+
         .logout-btn {
             font-family: 'Manrope', sans-serif;
             display: inline-block;
@@ -465,7 +467,40 @@
         </div>
     </div>
 </div>
+<div class="modal-overlay" id="add-trip-modal-overlay">
+    <div class="modal">
+        <h4>Add Trip</h4>
 
+        <div class="form-section-title">Cruise</div>
+        <select id="select-cruise" style="width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 10px;">
+            <option value="">Select Cruise</option>
+        </select>
+
+        <div class="form-section-title">Start Port</div>
+        <select id="select-start-port" style="width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 10px;">
+            <option value="">Select Start Port</option>
+        </select>
+        <input type="text" id="start-port-start-time" placeholder="Start Time (e.g. 2024-01-01T06:00:00)" style="width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 10px;">
+        <input type="text" id="start-port-end-time" placeholder="End Time (e.g. 2024-01-01T22:00:00)" style="width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 10px;">
+
+        <div class="form-section-title">End Port</div>
+        <select id="select-end-port" style="width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 10px;">
+            <option value="">Select End Port</option>
+        </select>
+        <input type="text" id="end-port-start-time" placeholder="Start Time (e.g. 2024-01-07T06:00:00)" style="width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 10px;">
+        <input type="text" id="end-port-end-time" placeholder="End Time (e.g. 2024-01-07T22:00:00)" style="width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 10px;">
+
+        <div class="form-section-title">Stop Ports</div>
+        <div id="stop-ports-container"></div>
+        <button class="add-button" id="add-stop-port-btn">Add Stop Port</button>
+
+        <div class="message" id="trip-modal-message"></div>
+        <div style="margin-top:10px;">
+            <button id="submit-trip-btn">Submit</button>
+            <button class="close-btn" id="close-trip-modal-btn">Close</button>
+        </div>
+    </div>
+</div>
 
 <div class="passenger-modal-overlay" id="passenger-modal-overlay">
     <div class="passenger-modal">
@@ -1023,6 +1058,156 @@
             modalMessage.style.color = 'red';
             modalMessage.textContent = text;
         }
+    });
+    // This is the trip add part
+    // Add Trip modal controls
+    const addTripBtn = document.querySelector('.add-trip-btn');
+    const addTripModalOverlay = document.getElementById('add-trip-modal-overlay');
+    const closeTripModalBtn = document.getElementById('close-trip-modal-btn');
+    const submitTripBtn = document.getElementById('submit-trip-btn');
+    const tripModalMessage = document.getElementById('trip-modal-message');
+
+    // Cruise and port dropdowns
+    const selectCruise = document.getElementById('select-cruise');
+    const selectStartPort = document.getElementById('select-start-port');
+    const selectEndPort = document.getElementById('select-end-port');
+    const stopPortsContainer = document.getElementById('stop-ports-container');
+    const addStopPortBtn = document.getElementById('add-stop-port-btn');
+
+    // Open Add Trip modal and fetch available cruises and ports
+    addTripBtn.addEventListener('click', async () => {
+        addTripModalOverlay.style.display = 'flex';
+        tripModalMessage.textContent = '';
+
+        try {
+            const res = await fetch('/api/trip/getValidCruisePort');
+            const data = await res.json();
+
+            // Populate cruise dropdown
+            selectCruise.innerHTML = '<option value="">Select Cruise</option>';
+            data.cruises.forEach(cruise => {
+                const option = document.createElement('option');
+                option.value = cruise.cruise_id;
+                option.textContent = cruise.cruise_name;
+                selectCruise.appendChild(option);
+            });
+
+            // Populate port dropdowns
+            selectStartPort.innerHTML = '<option value="">Select Start Port</option>';
+            selectEndPort.innerHTML = '<option value="">Select End Port</option>';
+            data.ports.forEach(port => {
+                const option = document.createElement('option');
+                option.value = port.port_id;
+                option.textContent = port.port_name;
+                selectStartPort.appendChild(option.cloneNode(true));
+                selectEndPort.appendChild(option.cloneNode(true));
+            });
+        } catch (err) {
+            console.error('Error loading cruise and port data:', err);
+        }
+    });
+
+
+    // Add dynamic stop port fields
+    addStopPortBtn.addEventListener('click', () => {
+        const div = document.createElement('div');
+        div.classList.add('item-block');
+        div.innerHTML = `
+        <select class="stop-port" style="width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 10px;">
+            ${selectStartPort.innerHTML}
+        </select>
+        <input type="text" class="stop-port-start-time" placeholder="Start Time (e.g. 2024-01-02T06:00:00)">
+        <input type="text" class="stop-port-end-time" placeholder="End Time (e.g. 2024-01-02T22:00:00)">
+        <button class="remove-stop-port-btn">Remove</button>
+    `;
+        stopPortsContainer.appendChild(div);
+
+        // Remove stop port
+        div.querySelector('.remove-stop-port-btn').addEventListener('click', () => {
+            div.remove();
+        });
+    });
+
+    // Submit trip data
+    submitTripBtn.addEventListener('click', async () => {
+        const cruiseId = selectCruise.value;
+        const startPortId = selectStartPort.value;
+        const endPortId = selectEndPort.value;
+        const startPortStartTime = document.getElementById('start-port-start-time').value;
+        const startPortEndTime = document.getElementById('start-port-end-time').value;
+        const endPortStartTime = document.getElementById('end-port-start-time').value;
+        const endPortEndTime = document.getElementById('end-port-end-time').value;
+
+        const stopPorts = [];
+        stopPortsContainer.querySelectorAll('.item-block').forEach(block => {
+            const portId = block.querySelector('.stop-port').value;
+            const startTime = block.querySelector('.stop-port-start-time').value;
+            const endTime = block.querySelector('.stop-port-end-time').value;
+            stopPorts.push({ portId, startDate: startTime, endDate: endTime });
+        });
+
+        // Validation
+        if (!cruiseId || !startPortId || !endPortId || !startPortStartTime || !startPortEndTime || !endPortStartTime || !endPortEndTime) {
+            tripModalMessage.textContent = 'All fields are required.';
+            tripModalMessage.style.color = 'red';
+            return;
+        }
+
+        if (new Date(startPortEndTime) >= new Date(endPortStartTime)) {
+            tripModalMessage.textContent = 'Start port end time must be before end port start time.';
+            tripModalMessage.style.color = 'red';
+            return;
+        }
+
+        const portIds = new Set([startPortId, endPortId]);
+        stopPorts.forEach(sp => portIds.add(sp.portId));
+        if (portIds.size !== stopPorts.length + 2) {
+            tripModalMessage.textContent = 'Start, end, and stop ports must be unique.';
+            tripModalMessage.style.color = 'red';
+            return;
+        }
+
+        const payload = {
+            cruiseId,
+            startPort: {
+                portId: startPortId,
+                startDate: startPortStartTime,
+                endDate: startPortEndTime,
+            },
+            endPort: {
+                portId: endPortId,
+                startDate: endPortStartTime,
+                endDate: endPortEndTime,
+            },
+            stopPort: stopPorts,
+        };
+
+        try {
+            const res = await fetch('/api/trip/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+            });
+
+            if (res.ok) {
+                tripModalMessage.textContent = 'Trip added successfully!';
+                tripModalMessage.style.color = 'green';
+                setTimeout(() => {
+                    addTripModalOverlay.style.display = 'none';
+                    loadTrips();
+                }, 1000);
+            } else {
+                tripModalMessage.textContent = 'Failed to add trip.';
+                tripModalMessage.style.color = 'red';
+            }
+        } catch (err) {
+            console.error('Error adding trip:', err);
+        }
+    });
+
+    // Close modal
+    closeTripModalBtn.addEventListener('click', () => {
+        addTripModalOverlay.style.display = 'none';
     });
 </script>
 </body>
