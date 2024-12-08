@@ -325,7 +325,24 @@
             border-color: #aaa;
         }
 
+        .logout-btn {
+            font-family: 'Manrope', sans-serif;
+            display: inline-block;
+            background: #000000;
+            color: #fff;
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background 0.3s ease;
+            cursor: pointer;
+            margin-left: 15px;
+        }
 
+        .logout-btn:hover {
+            background: #717171;
+        }
     </style>
 </head>
 <body>
@@ -336,6 +353,7 @@
     </div>
     <div class="header-right">
         Welcome, administrator
+        <a class="logout-btn" id="logoutBtn">Logout</a>
     </div>
 </div>
 
@@ -464,6 +482,11 @@
 </div>
 
 <script>
+    const logoutBtn = document.getElementById('logoutBtn');
+    logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('loggedInUserId');
+        window.location.href = 'login.html';
+    });
     // Adjusted password eye icon size via CSS:
     // .password-eye {
     //     width:16px;
