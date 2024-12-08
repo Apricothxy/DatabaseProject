@@ -1,4 +1,4 @@
-package com.demo.demo.model;
+package com.wxy.databaseproject.model;
 
 public class Stareroom {
     private Integer roomId;

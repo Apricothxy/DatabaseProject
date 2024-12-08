@@ -411,11 +411,40 @@
   - 描述：获取指定预订的详细信息。
 
 - **提交支付**
-  - 方法：`POST`(TBD)
+  - 方法：`POST`
+  
   - URL：`/api/payments`
+  
   - 描述：提交新的支付信息。
-  - 输入：invoice_id
-
+  
+  - 输入：
+  
+    ```json
+    {
+        "invoiceId": 1,
+        "amount": 1000.50,
+        "method": "Credit Card"
+    }
+    
+    ```
+  
+    
+  
+  - 返回值：
+  
+    ```json
+    {
+        "paymentId": 1,
+        "invoiceId": 123,
+        "amount": 1000.5,
+        "method": "Credit Card",
+        "date": "2024-12-07T12:34:56.789+00:00"
+    }
+    
+    ```
+    
+    
+  
 - **获取支付信息**
 
   - 方法：`GET`(TBD)
