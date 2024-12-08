@@ -59,7 +59,6 @@ public class PassengerRepository {
     }
 
     public Passenger createPassenger(Passenger p) {
-        System.out.println(p);
         String sql = """
             INSERT INTO wxy_passenger
             (fname, mname, lname, birth_date, address_country, address_state, address_city, address_street_1, address_street_2, gender, nationality, email, phone, user_id)

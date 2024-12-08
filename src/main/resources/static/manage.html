@@ -16,7 +16,6 @@
             flex-direction: column;
         }
 
-        /* Header */
         .header {
             position: fixed;
             top: 0;
@@ -57,14 +56,12 @@
             padding-right: 50px;
         }
 
-        /* Main container */
         .main-container {
             display: flex;
             margin-top: 60px;
             height: calc(100vh - 60px);
         }
 
-        /* Sidebar */
         .sidebar {
             font-family: 'Libre Baskerville', serif;
             width: 350px;
@@ -104,7 +101,6 @@
             color: #fff;
         }
 
-        /* Content area */
         .content {
             font-family: 'Libre Baskerville', serif;
             flex: 1;
@@ -122,15 +118,16 @@
             display: block;
         }
 
-        /* User Management Title and Add Button */
-        .user-management-header {
+        .user-management-header,
+        .cruise-management-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
 
-        .add-user-btn {
+        .add-user-btn,
+        .add-cruise-btn {
             background: #000;
             color: #fff;
             border: none;
@@ -141,12 +138,12 @@
             font-family: 'Manrope', sans-serif;
         }
 
-        .add-user-btn:hover {
+        .add-user-btn:hover,
+        .add-cruise-btn:hover {
             background: #333;
         }
 
-        /* Table Style */
-        .section h3 {
+        h3 {
             font-family: 'Manrope', sans-serif;
             color: #333;
             font-size: 20px;
@@ -182,43 +179,7 @@
             background: #f0f0f0;
         }
 
-        .password-cell {
-            display: inline-flex;
-            align-items: center;
-        }
-
-        .password-text {
-            display: inline-block;
-        }
-
-        .password-eye {
-            margin-left: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            user-select: none;
-            width: 16px;
-            height: 16px;
-            display: inline-block;
-            background: url('/images/eyes_icon.png') no-repeat center center; /* Replace eye-icon.png with actual icon */
-            background-size: contain;
-        }
-
-        .itinerary-list, .ship-status {
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            padding: 20px;
-        }
-
-        .itinerary-item, .ship-item {
-            margin-bottom: 15px;
-            font-family: 'Manrope', sans-serif;
-            font-size: 14px;
-            color: #333;
-        }
-
-        /* Modal Styles */
-        .modal-overlay, .passenger-modal-overlay {
+        .modal-overlay, .passenger-modal-overlay, .add-cruise-modal-overlay {
             position: fixed;
             top: 0; left: 0; right:0; bottom:0;
             background: rgba(0,0,0,0.3);
@@ -229,21 +190,27 @@
             display: none;
         }
 
-        .modal, .passenger-modal {
+        .modal, .passenger-modal, .add-cruise-modal {
             background: #fff;
             padding: 20px;
             border-radius: 8px;
-            width: 300px;
+            width: 400px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            max-height: 80vh;
+            overflow-y: auto;
         }
 
-        .modal h4, .passenger-modal h4 {
+        .modal h4, .passenger-modal h4, .add-cruise-modal h4 {
             margin-top: 0;
             font-family: 'Manrope', sans-serif;
             margin-bottom: 15px;
         }
 
-        .modal input[type="text"], .modal input[type="password"] {
+        .modal input[type="text"],
+        .modal input[type="password"],
+        .add-cruise-modal input[type="text"],
+        .add-cruise-modal input[type="number"],
+        .add-cruise-modal input[type="double"] {
             width: 100%;
             box-sizing: border-box;
             padding: 8px;
@@ -253,7 +220,7 @@
             font-size: 14px;
         }
 
-        .modal button, .passenger-modal button {
+        .modal button, .passenger-modal button, .add-cruise-modal button {
             font-family: 'Manrope', sans-serif;
             background: #000;
             color: #fff;
@@ -264,13 +231,13 @@
             font-size: 14px;
         }
 
-        .modal button:hover, .passenger-modal button:hover {
-            background: #717171;
+        .modal button:hover, .passenger-modal button:hover, .add-cruise-modal button:hover {
+            background: #333;
         }
 
-        .modal .close-btn, .passenger-modal .close-btn {
-            background: #000000;
-            color: #ffffff;
+        .modal .close-btn, .passenger-modal .close-btn, .add-cruise-modal .close-btn {
+            background: #f0f0f0;
+            color: #000;
             margin-left: 10px;
         }
 
@@ -298,6 +265,13 @@
             font-weight: 700;
         }
 
+        .form-section-title {
+            font-family: 'Manrope', sans-serif;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -316,7 +290,9 @@
         <h2>Dashboard</h2>
         <div class="tab active" data-target="user-management">User Management</div>
         <div class="tab" data-target="itinerary-management">Trip Management</div>
-        <div class="tab" data-target="ship-status">Cruise Status</div>
+        <!-- Remove the old Cruise Status tab -->
+        <!-- Add the new Cruise Management tab -->
+        <div class="tab" data-target="cruise-management">Cruise Management</div>
     </div>
 
     <div class="content">
@@ -343,7 +319,7 @@
             </div>
         </div>
 
-        <!-- Trip Management Section -->
+        <!-- Itinerary Management Section -->
         <div class="section" id="itinerary-management">
             <h3>Trip Management</h3>
             <div class="itinerary-list">
@@ -359,13 +335,24 @@
             </div>
         </div>
 
-        <!-- Cruise Status Section -->
-        <div class="section" id="ship-status">
-            <h3>Cruise Status</h3>
-            <div class="ship-status">
-                <div class="ship-item">Ship Name: NICE Explorer | Status: Sailing | Location: North Atlantic Ocean</div>
-                <div class="ship-item">Ship Name: NICE Voyager | Status: Docked | Location: Miami Port</div>
-                <div class="ship-item">Ship Name: NICE Adventurer | Status: Under Maintenance | Location: Dockyard</div>
+        <!-- Cruise Management Section -->
+        <div class="section" id="cruise-management">
+            <div class="cruise-management-header">
+                <h3>Cruise Management</h3>
+                <button class="add-cruise-btn">Add Cruise</button>
+            </div>
+            <div class="table-container">
+                <table id="cruise-table">
+                    <thead>
+                    <tr>
+                        <th>Cruise ID</th>
+                        <th>Cruise Name</th>
+                    </tr>
+                    </thead>
+                    <tbody id="cruise-tbody">
+                    <!-- Dynamic load from /api/cruise/getall -->
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -398,24 +385,48 @@
     </div>
 </div>
 
+<!-- Add Cruise Modal -->
+<div class="add-cruise-modal-overlay" id="add-cruise-modal-overlay">
+    <div class="add-cruise-modal">
+        <h4>Add Cruise</h4>
+        <input type="text" id="cruise-input-name" placeholder="Cruise Name" required>
+
+        <div class="form-section-title">Restaurant</div>
+        <input type="text" id="restaurant-type" placeholder="Type">
+        <input type="text" id="restaurant-start" placeholder="Start Time (e.g. 2024-01-01T06:00:00)">
+        <input type="text" id="restaurant-end" placeholder="End Time (e.g. 2024-01-01T22:00:00)">
+        <input type="number" id="restaurant-floor" placeholder="Floor">
+
+        <div class="form-section-title">Stateroom</div>
+        <input type="text" id="stateroom-type" placeholder="Type (e.g. inside stateroom)">
+        <input type="number" id="stateroom-size" placeholder="Size">
+        <input type="number" id="stateroom-bed" placeholder="Bed Number">
+        <input type="number" id="stateroom-bathroom" placeholder="Bathroom Number">
+        <input type="number" id="stateroom-balcony" placeholder="Balcony (0 or 1)">
+        <input type="number" step="0.01" id="stateroom-price" placeholder="Price per person">
+        <input type="text" id="stateroom-position" placeholder="Position (e.g. After)">
+
+        <div class="form-section-title">Entertainment</div>
+        <input type="text" id="ent-type" placeholder="Type (e.g. casino)">
+        <input type="number" id="ent-units" placeholder="Units Number">
+        <input type="number" id="ent-floor1" placeholder="Floor 1 (or leave blank)" >
+        <input type="number" id="ent-floor2" placeholder="Floor 2 (or blank)">
+        <input type="number" id="ent-floor3" placeholder="Floor 3 (or blank)">
+        <input type="number" id="ent-age" placeholder="Age limits">
+
+        <div class="message" id="cruise-modal-message"></div>
+        <div style="margin-top:10px;">
+            <button id="submit-cruise-btn">Submit</button>
+            <button class="close-btn" id="close-cruise-modal-btn">Close</button>
+        </div>
+    </div>
+</div>
+
 <script>
     const tabs = document.querySelectorAll('.tab');
     const sections = document.querySelectorAll('.section');
-    const userTableBody = document.getElementById('user-tbody');
 
-    const addUserModalOverlay = document.getElementById('add-user-modal-overlay');
-    const addUserBtn = document.querySelector('.add-user-btn');
-    const closeModalBtn = document.getElementById('close-modal-btn');
-    const submitUserBtn = document.getElementById('submit-user-btn');
-    const modalMessage = document.getElementById('modal-message');
-    const newUsernameInput = document.getElementById('new-username');
-    const newPasswordInput = document.getElementById('new-password');
-
-    const passengerModalOverlay = document.getElementById('passenger-modal-overlay');
-    const passengerList = document.getElementById('passenger-list');
-    const closePassengerModalBtn = document.getElementById('close-passenger-modal-btn');
-
-    // Tab Switching
+    // Tabs switching
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
             tabs.forEach(t => t.classList.remove('active'));
@@ -430,12 +441,161 @@
                 }
             });
 
-            // Reload user data if user management tab is clicked
-            if(targetId === 'user-management') {
-                loadUserData();
+            // If it's cruise-management tab, load cruises
+            if(targetId === 'cruise-management') {
+                loadCruises();
             }
         });
     });
+
+    async function loadCruises() {
+        const cruiseTbody = document.getElementById('cruise-tbody');
+        cruiseTbody.innerHTML = '';
+        try {
+            const res = await fetch('/api/cruise/getall');
+            const data = await res.json();
+            data.forEach(c => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${c.cruise_id}</td>
+                    <td>${c.cruise_name}</td>
+                `;
+                cruiseTbody.appendChild(tr);
+            });
+        } catch (err) {
+            console.error('Error fetching cruise data', err);
+        }
+    }
+
+    // Add Cruise Modal
+    const addCruiseBtn = document.querySelector('.add-cruise-btn');
+    const addCruiseModalOverlay = document.getElementById('add-cruise-modal-overlay');
+    const closeCruiseModalBtn = document.getElementById('close-cruise-modal-btn');
+    const submitCruiseBtn = document.getElementById('submit-cruise-btn');
+    const cruiseModalMessage = document.getElementById('cruise-modal-message');
+
+    addCruiseBtn.addEventListener('click', () => {
+        cruiseModalMessage.textContent = '';
+        addCruiseModalOverlay.style.display = 'flex';
+    });
+
+    closeCruiseModalBtn.addEventListener('click', () => {
+        addCruiseModalOverlay.style.display = 'none';
+    });
+
+    submitCruiseBtn.addEventListener('click', async () => {
+        const cruiseName = document.getElementById('cruise-input-name').value.trim();
+
+        const rType = document.getElementById('restaurant-type').value.trim();
+        const rStart = document.getElementById('restaurant-start').value.trim();
+        const rEnd = document.getElementById('restaurant-end').value.trim();
+        const rFloor = document.getElementById('restaurant-floor').value.trim();
+
+        const sType = document.getElementById('stateroom-type').value.trim();
+        const sSize = document.getElementById('stateroom-size').value.trim();
+        const sBed = document.getElementById('stateroom-bed').value.trim();
+        const sBath = document.getElementById('stateroom-bathroom').value.trim();
+        const sBal = document.getElementById('stateroom-balcony').value.trim();
+        const sPrice = document.getElementById('stateroom-price').value.trim();
+        const sPos = document.getElementById('stateroom-position').value.trim();
+
+        const eType = document.getElementById('ent-type').value.trim();
+        const eUnits = document.getElementById('ent-units').value.trim();
+        const eF1 = document.getElementById('ent-floor1').value.trim();
+        const eF2 = document.getElementById('ent-floor2').value.trim();
+        const eF3 = document.getElementById('ent-floor3').value.trim();
+        const eAge = document.getElementById('ent-age').value.trim();
+
+        if(!cruiseName) {
+            cruiseModalMessage.style.color = 'red';
+            cruiseModalMessage.textContent = 'Cruise Name is required.';
+            return;
+        }
+
+        // Prepare JSON
+        const payload = {
+            "cruise_name": cruiseName,
+            "restaurants": [],
+            "staterooms": [],
+            "entertainment": []
+        };
+
+        // Add one restaurant if provided
+        if(rType && rStart && rEnd && rFloor) {
+            payload.restaurants.push({
+                "type": rType,
+                "start_time": rStart,
+                "end_time": rEnd,
+                "floor": parseInt(rFloor)
+            });
+        }
+
+        // Add one stateroom if provided
+        if(sType && sSize && sBed && sBath && sBal && sPrice && sPos) {
+            payload.staterooms.push({
+                "type": sType,
+                "size": parseInt(sSize),
+                "bed_num": parseInt(sBed),
+                "bathroom_num": parseInt(sBath),
+                "balcony": parseInt(sBal),
+                "price_per_person": parseFloat(sPrice),
+                "position": sPos
+            });
+        }
+
+        // Add one entertainment if provided
+        // floor_1, floor_2, floor_3 can be null if empty
+        const floor_1 = eF1 ? parseInt(eF1) : null;
+        const floor_2 = eF2 ? parseInt(eF2) : null;
+        const floor_3 = eF3 ? parseInt(eF3) : null;
+
+        if(eType && eUnits && eAge) {
+            payload.entertainment.push({
+                "type": eType,
+                "units_num": parseInt(eUnits),
+                "floor_1": floor_1,
+                "floor_2": floor_2,
+                "floor_3": floor_3,
+                "age_limits": parseInt(eAge)
+            });
+        }
+
+        const res = await fetch('/api/cruise/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+        });
+
+        const text = await res.text();
+        if(text === 'Add Cruise Success') {
+            cruiseModalMessage.style.color = 'green';
+            cruiseModalMessage.textContent = 'Cruise added successfully!';
+            // Reload cruises
+            loadCruises();
+            // Close modal after short delay
+            setTimeout(() => {
+                addCruiseModalOverlay.style.display = 'none';
+            }, 1000);
+        } else {
+            cruiseModalMessage.style.color = 'red';
+            cruiseModalMessage.textContent = text;
+        }
+    });
+
+    const userTableBody = document.getElementById('user-tbody');
+
+    const addUserModalOverlay = document.getElementById('add-user-modal-overlay');
+    const addUserBtn = document.querySelector('.add-user-btn');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const submitUserBtn = document.getElementById('submit-user-btn');
+    const modalMessage = document.getElementById('modal-message');
+    const newUsernameInput = document.getElementById('new-username');
+    const newPasswordInput = document.getElementById('new-password');
+
+    const passengerModalOverlay = document.getElementById('passenger-modal-overlay');
+    const passengerList = document.getElementById('passenger-list');
+    const closePassengerModalBtn = document.getElementById('close-passenger-modal-btn');
+
 
     async function loadUserData() {
         userTableBody.innerHTML = '';
