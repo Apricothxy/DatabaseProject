@@ -173,7 +173,7 @@
 
     async function loadOrders() {
         try {
-            const res = await fetch('/invoices/' + userId);
+            const res = await fetch('/api/invoices/' + userId);
             const data = await res.json();
 
             // data structure example:

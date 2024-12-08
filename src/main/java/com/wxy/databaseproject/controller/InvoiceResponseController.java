@@ -19,6 +19,7 @@ public class InvoiceResponseController {
     @GetMapping("/invoices/{userId}")
     public ResponseEntity<List<InvoiceResponse>> getInvoicesByUserId(@PathVariable Integer userId) {
         List<InvoiceResponse> invoices = invoiceResponseService.getInvoicesByUserId(userId);
+
         return ResponseEntity.ok(invoices);
     }
 }

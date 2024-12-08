@@ -1,45 +1,46 @@
 package com.wxy.databaseproject.model;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class InvoiceResponse {
-    private Integer tripId;
-    private Integer groupId;
-    private Integer invoiceId;
-    private Double invoiceAmount;
+    private int tripId;
+    private int groupId;
+    private int invoiceId;
+    private BigDecimal invoiceAmount;
     private String paymentId; // 如果没有 payment，则返回 "Fail"
-    private List<PassengerInfo> passengers;
+    private List<PassengerInfo> passengers = new ArrayList<PassengerInfo>();
 
-    // Getters and Setters
-    public Integer getTripId() {
+    public int getTripId() {
         return tripId;
     }
 
-    public void setTripId(Integer tripId) {
+    public void setTripId(int tripId) {
         this.tripId = tripId;
     }
 
-    public Integer getGroupId() {
+    public int getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(Integer groupId) {
+    public void setGroupId(int groupId) {
         this.groupId = groupId;
     }
 
-    public Integer getInvoiceId() {
+    public int getInvoiceId() {
         return invoiceId;
     }
 
-    public void setInvoiceId(Integer invoiceId) {
+    public void setInvoiceId(int invoiceId) {
         this.invoiceId = invoiceId;
     }
 
-    public Double getInvoiceAmount() {
+    public BigDecimal getInvoiceAmount() {
         return invoiceAmount;
     }
 
-    public void setInvoiceAmount(Double invoiceAmount) {
+    public void setInvoiceAmount(BigDecimal invoiceAmount) {
         this.invoiceAmount = invoiceAmount;
     }
 
@@ -72,16 +73,21 @@ public class InvoiceResponse {
     }
 
     public static class PassengerInfo {
-        private Integer passengerId;
+        private int passengerId;
         private String passengerFName;
         private String passengerLName;
 
-        // Getters and Setters
-        public Integer getPassengerId() {
+        public PassengerInfo(int passengerId, String passengerFName, String passengerLName) {
+            this.passengerId = passengerId;
+            this.passengerFName = passengerFName;
+            this.passengerLName = passengerLName;
+        }
+
+        public int getPassengerId() {
             return passengerId;
         }
 
-        public void setPassengerId(Integer passengerId) {
+        public void setPassengerId(int passengerId) {
             this.passengerId = passengerId;
         }
 

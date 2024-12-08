@@ -4,6 +4,7 @@ import com.wxy.databaseproject.model.InvoiceResponse;
 import com.wxy.databaseproject.repository.InvoiceResponseRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 @Service
@@ -17,33 +18,42 @@ public class InvoiceResponseService {
     public List<InvoiceResponse> getInvoicesByUserId(Integer userId) {
         List<Map<String, Object>> rawData = invoiceResponseRepository.findInvoicesByUserId(userId);
 
-        Map<Integer, InvoiceResponse> map = new HashMap<>();
+        System.out.println(rawData);
+
+        Map<Integer, InvoiceResponse> responseMap = new HashMap<>();
 
         for (Map<String, Object> row : rawData) {
-            InvoiceResponse response = new InvoiceResponse();
-            int tripId = (Integer) row.get("tripId");
-            int groupId = (Integer) row.get("groupId");
-            int invoiceId = (Integer) row.get("invoiceId");
-            double invoiceAmount = (Double) row.get("invoiceAmount");
-            int paymentId = (Integer) row.get("paymentId");
+            int tripId = (int) row.get("tripId");
+            InvoiceResponse response = responseMap.get(tripId);
 
-            map[tripId].set
+            if(response == null) {
+                response = new InvoiceResponse();
+                int groupId = (int) row.get("groupId");
+                int invoiceId = (int) row.get("invoiceId");
+                BigDecimal invoiceAmount = (BigDecimal) row.get("invoiceAmount");
+                long paymentId = (long) row.get("paymentId");
+                String paId = "";
+                if(paymentId == -1){
+                    paId = "Fail";
+                }else{
+                    paId = "1";
+                }
+                response.setTripId(tripId);
+                response.setGroupId(groupId);
+                response.setInvoiceId(invoiceId);
+                response.setInvoiceAmount(invoiceAmount);
+                response.setPaymentId(paId);
+                responseMap.put(tripId, response);
+            }
 
+            int passengerId = (int) row.get("passengerId");
+            String passengerFirstName = (String) row.get("passengerFName");
+            String passengerLastName = (String) row.get("passengerLName");
+            System.out.println(passengerFirstName + " " + passengerLastName);
+            response.getPassengers().add(new InvoiceResponse.PassengerInfo(passengerId, passengerFirstName, passengerLastName));
 
         }
 
-            // 添加乘客信息
-            InvoiceResponse.PassengerInfo passenger = new InvoiceResponse.PassengerInfo();
-            passenger.setPassengerId((Integer) row.get("passengerId"));
-            passenger.setPassengerFName((String) row.get("passengerFName"));
-            passenger.setPassengerLName((String) row.get("passengerLName"));
-            invoiceResponse.getPassengers().add(passenger);
-        }
-
-        for (Map<String, Object> row : rawData){
-
-        }
-
-        return new ArrayList<>(groupedData.values());
+        return new ArrayList<>(responseMap.values());
     }
 }
