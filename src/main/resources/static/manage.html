@@ -381,7 +381,7 @@
     <div class="sidebar">
         <h2>Dashboard</h2>
         <div class="tab active" data-target="user-management">User Management</div>
-        <div class="tab" data-target="itinerary-management">Trip Management</div>
+        <div class="tab" data-target="trip-management">Trip Management</div>
         <div class="tab" data-target="cruise-management">Cruise Management</div>
     </div>
 
@@ -408,7 +408,7 @@
             </div>
         </div>
 
-        <div class="section" id="itinerary-management">
+        <div class="section" id="trip-management">
             <div class="trip-management-header">
                 <h3>Trip Management</h3>
                 <button class="add-trip-btn">Add Trip</button>
@@ -428,7 +428,10 @@
                 </table>
             </div>
         </div>
-
+        <div id="trip-detail-container" style="display:none; margin-top:20px; background:#fff; padding:20px; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.1);">
+            <h3>Trip Detail</h3>
+            <div id="trip-detail-content"></div>
+        </div>
         <div class="section" id="cruise-management">
             <div class="cruise-management-header">
                 <h3>Cruise Management</h3>
@@ -611,6 +614,9 @@
             // If it's cruise-management tab, load cruises
             if(targetId === 'cruise-management') {
                 loadCruises();
+            }
+            if(targetId === 'trip-management'){
+                loadTrips();
             }
         });
     });
@@ -887,6 +893,83 @@
         } catch (err) {
             console.error('Error fetching passenger data', err);
         }
+    }
+    async function loadTrips() {
+        const tripTbody = document.getElementById('trip-tbody');
+        tripTbody.innerHTML = '';
+        try {
+            const res = await fetch('/api/trip/getall');
+            const data = await res.json();
+            data.forEach(trip => {
+                const startDate = trip.startPort ? trip.startPort.startDate : '';
+                const endDate = trip.endPort ? trip.endPort.endDate : '';
+                let route = '';
+                if (trip.startPort && trip.endPort) {
+                    route = `From ${trip.startPort.portName} (${trip.startPort.startDate}) to ${trip.endPort.portName} (${trip.endPort.endDate})`;
+                } else {
+                    route = trip.cruiseName ? trip.cruiseName : 'N/A';
+                }
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                <td>${trip.tripId}</td>
+                <td>${route}</td>
+                <td>${startDate}</td>
+                <td>${endDate}</td>
+            `;
+
+                tr.addEventListener('click', () => {
+                    showTripDetail(trip, tr);
+                });
+
+                tripTbody.appendChild(tr);
+            });
+        } catch (err) {
+            console.error('Error fetching trip data', err);
+        }
+    }
+
+    function showTripDetail(trip, clickedTr) {
+        if (clickedTr.nextElementSibling && clickedTr.nextElementSibling.classList.contains('trip-detail-row')) {
+            clickedTr.nextElementSibling.remove();
+            return;
+        }
+
+        const cruiseName = trip.cruiseName ? trip.cruiseName : 'Unknown Cruise';
+        let itinerary = '';
+        if (trip.startPort && trip.endPort) {
+            itinerary = `From ${trip.startPort.portName} (${trip.startPort.startDate}) to ${trip.endPort.portName} (${trip.endPort.endDate})`;
+        } else {
+            itinerary = 'Itinerary not available';
+        }
+
+        let stopsHtml = '';
+        if (trip.stopPort && trip.stopPort.length > 0) {
+            stopsHtml = '<ul>';
+            trip.stopPort.forEach(sp => {
+                stopsHtml += `<li>${sp.portName}: Arrive at ${sp.startDate}, Depart at ${sp.endDate}</li>`;
+            });
+            stopsHtml += '</ul>';
+        } else {
+            stopsHtml = '<p>No intermediate stops.</p>';
+        }
+
+        const detailHtml = `
+        <p><strong>Cruise Name:</strong> ${cruiseName}</p>
+        <p><strong>Itinerary:</strong> ${itinerary}</p>
+        <p><strong>Intermediate Stops:</strong></p>
+        ${stopsHtml}
+    `;
+
+        const detailRow = document.createElement('tr');
+        detailRow.classList.add('trip-detail-row');
+        detailRow.innerHTML = `
+        <td colspan="4" style="background:#f9f9f9; padding:20px; border-top:2px solid #ddd; border-bottom:1px solid #eee;">
+            ${detailHtml}
+        </td>
+        `;
+
+        clickedTr.insertAdjacentElement('afterend', detailRow);
     }
 
     loadUserData();
