@@ -8,3 +8,5 @@ show tables;
 
 -- INSERT INTO wxy_group (group_id, trip_id) VALUES (NULL,1);
 -- INSERT INTO wxy_invoice (group_id, amount, invoice_date) VALUES (1, 1000.0, NOW());
+
+

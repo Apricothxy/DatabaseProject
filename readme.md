@@ -432,7 +432,7 @@
     ```json
     {
         "paymentId": 1,
-        "invoiceId": 123,
+        "invoiceId": 1,
         "amount": 1000.5,
         "method": "Credit Card",
         "date": "2024-12-07T12:34:56.789+00:00"
@@ -448,7 +448,7 @@
   
   - 方法：`GET`
   
-  - URL：`/invoices/{user_id}`
+  - URL：`/api/invoices/{user_id}`
   
   - 描述：获取指定发票的详细信息。
   
