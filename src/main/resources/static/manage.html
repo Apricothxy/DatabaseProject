@@ -300,8 +300,6 @@
             height: 16px;
         }
 
-        /* 在已有的CSS中添加或修改以下部分 */
-
         select.restaurant-type,
         select.stateroom-type,
         select.stateroom-position,
@@ -366,7 +364,6 @@
     </div>
 
     <div class="content">
-        <!-- User Management Section -->
         <div class="section active" id="user-management">
             <div class="user-management-header">
                 <h3>User Management</h3>
@@ -389,7 +386,6 @@
             </div>
         </div>
 
-        <!-- Itinerary Management Section -->
         <div class="section" id="itinerary-management">
             <h3>Trip Management</h3>
             <div class="itinerary-list">
@@ -405,7 +401,6 @@
             </div>
         </div>
 
-        <!-- Cruise Management Section -->
         <div class="section" id="cruise-management">
             <div class="cruise-management-header">
                 <h3>Cruise Management</h3>
@@ -420,7 +415,6 @@
                     </tr>
                     </thead>
                     <tbody id="cruise-tbody">
-                    <!-- Dynamic load from /api/cruise/getall -->
                     </tbody>
                 </table>
             </div>
@@ -428,7 +422,6 @@
     </div>
 </div>
 
-<!-- Add User Modal -->
 <div class="modal-overlay" id="add-user-modal-overlay">
     <div class="modal">
         <h4>Add User</h4>
@@ -442,12 +435,11 @@
     </div>
 </div>
 
-<!-- Passenger Modal -->
+
 <div class="passenger-modal-overlay" id="passenger-modal-overlay">
     <div class="passenger-modal">
         <h4>Passengers</h4>
         <ul class="passenger-list" id="passenger-list">
-            <!-- Dynamic Load -->
         </ul>
         <div style="margin-top:10px;">
             <button class="close-btn" id="close-passenger-modal-btn">Close</button>
@@ -455,7 +447,6 @@
     </div>
 </div>
 
-<!-- Add Cruise Modal -->
 <div class="add-cruise-modal-overlay" id="add-cruise-modal-overlay">
     <div class="add-cruise-modal">
         <h4>Add Cruise</h4>
@@ -487,15 +478,6 @@
         localStorage.removeItem('loggedInUserId');
         window.location.href = 'login.html';
     });
-    // Adjusted password eye icon size via CSS:
-    // .password-eye {
-    //     width:16px;
-    //     height:16px;
-    // }
-
-    // For restaurant type (select):
-    // Values: 'Common Buffett', 'Italian Specialty', 'La carte continental', 'Mexican Specialty', 'Ming Work Chinese',
-    // 'Pool Bar', 'Round Clock Cafe', 'Stout Bar', 'Tokyo Ramen Japanese'
 
     function addRestaurantBlock() {
         const div = document.createElement('div');
@@ -520,10 +502,6 @@
         document.getElementById('restaurants-container').appendChild(div);
     }
 
-    // For stateroom type and position (select):
-    // Types: 'club balcony suite', 'family balcony', 'family large balcony', 'inside stateroom', 'oceanview window',
-    // 'studio stateroom', 'the haven suite'
-    // Positions: 'After', 'Forward', 'Left', 'Right'
 
     function addStateroomBlock() {
         const div = document.createElement('div');
@@ -555,11 +533,6 @@
         document.getElementById('staterooms-container').appendChild(div);
     }
 
-    // For entertainment type (select):
-    // Types: 'casino', 'children play', 'gym', 'indoor pool', 'library',
-    // 'night club', 'outdoor pool', 'sona room', 'steam room', 'tennis court',
-    // 'theaters', 'whirlpool', 'yoga room'
-
     function addEntertainmentBlock() {
         const div = document.createElement('div');
         div.classList.add('item-block');
@@ -589,10 +562,6 @@
         document.getElementById('entertainments-container').appendChild(div);
     }
 
-    // The rest of the JS code that was previously included remains the same,
-    // ensuring that now we have select elements for restricted fields instead of text inputs.
-    // The addRestaurantBlock(), addStateroomBlock(), addEntertainmentBlock() functions are shown above
-    // replaced in the final code snippet.
     const tabs = document.querySelectorAll('.tab');
     const sections = document.querySelectorAll('.section');
 
@@ -622,7 +591,6 @@
         const cruiseTbody = document.getElementById('cruise-tbody');
         cruiseTbody.innerHTML = '';
         try {
-            // /api/cruise/getall returns List<String> of cruise names
             const res = await fetch('/api/cruise/getall');
             const data = await res.json();
             let index = 1;
@@ -893,10 +861,9 @@
         }
     }
 
-    // Initial load if user management is default visible
     loadUserData();
 
-    // Add user modal events
+
     addUserBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         modalMessage.textContent = '';
