@@ -1,315 +1,48 @@
 USE databaseproject;
 
--- 1. 插入用户（wxy_user）
 INSERT INTO wxy_user (password, membership, user_name) VALUES
 ('pass123', 'Gold', 'john_doe'),
 ('mypwd456', 'Silver', 'jane_smith'),
 ('secure789', 'Bronze', 'michael_lee'),
 ('pwdabc', 'Gold', 'anna_johnson'),
-('pwdddf', 'Silver', 'mark_wilson');
-
--- 假设生成的user_id为1~5
-
--- 2. 插入行程（wxy_trip）
-INSERT INTO wxy_trip (nights_num) VALUES
-(7),   -- trip_id = 1
-(10),  -- trip_id = 2
-(5),   -- trip_id = 3
-(14),  -- trip_id = 4
-(3);   -- trip_id = 5
-
--- 假设trip_id为1~5
-
--- 3. 插入港口（wxy_port）
--- 使用北美实际城市名作为port_name
-INSERT INTO wxy_port (port_id, port_name, state, country, address1, address2, nearest_airport_name, number_of_parking_spots) VALUES
-(101, 'Los Angeles', 'California', 'USA', 'Pier 93', NULL, 'LAX', 500),
-(102, 'Miami', 'Florida', 'USA', 'Port Blvd', NULL, 'MIA', 300),
-(103, 'Vancouver', 'British Columbia', 'Canada', 'Canada Place', NULL, 'YVR', 200),
-(104, 'New York', 'New York', 'USA', 'Manhattan Cruise Terminal', NULL, 'JFK', 400),
-(105, 'Seattle', 'Washington', 'USA', 'Pier 66', NULL, 'SEA', 250);
-
--- 4. 插入行程港口表（wxy_trip_port），依赖trip和port
--- type: 'start_port', 'end_port', 'stop_port'
-INSERT INTO wxy_trip_port (trip_id, port_id, type, start_date, end_date) VALUES
-(1, 101, 'start_port', '2024-01-01 09:00:00', '2024-01-01 18:00:00'),
-(1, 102, 'stop_port', '2024-01-02 09:00:00', '2024-01-02 20:00:00'),
-(1, 103, 'end_port', '2024-01-03 09:00:00', '2024-01-03 18:00:00'),
-
-(2, 104, 'start_port', '2024-02-10 09:00:00', '2024-02-10 18:00:00'),
-(2, 105, 'end_port', '2024-02-15 09:00:00', '2024-02-15 18:00:00'),
-
-(3, 102, 'start_port', '2024-03-05 09:00:00', '2024-03-05 18:00:00'),
-(3, 103, 'end_port', '2024-03-10 09:00:00', '2024-03-10 18:00:00');
-
--- 5. 插入旅行团组（wxy_group），依赖trip
-INSERT INTO wxy_group (trip_id) VALUES
-(1),
-(1),
-(2),
-(3),
-(4);
-
--- 假设group_id自增为1~5
-
--- 6. 插入邮轮（wxy_cruise），依赖trip
--- 每个cruise先只关联一个trip_id
-INSERT INTO wxy_cruise (trip_id, cruise_name) VALUES
-(1, 'Pacific Explorer'),
-(2, 'Caribbean Dream'),
-(3, 'Alaskan Venture'),
-(4, 'Atlantic Adventure'),
-(5, 'Gulf Navigator');
-
--- 假设cruise_id为1~5
-
--- 7. 插入房间（wxy_stateroom），依赖cruise
-INSERT INTO wxy_stateroom (type, SIZE, bed_num, bathroom_num, balcony, cruise_id, price_per_person, position) VALUES
-('inside stateroom', 200, 2, 1, 0, 1, 299.99, 'Forward'),
-('oceanview window', 250, 2, 1, 0, 1, 399.99, 'After'),
-('family balcony', 300, 4, 2, 1, 1, 599.99, 'Left'),
-('inside stateroom', 200, 2, 1, 0, 2, 319.99, 'Right'),
-('club balcony suite', 350, 2, 2, 1, 2, 799.99, 'Forward'),
-('the haven suite', 400, 2, 2, 1, 3, 1299.99, 'Left'),
-('inside stateroom', 180, 1, 1, 0, 4, 279.99, 'Right'),
-('family large balcony', 350, 4, 2, 1, 5, 999.99, 'After');
-
--- 假设room_id为1~8
-
--- 8. 插入乘客（wxy_passenger），依赖user_id
-INSERT INTO wxy_passenger (fname, mname, lname, birth_date, address_country, address_state, address_city, address_street_1, address_street_2, gender, nationality, email, phone, user_id)
-VALUES
-('John', NULL, 'Doe', '1990-05-20 00:00:00', 'USA', 'California', 'Los Angeles', 'Sunset Blvd', NULL, 'Male', 'USA', 'john.doe@example.com', '123-456-7890', 1),
-('Jane', 'A', 'Smith', '1985-07-10 00:00:00', 'USA', 'Florida', 'Miami', 'Ocean Dr', NULL, 'Female', 'USA', 'jane.smith@example.com', '234-567-8901', 2),
-('Michael', 'B', 'Lee', '1992-03-15 00:00:00', 'Canada', 'BC', 'Vancouver', 'Water St', NULL, 'Male', 'Canada', 'michael.lee@example.com', '345-678-9012', 3),
-('Anna', NULL, 'Johnson', '1995-11-05 00:00:00', 'USA', 'New York', 'New York', '5th Ave', 'Apt 101', 'Female', 'USA', 'anna.johnson@example.com', '456-789-0123', 4),
-('Mark', 'C', 'Wilson', '1988-01-25 00:00:00', 'USA', 'Washington', 'Seattle', '1st Ave', NULL, 'Male', 'USA', 'mark.wilson@example.com', '567-890-1234', 5);
-
--- 假设passenger_id为1~5
-
--- 9. 插入乘客-团组关系表（wxy_passenger_group），依赖passenger和group
-INSERT INTO wxy_passenger_group (group_id, passenger_id) VALUES
-(1, 1),
-(1, 2),
-(2, 3),
-(3, 4),
-(4, 5);
-
--- 10. 插入套餐（wxy_package），依赖passenger
-INSERT INTO wxy_package (type, price, passenger_id) VALUES
-('Water and Non-Alcoholic', 99.99, 1),
-('Unlimited Bar', 199.99, 2),
-('Internet 200 minutes, 100 GB', 49.99, 3),
-('Unlimited Internet', 149.99, 4),
-('Specialty dining', 79.99, 5);
-
--- 11. 插入发票（wxy_invoice），依赖group
-INSERT INTO wxy_invoice (amount, invoice_date, group_id) VALUES
-(500.00, '2024-01-01 10:00:00', 1),
-(1000.00, '2024-01-02 11:00:00', 2),
-(750.00, '2024-02-10 12:00:00', 3),
-(200.00, '2024-03-05 13:00:00', 4),
-(300.00, '2024-04-01 14:00:00', 5);
-
--- 假设invoice_id为1~5
-
--- 12. 插入付款（wxy_payment），依赖invoice
-INSERT INTO wxy_payment (amount, `DATE`, method, invoice_id) VALUES
-(500.00, '2024-01-03 10:00:00', 'Credit Card', 1),
-(1000.00, '2024-01-04 11:00:00', 'Debit Card', 2),
-(750.00, '2024-02-12 12:00:00', 'Cash', 3),
-(200.00, '2024-03-06 13:00:00', 'Credit Card', 4),
-(300.00, '2024-04-02 14:00:00', 'Online Transfer', 5);
-
--- 13. 插入餐厅（wxy_restaurant），依赖cruise
-INSERT INTO wxy_restaurant (type, start_time, end_time, floor, cruise_id) VALUES
-('Common Buffett', '2024-01-01 07:00:00', '2024-01-01 23:00:00', 5, 1),
-('Italian Specialty', '2024-01-01 11:00:00', '2024-01-01 22:00:00', 6, 1),
-('La carte continental', '2024-02-10 08:00:00', '2024-02-10 21:00:00', 7, 2),
-('Pool Bar', '2024-03-05 10:00:00', '2024-03-05 23:00:00', 3, 3),
-('Tokyo Ramen Japanese', '2024-04-01 09:00:00', '2024-04-01 22:00:00', 4, 4);
-
--- 14. 插入娱乐设施（wxy_entertainment），依赖cruise
-INSERT INTO wxy_entertainment (type, units_num, floor_1, floor_2, floor_3, age_limits, cruise_id) VALUES
-('casino', 1, 10, NULL, NULL, 18, 1),
-('gym', 2, 8, NULL, NULL, 16, 1),
-('theaters', 1, 9, NULL, NULL, 0, 2),
-('children play', 1, 4, NULL, NULL, 0, 3),
-('outdoor pool', 1, 5, NULL, NULL, 0, 4);
-
--- 15. 插入乘客房间分配（wxy_passenger_room），依赖passenger和stateroom
-INSERT INTO wxy_passenger_room (price, room_id, passenger_id) VALUES
-(300.00, 1, 1),
-(300.00, 2, 2),
-(600.00, 3, 3),
-(320.00, 4, 4),
-(800.00, 5, 5);
-
-
-USE databaseproject;
-
--- 继续插入用户 (wxy_user)，假设之前已有5个用户，这里从第6个用户开始
-INSERT INTO wxy_user (password, membership, user_name) VALUES
+('pwdddf', 'Silver', 'mark_wilson'),
 ('decpass1', 'Bronze', 'william_brown'),
 ('decpass2', 'Silver', 'lisa_hall'),
 ('decpass3', 'Gold', 'robert_king'),
 ('decpass4', 'Bronze', 'chris_taylor'),
 ('decpass5', 'Silver', 'david_clark');
 
--- user_id假设为6~10
-
--- 插入新的trip (wxy_trip)，假设之前有5个trip，这里从6开始插5个
 INSERT INTO wxy_trip (nights_num) VALUES
-(7),   -- trip_id=6
-(4),   -- trip_id=7
-(9),   -- trip_id=8
-(12),  -- trip_id=9
-(5);   -- trip_id=10
+(7), (10), (5), (14), (3), (7), (4), (9), (12), (5),
+(5), (6), (7), (8), (9), (10), (4), (3), (11), (12),
+(7), (8), (6), (5), (9), (10), (12), (4), (7), (8),
+(6), (11), (5), (9), (7), (10), (3), (4), (11), (12),
+(6), (5), (8), (7), (9), (4), (10), (3), (12), (11);
 
--- 插入新的港口 (wxy_port)，假设之前有port_id到105，这里从106开始
-INSERT INTO wxy_port (port_id, port_name, state, country, address1, address2, nearest_airport_name, number_of_parking_spots) VALUES
-(106, 'San Francisco', 'California', 'USA', 'Ferry Bldg', NULL, 'SFO', 350),
-(107, 'San Diego', 'California', 'USA', 'B St Pier', NULL, 'SAN', 200),
-(108, 'Boston', 'Massachusetts', 'USA', 'Black Falcon Ave', NULL, 'BOS', 250),
-(109, 'Halifax', 'Nova Scotia', 'Canada', 'Pier 21', NULL, 'YHZ', 150),
-(110, 'Tampa', 'Florida', 'USA', 'Channelside Dr', NULL, 'TPA', 300);
-
--- 插入trip_port (wxy_trip_port) 对应12月的日期
--- type有'start_port','stop_port','end_port'
-INSERT INTO wxy_trip_port (trip_id, port_id, type, start_date, end_date) VALUES
-(6, 106, 'start_port', '2024-12-01 09:00:00', '2024-12-01 18:00:00'),
-(6, 107, 'stop_port',  '2024-12-02 09:00:00', '2024-12-02 20:00:00'),
-(6, 108, 'end_port',   '2024-12-03 09:00:00', '2024-12-03 18:00:00'),
-(7, 109, 'start_port', '2024-12-05 09:00:00', '2024-12-05 18:00:00'),
-(7, 110, 'end_port',   '2024-12-07 09:00:00', '2024-12-07 18:00:00'),
-(8, 106, 'start_port', '2024-12-10 09:00:00', '2024-12-10 18:00:00'),
-(8, 107, 'stop_port',  '2024-12-11 09:00:00', '2024-12-11 20:00:00'),
-(8, 108, 'end_port',   '2024-12-12 09:00:00', '2024-12-12 18:00:00'),
-(9, 109, 'start_port', '2024-12-15 09:00:00', '2024-12-15 18:00:00'),
-(9, 110, 'end_port',   '2024-12-17 09:00:00', '2024-12-17 18:00:00'),
-(10,106,'start_port',  '2024-12-20 09:00:00', '2024-12-20 18:00:00'),
-(10,108,'end_port',    '2024-12-22 09:00:00', '2024-12-22 18:00:00');
-
--- 插入group (wxy_group)，假设之前有5个group，这里插入5个
 INSERT INTO wxy_group (trip_id) VALUES
+(1),
+(1),
+(2),
+(3),
+(4),
 (6),
 (6),
 (7),
 (8),
-(9);
+(9),
+(10);
 
--- group_id假设为6~10
-
--- 插入cruise (wxy_cruise)，依赖trip
-INSERT INTO wxy_cruise (trip_id, cruise_name) VALUES
-(6, 'Arctic Breeze'),
-(7, 'Tropic Express'),
-(8, 'Eastern Voyager'),
-(9, 'Northern Star'),
-(10, 'Western Horizon');
-
--- cruise_id假设为6~10
-
--- 插入stateroom (wxy_stateroom)
-INSERT INTO wxy_stateroom (type, SIZE, bed_num, bathroom_num, balcony, cruise_id, price_per_person, position) VALUES
-('inside stateroom', 180, 2, 1, 0, 6, 289.99, 'Forward'),
-('oceanview window', 240, 2, 1, 0, 6, 389.99, 'After'),
-('family balcony', 320, 4, 2, 1, 7, 579.99, 'Left'),
-('club balcony suite', 360, 2, 2, 1, 7, 759.99, 'Right'),
-('the haven suite', 420, 2, 2, 1, 8, 1299.99, 'Forward'),
-('inside stateroom', 190, 2, 1, 0, 9, 279.99, 'Left'),
-('family large balcony', 350, 4, 2, 1, 9, 959.99, 'After'),
-('inside stateroom', 200, 1, 1, 0, 10, 250.00, 'Right');
-
--- stateroom_id继续为9~16
-
--- 插入passenger (wxy_passenger)，假设之前有5个，这里再插10个乘客
-INSERT INTO wxy_passenger (fname, mname, lname, birth_date, address_country, address_state, address_city, address_street_1, address_street_2, gender, nationality, email, phone, user_id)
-VALUES
-('William', NULL, 'Brown', '1980-12-05 00:00:00', 'USA', 'California', 'San Francisco', 'Market St', NULL, 'Male', 'USA', 'william.brown@example.com', '111-222-3333', 6),
-('Lisa', 'M', 'Hall', '1990-12-10 00:00:00', 'USA', 'California', 'San Diego', 'C St', NULL, 'Female', 'USA', 'lisa.hall@example.com', '222-333-4444', 7),
-('Robert', NULL, 'King', '1985-12-15 00:00:00', 'USA', 'Massachusetts', 'Boston', 'Beacon St', 'Apt 2', 'Male', 'USA', 'robert.king@example.com', '333-444-5555', 8),
-('Chris', 'A', 'Taylor', '1992-12-20 00:00:00', 'Canada', 'Nova Scotia', 'Halifax', 'Lower Water St', NULL, 'Male', 'Canada', 'chris.taylor@example.com', '444-555-6666', 9),
-('David', 'C', 'Clark', '1978-12-25 00:00:00', 'USA', 'Florida', 'Tampa', 'Channelside Dr', NULL, 'Male', 'USA', 'david.clark@example.com', '555-666-7777', 10),
-('Sophia', NULL, 'Lopez', '1995-12-02 00:00:00', 'USA', 'California', 'Los Angeles', 'Broadway', NULL, 'Female', 'USA', 'sophia.lopez@example.com', '666-777-8888', NULL),
-('Emily', 'J', 'Davis', '1987-12-12 00:00:00', 'USA', 'Florida', 'Miami', 'Flagler St', NULL, 'Female', 'USA', 'emily.davis@example.com', '777-888-9999', NULL),
-('James', NULL, 'Martinez', '1991-12-22 00:00:00', 'USA', 'Washington', 'Seattle', 'Pike St', NULL, 'Male', 'USA', 'james.martinez@example.com', '888-999-0000', NULL),
-('Mia', 'F', 'Johnson', '1993-12-18 00:00:00', 'Canada', 'BC', 'Vancouver', 'Cordova St', NULL, 'Female', 'Canada', 'mia.johnson@example.com', '999-000-1111', NULL),
-('Daniel', 'H', 'Smith', '1986-12-28 00:00:00', 'USA', 'New York', 'New York', 'Madison Ave', 'Floor 10', 'Male', 'USA', 'daniel.smith@example.com', '000-111-2222', NULL);
-
--- passenger_id假设为6~15
-
--- 插入passenger_group (wxy_passenger_group)，将乘客分配给group
-INSERT INTO wxy_passenger_group (group_id, passenger_id) VALUES
-(6, 6),
-(6, 7),
-(7, 8),
-(7, 9),
-(8, 10),
-(9, 11),
-(9, 12),
-(10,13),
-(10,14),
-(10,15);
-
--- 插入package (wxy_package)，有的乘客买，有的没买
-INSERT INTO wxy_package (type, price, passenger_id) VALUES
-('Water and Non-Alcoholic', 89.99, 6),
-('Unlimited Bar', 199.99, 7),
-('Internet 200 minutes, 100 GB', 59.99, 8),
-('Unlimited Internet', 159.99, 9),
-('Specialty dining', 79.99, 10),
-('Unlimited Bar', 189.99, 11),
-('Water and Non-Alcoholic', 99.99, 12);
-
--- 并非所有passenger都买package，这里只给部分
-
--- 插入invoice (wxy_invoice)，并非每个group都有invoice
-INSERT INTO wxy_invoice (amount, invoice_date, group_id) VALUES
-(400.00, '2024-12-01 10:00:00', 6),
-(1200.00, '2024-12-02 10:30:00',7),
-(800.00, '2024-12-10 11:00:00', 8),
-(100.00, '2024-12-15 11:30:00', 9);
--- group_id=10没有invoice，体现有人没invoice的情况
-
--- 假设invoice_id自增为6~9
-
--- 插入payment (wxy_payment)，并非所有invoice都有payment
-INSERT INTO wxy_payment (amount, `DATE`, method, invoice_id) VALUES
-(400.00, '2024-12-01 15:00:00', 'Credit Card', 6),
-(1200.00, '2024-12-03 16:00:00', 'Debit Card', 7),
-(800.00, '2024-12-11 17:00:00', 'Cash', 8);
--- invoice_id=9没有payment
-
--- 插入restaurant (wxy_restaurant)，时间在2024年12月
-INSERT INTO wxy_restaurant (type, start_time, end_time, floor, cruise_id) VALUES
-('Common Buffett', '2024-12-01 07:00:00', '2024-12-01 23:00:00', 5, 6),
-('Italian Specialty', '2024-12-02 11:00:00', '2024-12-02 22:00:00', 6, 6),
-('Ming Work Chinese', '2024-12-10 08:00:00', '2024-12-10 21:00:00', 7, 7),
-('Pool Bar', '2024-12-15 10:00:00', '2024-12-15 23:00:00', 3, 8),
-('Tokyo Ramen Japanese', '2024-12-20 09:00:00', '2024-12-20 22:00:00', 4, 9);
-
--- 插入entertainment (wxy_entertainment)，日期不需要直接控制，这里主要是cruise依赖
-INSERT INTO wxy_entertainment (type, units_num, floor_1, floor_2, floor_3, age_limits, cruise_id) VALUES
-('casino', 1, 10, NULL, NULL, 18, 6),
-('gym', 2, 8, NULL, NULL, 16, 7),
-('theaters', 1, 9, NULL, NULL, 0, 8),
-('children play', 1, 4, NULL, NULL, 0, 9),
-('outdoor pool', 1, 5, NULL, NULL, 0, 10);
-
--- 插入passenger_room (wxy_passenger_room)
-INSERT INTO wxy_passenger_room (price, room_id, passenger_id) VALUES
-(290.00, 9, 6),
-(390.00,10, 7),
-(580.00,11, 8),
-(760.00,12, 9),
-(1299.99,13,10),
-(280.00,14,11),
-(960.00,15,12),
-(250.00,16,13);
-
--- 1. 插入港口 (wxy_port)，从111到150，港口名称唯一
 INSERT INTO wxy_port (port_id, port_name, state, country, address1, address2, nearest_airport_name, number_of_parking_spots) VALUES
+(101, 'Los Angeles', 'California', 'USA', 'Pier 93', NULL, 'LAX', 500),
+(102, 'Miami', 'Florida', 'USA', 'Port Blvd', NULL, 'MIA', 300),
+(103, 'Vancouver', 'British Columbia', 'Canada', 'Canada Place', NULL, 'YVR', 200),
+(104, 'New York', 'New York', 'USA', 'Manhattan Cruise Terminal', NULL, 'JFK', 400),
+(105, 'Seattle', 'Washington', 'USA', 'Pier 66', NULL, 'SEA', 250),
+(106, 'San Francisco', 'California', 'USA', 'Ferry Bldg', NULL, 'SFO', 350),
+(107, 'San Diego', 'California', 'USA', 'B St Pier', NULL, 'SAN', 200),
+(108, 'Boston', 'Massachusetts', 'USA', 'Black Falcon Ave', NULL, 'BOS', 250),
+(109, 'Halifax', 'Nova Scotia', 'Canada', 'Pier 21', NULL, 'YHZ', 150),
+(110, 'Tampa', 'Florida', 'USA', 'Channelside Dr', NULL, 'TPA', 300),
 (111, 'Anchorage', 'Alaska', 'USA', 'Port Avenue', NULL, 'ANC', 120),
 (112, 'Honolulu', 'Hawaii', 'USA', 'Pier 2', NULL, 'HNL', 250),
 (113, 'Juneau', 'Alaska', 'USA', 'Marine Way', NULL, 'JNU', 80),
@@ -351,26 +84,23 @@ INSERT INTO wxy_port (port_id, port_name, state, country, address1, address2, ne
 (149, 'Superior', 'Wisconsin', 'USA', 'Tower Avenue', NULL, 'SUW', 50),
 (150, 'Two Harbors', 'Minnesota', 'USA', 'Water Street', NULL, 'TWM', 20);
 
--- 2. 插入新的trip (wxy_trip)，从11到50
-INSERT INTO wxy_trip (nights_num) VALUES
-(5), (6), (7), (8), (9),
-(10), (4), (3), (11), (12),
-(7), (8), (6), (5), (9),
-(10), (12), (4), (7), (8),
-(6), (11), (5), (9), (7),
-(10), (3), (4), (11), (12),
-(6), (5), (8), (7), (9),
-(4), (10), (3), (12), (11);
 
--- 这样已经插入了相当数量的数据行（多于40条INSERT）。
--- 插入 trip_port 数据，确保每个 trip_id 都有 start_port, stop_port 和 end_port
 INSERT INTO wxy_trip_port (trip_id, port_id, type, start_date, end_date) VALUES
-(3, 111, 'start_port', '2024-12-01 09:00:00', '2024-12-01 18:00:00'),
-(3, 112, 'stop_port',  '2024-12-02 09:00:00', '2024-12-02 20:00:00'),
-(3, 113, 'end_port',   '2024-12-03 09:00:00', '2024-12-03 18:00:00'),
-(4, 114, 'start_port', '2024-12-04 09:00:00', '2024-12-04 18:00:00'),
-(4, 115, 'stop_port',  '2024-12-05 09:00:00', '2024-12-05 20:00:00'),
-(4, 116, 'end_port',   '2024-12-06 09:00:00', '2024-12-06 18:00:00'),
+(1, 101, 'start_port', '2024-01-01 09:00:00', '2024-01-01 18:00:00'),
+(1, 102, 'stop_port', '2024-01-02 09:00:00', '2024-01-02 20:00:00'),
+(1, 103, 'end_port', '2024-01-03 09:00:00', '2024-01-03 18:00:00'),
+
+(2, 104, 'start_port', '2024-02-10 09:00:00', '2024-02-10 18:00:00'),
+(2, 105, 'end_port', '2024-02-15 09:00:00', '2024-02-15 18:00:00'),
+
+(3, 102, 'start_port', '2024-03-05 09:00:00', '2024-03-05 18:00:00'),
+(3, 103, 'end_port', '2024-03-10 09:00:00', '2024-03-10 18:00:00'),
+
+(4, 104, 'start_port', '2024-12-10 09:00:00' ,'2024-12-10 11:00:00'),
+(4, 111, 'stop_port', '2024-12-15 09:00:00' ,'2024-12-15 11:00:00'),
+(4, 105, 'stop_port', '2024-12-16 09:00:00' ,'2024-12-16 11:00:00'),
+(4, 101, 'end_port', '2024-12-18 09:00:00' ,'2024-12-18 11:00:00'),
+
 (5, 117, 'start_port', '2024-12-07 09:00:00', '2024-12-07 18:00:00'),
 (5, 118, 'stop_port',  '2024-12-08 09:00:00', '2024-12-08 20:00:00'),
 (5, 119, 'end_port',   '2024-12-09 09:00:00', '2024-12-09 18:00:00'),
@@ -408,10 +138,17 @@ INSERT INTO wxy_trip_port (trip_id, port_id, type, start_date, end_date) VALUES
 (16, 111, 'stop_port',  '2024-12-11 09:00:00', '2024-12-11 20:00:00'),
 (16, 112, 'end_port',   '2024-12-12 09:00:00', '2024-12-12 18:00:00');
 
--- 重复类似逻辑为 trip_id 从 17 到 50 填充港口数据。
--- 每个 trip 包括至少 1 个 start_port，1 个 end_port，最多 2 个 stop_port，均分布在不同的 port_id。
--- 插入 cruise 数据，每个 cruise 关联一个 trip_id
 INSERT INTO wxy_cruise (trip_id, cruise_name) VALUES
+(1, 'Pacific Explorer'),
+(2, 'Caribbean Dream'),
+(3, 'Alaskan Venture'),
+(4, 'Atlantic Adventure'),
+(5, 'Gulf Navigator'),
+(6, 'Arctic Breeze'),
+(7, 'Tropic Express'),
+(8, 'Eastern Voyager'),
+(9, 'Northern Star'),
+(10, 'Western Horizon'),
 (11, 'Western Escape'),
 (12, 'Alaskan Marvel'),
 (13, 'Pacific Splendor'),
@@ -453,9 +190,92 @@ INSERT INTO wxy_cruise (trip_id, cruise_name) VALUES
 (49, 'Titanic Heritage'),
 (50, 'Legacy of the Seas');
 
--- 为每个 cruise 插入多种 stateroom 类型
--- 房间类型: inside stateroom, oceanview window, family balcony, club balcony suite, the haven suite
+INSERT INTO wxy_passenger (fname, mname, lname, birth_date, address_country, address_state, address_city, address_street_1, address_street_2, gender, nationality, email, phone, user_id)
+VALUES
+('John', NULL, 'Doe', '1990-05-20 00:00:00', 'USA', 'California', 'Los Angeles', 'Sunset Blvd', NULL, 'Male', 'USA', 'john.doe@example.com', '123-456-7890', 1),
+('Jane', 'A', 'Smith', '1985-07-10 00:00:00', 'USA', 'Florida', 'Miami', 'Ocean Dr', NULL, 'Female', 'USA', 'jane.smith@example.com', '234-567-8901', 2),
+('Michael', 'B', 'Lee', '1992-03-15 00:00:00', 'Canada', 'BC', 'Vancouver', 'Water St', NULL, 'Male', 'Canada', 'michael.lee@example.com', '345-678-9012', 3),
+('Anna', NULL, 'Johnson', '1995-11-05 00:00:00', 'USA', 'New York', 'New York', '5th Ave', 'Apt 101', 'Female', 'USA', 'anna.johnson@example.com', '456-789-0123', 4),
+('Mark', 'C', 'Wilson', '1988-01-25 00:00:00', 'USA', 'Washington', 'Seattle', '1st Ave', NULL, 'Male', 'USA', 'mark.wilson@example.com', '567-890-1234', 5),
+('William', NULL, 'Brown', '1980-12-05 00:00:00', 'USA', 'California', 'San Francisco', 'Market St', NULL, 'Male', 'USA', 'william.brown@example.com', '111-222-3333', 6),
+('Lisa', 'M', 'Hall', '1990-12-10 00:00:00', 'USA', 'California', 'San Diego', 'C St', NULL, 'Female', 'USA', 'lisa.hall@example.com', '222-333-4444', 7),
+('Robert', NULL, 'King', '1985-12-15 00:00:00', 'USA', 'Massachusetts', 'Boston', 'Beacon St', 'Apt 2', 'Male', 'USA', 'robert.king@example.com', '333-444-5555', 8),
+('Chris', 'A', 'Taylor', '1992-12-20 00:00:00', 'Canada', 'Nova Scotia', 'Halifax', 'Lower Water St', NULL, 'Male', 'Canada', 'chris.taylor@example.com', '444-555-6666', 9),
+('David', 'C', 'Clark', '1978-12-25 00:00:00', 'USA', 'Florida', 'Tampa', 'Channelside Dr', NULL, 'Male', 'USA', 'david.clark@example.com', '555-666-7777', 10),
+('Sophia', NULL, 'Lopez', '1995-12-02 00:00:00', 'USA', 'California', 'Los Angeles', 'Broadway', NULL, 'Female', 'USA', 'sophia.lopez@example.com', '666-777-8888', 1),
+('Emily', 'J', 'Davis', '1987-12-12 00:00:00', 'USA', 'Florida', 'Miami', 'Flagler St', NULL, 'Female', 'USA', 'emily.davis@example.com', '777-888-9999', 1),
+('James', NULL, 'Martinez', '1991-12-22 00:00:00', 'USA', 'Washington', 'Seattle', 'Pike St', NULL, 'Male', 'USA', 'james.martinez@example.com', '888-999-0000', 2),
+('Mia', 'F', 'Johnson', '1993-12-18 00:00:00', 'Canada', 'BC', 'Vancouver', 'Cordova St', NULL, 'Female', 'Canada', 'mia.johnson@example.com', '999-000-1111', 3),
+('Daniel', 'H', 'Smith', '1986-12-28 00:00:00', 'USA', 'New York', 'New York', 'Madison Ave', 'Floor 10', 'Male', 'USA', 'daniel.smith@example.com', '000-111-2222', 4);
+
+INSERT INTO wxy_passenger_group (group_id, passenger_id) VALUES
+(1, 1),
+(1, 2),
+(2, 3),
+(3, 4),
+(4, 5),
+(5, 6),
+(6, 7),
+(7, 8),
+(7, 9),
+(8, 10),
+(9, 11),
+(9, 12),
+(10,13),
+(10,14),
+(10,15);
+
+INSERT INTO wxy_package (type, price, passenger_id) VALUES
+('Water and Non-Alcoholic', 99.99, 1),
+('Unlimited Bar', 199.99, 2),
+('Internet 200 minutes, 100 GB', 49.99, 3),
+('Unlimited Internet', 149.99, 4),
+('Specialty dining', 79.99, 5),
+('Water and Non-Alcoholic', 89.99, 6),
+('Unlimited Bar', 199.99, 7),
+('Internet 200 minutes, 100 GB', 59.99, 8),
+('Unlimited Internet', 159.99, 9),
+('Specialty dining', 79.99, 10),
+('Unlimited Bar', 189.99, 11),
+('Water and Non-Alcoholic', 99.99, 12);
+
+INSERT INTO wxy_invoice (amount, invoice_date, group_id) VALUES
+(500.00, '2024-01-01 10:00:00', 1),
+(1000.00, '2024-01-02 11:00:00', 2),
+(750.00, '2024-02-10 12:00:00', 3),
+(200.00, '2024-03-05 13:00:00', 4),
+(300.00, '2024-04-01 14:00:00', 5),
+(400.00, '2024-12-01 10:00:00', 6),
+(1200.00, '2024-12-02 10:30:00',7),
+(800.00, '2024-12-10 11:00:00', 8),
+(100.00, '2024-12-15 11:30:00', 9),
+(200.00, '2024-12-20 12:00:00', 10);
+
+
+INSERT INTO wxy_payment (amount, `DATE`, method, invoice_id) VALUES
+(500.00, '2024-01-03 10:00:00', 'applepay', 1),
+(1000.00, '2024-01-04 11:00:00', 'applepay', 2),
+(750.00, '2024-02-12 12:00:00', 'applepay', 3),
+(200.00, '2024-03-06 13:00:00', 'applepay', 4),
+(300.00, '2024-04-02 14:00:00', 'googlepay', 5),
+(400.00, '2024-12-01 15:00:00', 'googlepay', 6),
+(1200.00, '2024-12-03 16:00:00', 'googlepay', 7),
+(800.00, '2024-12-11 17:00:00', 'paypal', 8);
+
+
 INSERT INTO wxy_stateroom (type, SIZE, bed_num, bathroom_num, balcony, cruise_id, price_per_person, position) VALUES
+('inside stateroom', 180, 2, 1, 0, 1, 299.99, 'Forward'),
+('oceanview window', 250, 2, 1, 0, 1, 399.99, 'After'),
+('family balcony', 300, 4, 2, 1, 1, 599.99, 'Left'),
+('club balcony suite', 350, 2, 2, 1, 1, 799.99, 'Right'),
+('the haven suite', 400, 2, 2, 1, 1, 1299.99, 'Forward'),
+
+('inside stateroom', 180, 2, 1, 0, 2, 299.99, 'Forward'),
+('oceanview window', 250, 2, 1, 0, 2, 399.99, 'After'),
+('family balcony', 300, 4, 2, 1, 2, 599.99, 'Left'),
+('club balcony suite', 350, 2, 2, 1, 2, 799.99, 'Right'),
+('the haven suite', 400, 2, 2, 1, 2, 1299.99, 'Forward'),
+
 ('inside stateroom', 180, 2, 1, 0, 3, 299.99, 'Forward'),
 ('oceanview window', 250, 2, 1, 0, 3, 399.99, 'After'),
 ('family balcony', 300, 4, 2, 1, 3, 599.99, 'Left'),
@@ -526,20 +346,43 @@ INSERT INTO wxy_stateroom (type, SIZE, bed_num, bathroom_num, balcony, cruise_id
 ('oceanview window', 250, 2, 1, 0, 14, 359.99, 'After'),
 ('family balcony', 300, 4, 2, 1, 14, 559.99, 'Left'),
 ('club balcony suite', 350, 2, 2, 1, 14, 759.99, 'Right'),
-('the haven suite', 400, 2, 2, 1, 14, 1259.99, 'Forward');
+('the haven suite', 400, 2, 2, 1, 14, 1259.99, 'Forward'),
 
--- 为 cruise_id 从 1 到 14 插入餐厅，每个邮轮 1 至 3 个餐厅
+('inside stateroom', 180, 2, 1, 0, 15, 259.99, 'Forward'),
+('oceanview window', 250, 2, 1, 0, 15, 359.99, 'After'),
+('family balcony', 300, 4, 2, 1, 15, 559.99, 'Left'),
+('club balcony suite', 350, 2, 2, 1, 15, 759.99, 'Right'),
+('the haven suite', 400, 2, 2, 1, 15, 1259.99, 'Forward'),
+
+('inside stateroom', 180, 2, 1, 0, 16, 259.99, 'Forward'),
+('oceanview window', 250, 2, 1, 0, 16, 359.99, 'After'),
+('family balcony', 300, 4, 2, 1, 16, 559.99, 'Left'),
+('club balcony suite', 350, 2, 2, 1, 16, 759.99, 'Right'),
+('the haven suite', 400, 2, 2, 1, 16, 1259.99, 'Forward');
+
+INSERT INTO wxy_passenger_room (price, room_id, passenger_id) VALUES
+(300.00, 1, 1),
+(300.00, 2, 2),
+(600.00, 3, 3),
+(320.00, 4, 4),
+(800.00, 5, 5),
+(290.00, 9, 6),
+(390.00,10, 7),
+(580.00,11, 8),
+(760.00,12, 9),
+(1299.99,13,10),
+(280.00,14,11),
+(960.00,15,12),
+(250.00,16,13);
+
 INSERT INTO wxy_restaurant (type, start_time, end_time, floor, cruise_id) VALUES
--- 邮轮 1 的餐厅
 ('Common Buffett', '2024-12-01 07:00:00', '2024-12-01 23:00:00', 5, 1),
 ('Italian Specialty', '2024-12-01 11:00:00', '2024-12-01 22:00:00', 6, 1),
 ('Tokyo Ramen Japanese', '2024-12-01 09:00:00', '2024-12-01 22:00:00', 7, 1),
 
--- 邮轮 2 的餐厅
 ('Common Buffett', '2024-12-02 07:00:00', '2024-12-02 23:00:00', 5, 2),
 ('Mexican Specialty', '2024-12-02 10:00:00', '2024-12-02 22:00:00', 6, 2),
 
--- 邮轮 3 的餐厅
 ('La carte continental', '2024-12-03 07:00:00', '2024-12-03 22:00:00', 5, 3),
 
 -- 邮轮 4 的餐厅
