@@ -23,15 +23,15 @@ public class InvoiceResponseService {
         Map<Integer, InvoiceResponse> responseMap = new HashMap<>();
 
         for (Map<String, Object> row : rawData) {
-            int tripId = (int) row.get("tripId");
-            InvoiceResponse response = responseMap.get(tripId);
+            int invoiceId = (int) row.get("invoiceId");
+            InvoiceResponse response = responseMap.get(invoiceId);
 
             if(response == null) {
                 response = new InvoiceResponse();
                 int groupId = (int) row.get("groupId");
-                int invoiceId = (int) row.get("invoiceId");
+                int tripId = (int) row.get("tripId");
                 BigDecimal invoiceAmount = (BigDecimal) row.get("invoiceAmount");
-                long paymentId = (long) row.get("paymentId");
+                int paymentId = (int) row.get("paymentId");
                 String paId = "";
                 if(paymentId == -1){
                     paId = "Fail";
@@ -43,7 +43,7 @@ public class InvoiceResponseService {
                 response.setInvoiceId(invoiceId);
                 response.setInvoiceAmount(invoiceAmount);
                 response.setPaymentId(paId);
-                responseMap.put(tripId, response);
+                responseMap.put(invoiceId, response);
             }
 
             int passengerId = (int) row.get("passengerId");

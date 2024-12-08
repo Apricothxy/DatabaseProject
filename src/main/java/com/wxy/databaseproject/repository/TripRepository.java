@@ -117,6 +117,10 @@ public class TripRepository {
             trip.setCruiseName(rs.getString("cruise_name"));
         });
     }
+    private String getCruiseInfo(Integer tripId) {
+        String sql = "SELECT cruise_id, cruise_name FROM wxy_cruise WHERE trip_id = ?";
+        return jdbcTemplate.query(sql, new Object[]{tripId}, rs -> {return rs.getString("cruise_name");});
+    }
     private void insertTripPort(int tripId, Port port, String type) {
         String sql = "INSERT INTO wxy_trip_port (trip_id, port_id, type, start_date, end_date) VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,

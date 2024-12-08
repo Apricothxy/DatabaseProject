@@ -32,7 +32,7 @@ public class InvoiceResponseRepository {
                JOIN wxy_passenger_group pg ON g.group_id = pg.group_id
                JOIN wxy_passenger p ON pg.passenger_id = p.passenger_id AND p.user_id = ?
                JOIN wxy_trip t ON t.trip_id = g.trip_id
-           ORDER BY t.trip_id;
+           ORDER BY i.invoice_id;
                                            
         """;
 

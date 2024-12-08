@@ -176,28 +176,6 @@
             const res = await fetch('/api/invoices/' + userId);
             const data = await res.json();
 
-            // data structure example:
-            // [
-            //   {
-            //     "tripId": 1,
-            //     "groupId":1,
-            //     "invoiceId": 3,
-            //     "invoiceAmout": 2000.0,
-            //     "paymentId": "5",
-            //     "panssgers": [
-            //        {"passengerId":..., "passengerFName":..., "passengerLName":...}, ...
-            //     ]
-            //   },
-            //   {
-            //     "tripId": 2,
-            //     "groupId":1,
-            //     "invoiceId": 4,
-            //     "invoiceAmout": 1000.0,
-            //     "paymentId": "Fail",
-            //     "panssgers": [...]
-            //   }
-            // ]
-
             if (!Array.isArray(data)) {
                 document.getElementById('message').textContent = 'No orders found or invalid response.';
                 return;
@@ -214,17 +192,17 @@
                     <div class="order-details">
                         <strong>Group ID:</strong> ${order.groupId}<br>
                         <strong>Invoice ID:</strong> ${order.invoiceId}<br>
-                        <strong>Invoice Amount:</strong> ${order.invoiceAmout}<br>
+                        <strong>Invoice Amount:</strong> ${order.invoiceAmount}<br>
                         <strong>Payment Status:</strong> ${paid ? 'Paid (Payment ID: '+order.paymentId+')' : 'Not Paid'}
                     </div>
                 `;
 
                 // Passengers
-                if (Array.isArray(order.panssgers)) {
+                if (Array.isArray(order.passengers)) {
                     const ul = document.createElement('ul');
                     ul.classList.add('passenger-list');
                     ul.innerHTML = `<strong>Passengers:</strong>`;
-                    order.panssgers.forEach(p => {
+                    order.passengers.forEach(p => {
                         const li = document.createElement('li');
                         li.textContent = `${p.passengerFName} ${p.passengerLName}`;
                         ul.appendChild(li);
@@ -240,7 +218,7 @@
                     payBtn.addEventListener('click', () => {
                         const url = 'payment.html?'
                             + 'invoiceId=' + encodeURIComponent(order.invoiceId)
-                            + '&totalPrice=' + encodeURIComponent(order.invoiceAmout);
+                            + '&totalPrice=' + encodeURIComponent(order.invoiceAmount);
                         window.location.href = url;
                     });
                     div.appendChild(payBtn);
