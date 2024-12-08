@@ -168,16 +168,14 @@ public class TripRepository {
 
     public validCruisePort getAvailableData() {
         // Query a single cruise without trip_id
-        String cruiseSql = "SELECT cruise_id, cruise_name FROM wxy_cruise WHERE trip_id IS NULL LIMIT 1";
-        Map<String, Object> cruiseRow = jdbcTemplate.queryForMap(cruiseSql);
-        int cruiseId = ((Number) cruiseRow.get("cruise_id")).intValue();
-        String cruiseName = (String) cruiseRow.get("cruise_name");
+        String cruiseSql = "SELECT cruise_id, cruise_name FROM wxy_cruise WHERE trip_id IS NULL";
+        List<Map<String, Object>> cruises = jdbcTemplate.queryForList(cruiseSql);
 
         // Query all ports
         String portsSql = "SELECT port_id, port_name FROM wxy_port";
         List<Map<String, Object>> ports = jdbcTemplate.queryForList(portsSql);
 
         // Return the data in a single object
-        return new validCruisePort(cruiseId, cruiseName, ports);
+        return new validCruisePort(cruises, ports);
     }
 }

@@ -4,30 +4,20 @@ import java.util.List;
 import java.util.Map;
 
 public class validCruisePort {
-    private int cruiseId;
-    private String cruiseName;
-    private List<Map<String, Object>> ports;
+    private List<Map<String, Object>> cruises; // CruiseID
+    private List<Map<String, Object>> ports;  // Ports
 
-    public validCruisePort(int cruiseId, String cruiseName, List<Map<String, Object>> ports) {
-        this.cruiseId = cruiseId;
-        this.cruiseName = cruiseName;
+    public validCruisePort(List<Map<String, Object>> cruises, List<Map<String, Object>> ports) {
+        this.cruises = cruises;
         this.ports = ports;
     }
 
-    public int getCruiseId() {
-        return cruiseId;
+    public List<Map<String, Object>> getCruises() {
+        return cruises;
     }
 
-    public void setCruiseId(int cruiseId) {
-        this.cruiseId = cruiseId;
-    }
-
-    public String getCruiseName() {
-        return cruiseName;
-    }
-
-    public void setCruiseName(String cruiseName) {
-        this.cruiseName = cruiseName;
+    public void setCruises(List<Map<String, Object>> cruises) {
+        this.cruises = cruises;
     }
 
     public List<Map<String, Object>> getPorts() {
@@ -36,5 +26,12 @@ public class validCruisePort {
 
     public void setPorts(List<Map<String, Object>> ports) {
         this.ports = ports;
+    }
+    @Override
+    public String toString() {
+        return "validCruisePort{" +
+                "cruises=" + cruises +
+                ", ports=" + ports +
+                '}';
     }
 }
