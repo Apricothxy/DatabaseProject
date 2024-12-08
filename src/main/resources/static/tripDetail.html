@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
     <title>Trip Detail</title>
     <style>
         html, body {
@@ -11,7 +13,7 @@
         }
 
         body {
-            font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+            font-family: 'Libre Baskerville', serif;
             background: #f7f9fc;
             display: flex;
             flex-direction: column;
@@ -22,15 +24,15 @@
 
         /* Colors */
         :root {
-            --primary: #6C2C92;    /* NYU Purple */
-            --primary-hover: #8B5FBF;
+            --primary: #FFFFFF;    /* NYU Purple */
+            --primary-hover: #717171;
             --error: #e74c3c;
         }
 
         /* Top Bar */
         .top-bar {
             background: var(--primary);
-            color: #fff;
+            color: #000000;
             padding: 15px 20px;
             display: flex;
             align-items: center;
@@ -69,14 +71,15 @@
 
         .user-id {
             font-size: 0.875rem;
-            color: #fff;
+            color: #000000;
             word-break: break-all;
         }
 
         .logout-btn {
+            font-family: 'Manrope', sans-serif;
             display: inline-block;
-            background: var(--primary-hover);
-            color: #fff;
+            background: #000000;
+            color: #FFFFFF;
             padding: 8px 14px;
             border-radius: 6px;
             text-decoration: none;
@@ -87,7 +90,7 @@
         }
 
         .logout-btn:hover {
-            background: var(--primary);
+            background: #717171;
         }
 
         /* Side menu is no longer triggered, but let's keep code in case needed in future */
@@ -204,7 +207,7 @@
         /* Booking Panel on the right */
         .booking-panel {
             flex: 1;
-            background: #f0e6f9;
+            background: #FFFFFF;
             border-radius: 8px;
             padding: 20px;
             box-sizing: border-box;
@@ -215,7 +218,8 @@
         }
 
         .book-now-btn {
-            background: var(--primary);
+            font-family: 'Manrope', sans-serif;
+            background: #000000;
             color: #fff;
             border: none;
             border-radius: 6px;
@@ -347,8 +351,28 @@
             + '&endPortName=' + encodeURIComponent(endPortName);
         window.location.href = url;
     });
-    // Display user ID
-    userIdDisplay.textContent = 'Welcome Back, User ID: ' + userId;
+
+    async function fetchUsername() {
+        const apiUrl = '/api/user/' + userId;
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'GET',
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch user data');
+            }
+
+            const userData = await response.json();
+            userIdDisplay.textContent = `Welcome Back, ${userData.username}`;
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+            userIdDisplay.textContent = 'Welcome Back, User';
+        }
+    }
+
+    fetchUsername();
 
     // Logout
     logoutBtn.addEventListener('click', () => {
