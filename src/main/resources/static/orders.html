@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>My Orders</title>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Libre Baskerville', serif;
+            margin: 0;
+            background: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .header {
+            background: #fff;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-left img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .header-left .company-name {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .header-right {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+            font-family: 'Manrope', sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .orders-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .order-item {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .order-item h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .order-details {
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .order-details strong {
+            font-weight: 700;
+        }
+
+        .passenger-list {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .passenger-list li {
+            margin-bottom: 5px;
+        }
+
+        .pay-btn {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'Manrope', sans-serif;
+            float: right;
+            margin-top: 10px;
+        }
+
+        .pay-btn:hover {
+            background: #333;
+        }
+
+        .message {
+            margin-top: 20px;
+            font-size: 14px;
+            color: red;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: #333;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .back-btn:hover {
+            background: #eee;
+        }
+
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="header-left">
+        <button class="back-btn" id="backBtn">←</button>
+        <img src="/images/logo.png" alt="Logo">
+        <div class="company-name">Nature International Cruise Excellence</div>
+    </div>
+    <div class="header-right">
+        My Orders
+    </div>
+</div>
+
+<div class="content">
+    <h1>My Orders</h1>
+    <div class="orders-list" id="orders-list">
+        <!-- Dynamic orders load here -->
+    </div>
+    <div class="message" id="message"></div>
+</div>
+
+<script>
+    const userId = localStorage.getItem('loggedInUserId');
+    const ordersList = document.getElementById('orders-list');
+
+    const backBtn = document.getElementById('backBtn');
+    backBtn.addEventListener('click', () => {
+        window.location.href = 'home.html';
+    });
+
+    async function loadOrders() {
+        try {
+            const res = await fetch('/invoices/' + userId);
+            const data = await res.json();
+
+            // data structure example:
+            // [
+            //   {
+            //     "tripId": 1,
+            //     "groupId":1,
+            //     "invoiceId": 3,
+            //     "invoiceAmout": 2000.0,
+            //     "paymentId": "5",
+            //     "panssgers": [
+            //        {"passengerId":..., "passengerFName":..., "passengerLName":...}, ...
+            //     ]
+            //   },
+            //   {
+            //     "tripId": 2,
+            //     "groupId":1,
+            //     "invoiceId": 4,
+            //     "invoiceAmout": 1000.0,
+            //     "paymentId": "Fail",
+            //     "panssgers": [...]
+            //   }
+            // ]
+
+            if (!Array.isArray(data)) {
+                document.getElementById('message').textContent = 'No orders found or invalid response.';
+                return;
+            }
+
+            data.forEach(order => {
+                const div = document.createElement('div');
+                div.classList.add('order-item');
+
+                // Display trip details, invoice info
+                const paid = order.paymentId && order.paymentId !== 'Fail';
+                div.innerHTML = `
+                    <h2>Trip ID: ${order.tripId}</h2>
+                    <div class="order-details">
+                        <strong>Group ID:</strong> ${order.groupId}<br>
+                        <strong>Invoice ID:</strong> ${order.invoiceId}<br>
+                        <strong>Invoice Amount:</strong> ${order.invoiceAmout}<br>
+                        <strong>Payment Status:</strong> ${paid ? 'Paid (Payment ID: '+order.paymentId+')' : 'Not Paid'}
+                    </div>
+                `;
+
+                // Passengers
+                if (Array.isArray(order.panssgers)) {
+                    const ul = document.createElement('ul');
+                    ul.classList.add('passenger-list');
+                    ul.innerHTML = `<strong>Passengers:</strong>`;
+                    order.panssgers.forEach(p => {
+                        const li = document.createElement('li');
+                        li.textContent = `${p.passengerFName} ${p.passengerLName}`;
+                        ul.appendChild(li);
+                    });
+                    div.appendChild(ul);
+                }
+
+                // If not paid, show pay button
+                if (!paid) {
+                    const payBtn = document.createElement('button');
+                    payBtn.classList.add('pay-btn');
+                    payBtn.textContent = 'Pay Now';
+                    payBtn.addEventListener('click', () => {
+                        const url = 'payment.html?'
+                            + 'invoiceId=' + encodeURIComponent(order.invoiceId)
+                            + '&totalPrice=' + encodeURIComponent(order.invoiceAmout);
+                        window.location.href = url;
+                    });
+                    div.appendChild(payBtn);
+                }
+
+                ordersList.appendChild(div);
+            });
+
+        } catch (err) {
+            console.error('Error loading orders', err);
+            document.getElementById('message').textContent = 'Failed to load orders.';
+        }
+    }
+
+    loadOrders();
+</script>
+</body>
+</html>
