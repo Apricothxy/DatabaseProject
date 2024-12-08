@@ -40,7 +40,7 @@ public class AddCruiseRequest {
         this.entertainment = entertainment;
     }
 
-    public class Restaurant {
+    public static class Restaurant {
         private String type;
         private String start_time;
         private String end_time;
@@ -79,7 +79,7 @@ public class AddCruiseRequest {
         }
     }
 
-    public class Stateroom {
+    public static class Stateroom {
         private String type;
         private int size;
         private int bed_num;
@@ -145,7 +145,7 @@ public class AddCruiseRequest {
         }
     }
 
-    public class Entertainment {
+    public static class Entertainment {
         private String type;
         private int units_num;
         private Integer floor_1;

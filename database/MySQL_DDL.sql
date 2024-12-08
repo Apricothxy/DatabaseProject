@@ -9,7 +9,7 @@ ALTER TABLE wxy_passenger_group ADD CONSTRAINT wxy_passenger_group_pk PRIMARY KE
 
 CREATE TABLE wxy_cruise (
     cruise_id   INT AUTO_INCREMENT NOT NULL COMMENT 'cruise id',
-    trip_id     INT NOT NULL,
+    trip_id     INT,
     cruise_name VARCHAR(100) NOT NULL,
     PRIMARY KEY (cruise_id)
 );

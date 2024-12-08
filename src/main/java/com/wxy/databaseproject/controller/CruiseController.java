@@ -1,6 +1,7 @@
 package com.wxy.databaseproject.controller;
 
 import com.wxy.databaseproject.model.AddCruiseRequest;
+import com.wxy.databaseproject.service.CruiseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
