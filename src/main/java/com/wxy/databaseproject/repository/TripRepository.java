@@ -1,5 +1,6 @@
 package com.wxy.databaseproject.repository;
 
+import com.wxy.databaseproject.model.OrderTripInfo;
 import com.wxy.databaseproject.model.Port;
 import com.wxy.databaseproject.model.Trip;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -117,9 +118,35 @@ public class TripRepository {
             trip.setCruiseName(rs.getString("cruise_name"));
         });
     }
-    private String getCruiseInfo(Integer tripId) {
-        String sql = "SELECT cruise_id, cruise_name FROM wxy_cruise WHERE trip_id = ?";
-        return jdbcTemplate.query(sql, new Object[]{tripId}, rs -> {return rs.getString("cruise_name");});
+    public OrderTripInfo getCruiseInfo(Integer tripId) {
+        String sql = """
+        SELECT
+            tp_start.trip_id,
+            c.cruise_name,
+            tp_start.start_date AS start_time,
+            tp_end.end_date AS end_time,
+            p_start.port_name AS start_port_name,
+            p_end.port_name AS end_port_name
+        FROM
+            wxy_trip_port tp_start
+            JOIN wxy_trip_port tp_end ON tp_start.trip_id = tp_end.trip_id AND tp_end.type = 'end_port'
+            JOIN wxy_cruise c ON tp_start.trip_id = c.trip_id
+            JOIN wxy_port p_start ON tp_start.port_id = p_start.port_id AND tp_start.type = 'start_port'
+            JOIN wxy_port p_end ON tp_end.port_id = p_end.port_id
+        WHERE
+            tp_start.trip_id = ?
+        """;
+        return jdbcTemplate.query(sql, new Object[]{tripId}, rs -> {
+            if (!rs.next()) return null;
+            OrderTripInfo tripInfo = new OrderTripInfo();
+            tripInfo.setTripId(rs.getInt("trip_id"));
+            tripInfo.setCruiseName(rs.getString("cruise_name"));
+            tripInfo.setStartTime(rs.getTimestamp("start_time").toLocalDateTime());
+            tripInfo.setEndTime(rs.getTimestamp("end_time").toLocalDateTime());
+            tripInfo.setStartPortName(rs.getString("start_port_name"));
+            tripInfo.setEndPortName(rs.getString("end_port_name"));
+            return tripInfo;
+        });
     }
     private void insertTripPort(int tripId, Port port, String type) {
         String sql = "INSERT INTO wxy_trip_port (trip_id, port_id, type, start_date, end_date) VALUES (?, ?, ?, ?, ?)";

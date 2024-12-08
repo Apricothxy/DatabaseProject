@@ -69,3 +69,19 @@ INSERT INTO WXY_TRIP_PORT (TRIP_ID, PORT_ID, TYPE, START_DATE, END_DATE)
 VALUES (2, 4, 'end_port', '2024-12-07', '2024-12-07');
 
 update wxy_cruise set trip_id = 2 where cruise_name = 'Ocean Explorer';
+
+SELECT
+            tp_start.trip_id,
+            c.cruise_name,
+            tp_start.start_date AS start_time,
+            tp_end.end_date AS end_time,
+            p_start.port_name AS start_port_name,
+            p_end.port_name AS end_port_name
+        FROM
+            wxy_trip_port tp_start
+            JOIN wxy_trip_port tp_end ON tp_start.trip_id = tp_end.trip_id AND tp_end.type = 'end_port'
+            JOIN wxy_cruise c ON tp_start.trip_id = c.trip_id
+            JOIN wxy_port p_start ON tp_start.port_id = p_start.port_id AND tp_start.type = 'start_port'
+            JOIN wxy_port p_end ON tp_end.port_id = p_end.port_id
+        WHERE
+            tp_start.trip_id = 1;

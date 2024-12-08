@@ -1,5 +1,6 @@
 package com.wxy.databaseproject.service;
 
+import com.wxy.databaseproject.model.OrderTripInfo;
 import com.wxy.databaseproject.model.Port;
 import com.wxy.databaseproject.model.Trip;
 import com.wxy.databaseproject.repository.TripRepository;
@@ -123,6 +124,10 @@ public class TripService {
         }
         tripRepository.updateCruiseTripId(cruiseId,createdTrip.getTripId());
         return true;
+    }
+
+    public OrderTripInfo getCruiseInfo(Integer tripId) {
+        return tripRepository.getCruiseInfo(tripId);
     }
 
     /**

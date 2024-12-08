@@ -1,5 +1,6 @@
 package com.wxy.databaseproject.controller;
 
+import com.wxy.databaseproject.model.OrderTripInfo;
 import com.wxy.databaseproject.model.Trip;
 import com.wxy.databaseproject.service.TripService;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,12 @@ public class TripController {
 
     public TripController(TripService tripService) {
         this.tripService = tripService;
+    }
+
+    @GetMapping("/trip/cruise/{tripId}")
+    public ResponseEntity<OrderTripInfo> getTripInfo(@PathVariable Integer tripId) {
+        OrderTripInfo tripInfo = tripService.getCruiseInfo(tripId);
+        return new ResponseEntity<>(tripInfo, HttpStatus.OK);
     }
 
     @GetMapping("/trip/getall")
