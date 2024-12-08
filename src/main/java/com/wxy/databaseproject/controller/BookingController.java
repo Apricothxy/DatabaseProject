@@ -21,11 +21,12 @@ public class BookingController {
         this.bookingService = bookingService;
     }
 
-    @PostMapping("/booking")
+    @PostMapping("/bookings")
     public ResponseEntity<Map<String, Object>> createBooking(
             @RequestBody List<Map<String, Object>> bookingData) {
         Map<String, Object> response = bookingService.createBooking(bookingData);
-        System.out.println("connected");
+        System.out.println(response);
+
         if ("success".equals(response.get("status"))) {
             return ResponseEntity.ok(response);
         } else {

@@ -597,6 +597,7 @@
     proceedBtn.addEventListener('click', async () => {
         // Strip out price and quantity before sending
         const bookingData = selectedPassengers.map(sp => ({
+            tripId: tripId,
             passengerId: sp.passengerId,
             stateroomId: sp.stateroomId,
             stateroomNum: tripDays,
@@ -607,7 +608,7 @@
         }));
 
         try {
-            const response = await fetch('/bookings', {
+            const response = await fetch('/api/bookings', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(bookingData)
