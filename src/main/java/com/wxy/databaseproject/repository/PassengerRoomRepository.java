@@ -14,7 +14,7 @@ public class PassengerRoomRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public double addPassengerRoom(int passengerId, int stateroomId) {
+    public double addPassengerRoom(int passengerId, int stateroomId, int night_num) {
         String getBirthDateSql = "SELECT birth_date FROM wxy_passenger WHERE passenger_id = ?";
         Date birthDate = jdbcTemplate.queryForObject(getBirthDateSql, new Object[]{passengerId}, Date.class);
 
@@ -39,6 +39,7 @@ public class PassengerRoomRepository {
             String priceSql = "SELECT price_per_person FROM wxy_stateroom WHERE room_id = ?";
             price = jdbcTemplate.queryForObject(priceSql, new Object[]{stateroomId}, Double.class);
         }
+        price *= night_num;
 
         String sql = "INSERT INTO wxy_passenger_room (passenger_id, room_id, price) VALUES (?, ?, ?)";
         jdbcTemplate.update(sql, passengerId, stateroomId, price);
