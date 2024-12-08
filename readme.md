@@ -353,30 +353,32 @@
     ```json
     [
       {
-        "passengerId": 101,
-        "stateroomId": 301,
+        "tripId": 1,
+        "passengerId": 1,
+        "stateroomId": 1,
         "stateroomNum": 7,
         "packages": [
-          { "packageType": xxx,
+          { "packageType": "Water and Non-Alcoholic",
           	"packageNum" : 1
           },
-          { "packageType": xxx,
+          { "packageType": "Unlimited Bar",
           	"packageNum" : 1
           },
-          { "packageType": xxx,
+          { "packageType": "Internet 200 minutes",
           	"packageNum" : 1
           }
         ]
       },
       {
-        "passengerId": 102,
-        "stateroomId": 302,
+        "tripId": 1,
+        "passengerId": 2,
+        "stateroomId": 1,
         "stateroomNum": 7,
         "packages": [
-          { "packageType": xxx,
+          { "packageType": "Unlimited internet",
           	"packageNum" : 1
           },
-          { "packageType": xxx,
+          { "packageType": "Specialty dining",
           	"packageNum" : 1
           }
         ]

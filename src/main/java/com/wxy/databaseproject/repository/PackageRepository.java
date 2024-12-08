@@ -11,9 +11,8 @@ public class PackageRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public double updatePackageForPassenger(int passengerId, String packageType, int night_num) {
-//        String getPriceSql = "SELECT price FROM wxy_package WHERE package_type = ? LIMIT 1";
-//        Double price = jdbcTemplate.queryForObject(getPriceSql, new Object[]{packageType}, Double.class);
+    public double updatePackageForPassenger(int passengerId, String packageType, int packageNum) {
+
         double price = 0.0;
         if(packageType == "Water and Non-Alcoholic"){
             price = 40.0;
@@ -27,7 +26,7 @@ public class PackageRepository {
             price = 60.0;
         }
 
-        price *= night_num;
+        price *= packageNum;
         packageType = packageType.trim();
 
         String insertSql = "INSERT INTO wxy_package (passenger_id, type, price) VALUES (?, ?, ?)";

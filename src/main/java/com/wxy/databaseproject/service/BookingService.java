@@ -45,18 +45,20 @@ public class BookingService {
             for (Map<String, Object> record : bookingData) {
                 Integer passengerId = (Integer) record.get("passengerId");
                 Integer stateroomId = (Integer) record.get("stateroomId");
-                List<Map<String, String>> packages = (List<Map<String, String>>) record.get("packages");
+                List<Map<String, Object>> packages = (List<Map<String, Object>>) record.get("packages");
 
                 // Step 2: 创建 passenger_group 记录
                 passengerGroupRepository.addPassengerToGroup(passengerId, groupId);
 
                 // Step 3: 创建 passenger_room 记录
-                totalPrice += passengerRoomRepository.addPassengerRoom(passengerId, stateroomId);
+                int room_night_num = (Integer) record.get("stateroomNum");
+                totalPrice += passengerRoomRepository.addPassengerRoom(passengerId, stateroomId, room_night_num);
 
                 // Step 4: 创建 package 记录
-                for (Map<String, String> pkg : packages) {
-                    String packageType = pkg.get("packageType");
-                    totalPrice += packageRepository.updatePackageForPassenger(passengerId,packageType,1);
+                for (Map<String, Object> pkg : packages) {
+                    String packageType = (String) pkg.get("packageType");
+                    Integer packageNum = (Integer) pkg.get("packageNum");
+                    totalPrice += packageRepository.updatePackageForPassenger(passengerId,packageType, packageNum);
                 }
             }
 
