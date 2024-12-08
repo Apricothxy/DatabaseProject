@@ -35,7 +35,7 @@ public class PassengerRoomRepository {
             months += 12;
         }
         double price = 0.0;
-        if(year > 5){
+        if(years > 5){
             String priceSql = "SELECT price_per_person FROM wxy_stateroom WHERE room_id = ?";
             price = jdbcTemplate.queryForObject(priceSql, new Object[]{stateroomId}, Double.class);
         }
