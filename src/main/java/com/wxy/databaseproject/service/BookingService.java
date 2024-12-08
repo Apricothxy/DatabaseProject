@@ -2,13 +2,9 @@ package com.wxy.databaseproject.service;
 
 import com.wxy.databaseproject.repository.*;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import java.util.*;
 
 @Service
 public class BookingService {
@@ -32,62 +28,61 @@ public class BookingService {
         this.invoiceRepository = invoiceRepository;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public List<Map<String, Object>> createBooking(List<Map<String, Object>> bookingData) {
         List<Map<String, Object>> responseList = new ArrayList<>();
         Map<String, Object> response = new HashMap<>();
-//        System.out.println("BookingService");
+
         try {
-            // Step 1: 创建 group 记录
-            int groupId = 1;
+            // Step 1: Extract the tripId from the booking data.
             Integer tripId = null;
-            for (Map<String, Object> record : bookingData){
-//                System.out.println("A");
-                tripId = Integer.parseInt((String)record.get("tripId"));
-//                System.out.println("C");
-                break;
+            for (Map<String, Object> record : bookingData) {
+                tripId = Integer.parseInt((String) record.get("tripId"));
+                break; // Assuming all records share the same tripId.
             }
+
+            // Before creating the group, check if any passenger is already in a group for the same trip.
             for (Map<String, Object> record : bookingData) {
                 Integer passengerId = (Integer) record.get("passengerId");
-                // 使用passengerGroupRepository检查是否已经属于该trip的其他group
                 boolean alreadyInGroup = passengerGroupRepository.isPassengerInTrip(passengerId, tripId);
                 if (alreadyInGroup) {
-                    // 如果存在则直接抛出异常或返回错误信息
+                    // If any passenger is already in a group for this trip, throw an exception.
+                    // This will cause the transaction to roll back.
                     throw new RuntimeException("Passenger " + passengerId + " is already in this trip " + tripId);
                 }
             }
-            groupId = groupRepository.createGroup(tripId);
+
+            // Step 2: Create a new group record for this trip.
+            int groupId = groupRepository.createGroup(tripId);
             double totalPrice = 0.0;
 
-//            System.out.println("1");
-
+            // Step 3: For each passenger, insert their group, room, and package data.
+            // If any step fails, an exception will be thrown, rolling back the entire transaction.
             for (Map<String, Object> record : bookingData) {
                 Integer passengerId = (Integer) record.get("passengerId");
                 Integer stateroomId = (Integer) record.get("stateroomId");
+                int room_night_num = (Integer) record.get("stateroomNum");
                 List<Map<String, Object>> packages = (List<Map<String, Object>>) record.get("packages");
 
-                // Step 2: 创建 passenger_group 记录
+                // Add the passenger to the group
                 passengerGroupRepository.addPassengerToGroup(passengerId, groupId);
-//                System.out.println("2");
 
-                // Step 3: 创建 passenger_room 记录
-                int room_night_num = (Integer) record.get("stateroomNum");
+                // Add passenger-room records and update total price
                 totalPrice += passengerRoomRepository.addPassengerRoom(passengerId, stateroomId, room_night_num);
-//                System.out.println("3");
 
-                // Step 4: 创建 package 记录
+                // Add/update package records for this passenger and update total price
                 for (Map<String, Object> pkg : packages) {
                     String packageType = (String) pkg.get("packageType");
                     Integer packageNum = (Integer) pkg.get("packageNum");
-                    totalPrice += packageRepository.updatePackageForPassenger(passengerId,packageType, packageNum);
+                    totalPrice += packageRepository.updatePackageForPassenger(passengerId, packageType, packageNum);
                 }
-//                System.out.println("4");
             }
 
-            // Step 5: 创建 invoice 记录
+            // Step 4: Create an invoice record for the entire group
             String invoiceId = invoiceRepository.createInvoice(groupId, totalPrice);
-//            System.out.println("5");
 
-            // 返回成功响应
+            // If we reach this point without exceptions, all operations are successful
+            // and the transaction will be committed automatically.
             response.put("status", "success");
             response.put("invoiceID", invoiceId);
             response.put("TotalPrice", totalPrice);
@@ -95,7 +90,9 @@ public class BookingService {
             return responseList;
 
         } catch (Exception e) {
-            // 错误处理
+            // In case of any exception, the transaction is rolled back.
+            // Return a failure response to the client.
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             response.put("status", "fail");
             response.put("message", e.getMessage());
             response.put("TotalPrice", -1);
