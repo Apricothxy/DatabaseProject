@@ -64,8 +64,8 @@ ALTER TABLE wxy_package ADD CHECK ( price >= 0 );
 -- ALTER TABLE wxy_package ADD CONSTRAINT wxy_package_pk PRIMARY KEY ( package_id );
 
 ALTER TABLE wxy_package
-    ADD CHECK ( type IN ( 'Water and Non-Alcoholic', 'Unlimited Bar', 'Internet 200 minutes', 
-                           'Unlimited internet', 'Specialty dining' ) );
+    ADD CHECK ( type IN ( 'Water and Non-Alcoholic', 'Unlimited Bar', 'Internet 200 minutes, 100 GB', 
+                           'Unlimited Internet', 'Specialty dining' ) );
 
 CREATE TABLE wxy_passenger (
     passenger_id     INT AUTO_INCREMENT NOT NULL COMMENT 'passenger id',
@@ -100,14 +100,14 @@ ALTER TABLE wxy_passenger_room ADD CHECK ( price >= 0 );
 ALTER TABLE wxy_passenger_room ADD CONSTRAINT wxy_passenger_room_pk PRIMARY KEY ( room_id, passenger_id );
 
 CREATE TABLE wxy_payment (
-    payment_id INT NOT NULL COMMENT 'payment id',
+    payment_id INT AUTO_INCREMENT PRIMARY KEY,
     amount     DECIMAL(10, 2) NOT NULL COMMENT 'amount in us dollar',
     `DATE`     DATETIME NOT NULL COMMENT 'payment data',
     method     VARCHAR(50) NOT NULL COMMENT 'payment method',
     invoice_id INT NOT NULL COMMENT 'invoice the payment for'
 );
 
-ALTER TABLE wxy_payment ADD CONSTRAINT wxy_payment_pk PRIMARY KEY ( payment_id );
+-- ALTER TABLE wxy_payment ADD CONSTRAINT wxy_payment_pk PRIMARY KEY ( payment_id );
 
 CREATE TABLE wxy_port (
     port_id                 INT NOT NULL COMMENT 'port id',

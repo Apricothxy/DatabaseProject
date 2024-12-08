@@ -13,19 +13,22 @@ public class PackageRepository {
 
     public double updatePackageForPassenger(int passengerId, String packageType, int packageNum) {
 
+
         double price = 0.0;
-        if(packageType == "Water and Non-Alcoholic"){
+        packageType = packageType.trim();
+        System.out.println(packageType);
+        if(packageType.equals("Water and Non-Alcoholic")){
             price = 40.0;
-        }else if(packageType == "Unlimited Bar"){
+        }else if(packageType.equals("Unlimited Bar")){
             price = 80.0;
-        }else if(packageType == "Internet 200 minutes"){
+        }else if(packageType.equals("Internet 200 minutes, 100 GB")){
             price = 150.0;
-        }else if(packageType == "Unlimited internet"){
+        }else if(packageType.equals("Unlimited Internet")){
             price = 250.0;
-        }else if(packageType == "Specialty dining"){
+        }else if(packageType.equals("Specialty dining")){
             price = 60.0;
         }
-
+        System.out.println(price+" "+packageNum);
         price *= packageNum;
         packageType = packageType.trim();
 
