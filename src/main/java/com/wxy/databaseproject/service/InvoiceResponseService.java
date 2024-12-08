@@ -31,7 +31,7 @@ public class InvoiceResponseService {
                 int groupId = (int) row.get("groupId");
                 int tripId = (int) row.get("tripId");
                 BigDecimal invoiceAmount = (BigDecimal) row.get("invoiceAmount");
-                int paymentId = (int) row.get("paymentId");
+                long paymentId = (long) row.get("paymentId");
                 String paId = "";
                 if(paymentId == -1){
                     paId = "Fail";
