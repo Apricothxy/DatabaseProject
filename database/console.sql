@@ -4,6 +4,8 @@ create database databaseproject;
 drop database databaseproject;
 create database databaseproject;
 
+
+
 select * from databaseproject.WXY_CRUISE;
 select * from databaseproject.WXY_STATEROOM;
 select * from databaseproject.WXY_RESTAURANT;

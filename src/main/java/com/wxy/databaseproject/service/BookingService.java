@@ -39,16 +39,23 @@ public class BookingService {
         try {
             // Step 1: 创建 group 记录
             int groupId = 1;
+            Integer tripId = null;
             for (Map<String, Object> record : bookingData){
 //                System.out.println("A");
-                Integer tripId = Integer.parseInt((String)record.get("tripId"));
-//                System.out.println("B");
-                groupId = groupRepository.createGroup(tripId);
+                tripId = Integer.parseInt((String)record.get("tripId"));
 //                System.out.println("C");
                 break;
             }
-
-
+            for (Map<String, Object> record : bookingData) {
+                Integer passengerId = (Integer) record.get("passengerId");
+                // 使用passengerGroupRepository检查是否已经属于该trip的其他group
+                boolean alreadyInGroup = passengerGroupRepository.isPassengerInTrip(passengerId, tripId);
+                if (alreadyInGroup) {
+                    // 如果存在则直接抛出异常或返回错误信息
+                    throw new RuntimeException("Passenger " + passengerId + " is already in this trip " + tripId);
+                }
+            }
+            groupId = groupRepository.createGroup(tripId);
             double totalPrice = 0.0;
 
 //            System.out.println("1");
