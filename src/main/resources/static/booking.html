@@ -595,7 +595,6 @@
     }
 
     proceedBtn.addEventListener('click', async () => {
-        // Strip out price and quantity before sending
         const bookingData = selectedPassengers.map(sp => ({
             tripId: tripId,
             passengerId: sp.passengerId,
@@ -614,17 +613,17 @@
                 body: JSON.stringify(bookingData)
             });
 
-            if (response.ok) {
-                const result = await response.json();
-                // Expect:
-                // [
-                //   {
-                //     "status": "success" or "fail",
-                //     "invoiceID": invoiceid or undefined,
-                //     "TotalPrice": totalprice or -1
-                //   }
-                // ]
+            let result;
+            try {
+                // 尝试解析返回的 JSON，即使 status 非200
+                result = await response.json();
+            } catch (err) {
+                // 如果无法解析 JSON 则置空
+                result = null;
+            }
 
+            if (response.ok) {
+                // 请求成功状态
                 if (Array.isArray(result) && result.length > 0) {
                     const resData = result[0];
                     if (resData.status === 'success') {
@@ -640,16 +639,21 @@
                             + '&endPortName=' + encodeURIComponent(endPortName);
                         window.location.href = url;
                     } else {
+                        // 当 status 为 fail 时，显示具体错误消息
                         alert('booking failed: ' + (resData.message || 'Unknown error'));
                     }
                 } else {
                     alert('booking failed: Invalid response format.');
                 }
-
             } else {
-                console.error('Booking failed, status:', response.status);
-                alert('booking failed: Server error ' + response.status);
+                // 请求非成功状态，如400、500等
+                if (Array.isArray(result) && result.length > 0 && result[0].message) {
+                    alert('booking failed: ' + result[0].message);
+                } else {
+                    alert('booking failed: Server error ' + response.status);
+                }
             }
+
         } catch (error) {
             console.error('Error calling bookings API:', error);
             alert('booking failed: Network error.');

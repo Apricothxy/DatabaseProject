@@ -17,5 +17,13 @@ public class PassengerGroupRepository {
         jdbcTemplate.update(sql,  passengerId, groupId);
 
     }
+    public boolean isPassengerInTrip(int passengerId, int tripId) {
+        String sql = "SELECT COUNT(*) FROM wxy_passenger_group pg " +
+                "JOIN wxy_group g ON pg.group_id = g.group_id " +
+                "WHERE pg.passenger_id = ? AND g.trip_id = ?";
+
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, passengerId, tripId);
+        return count != null && count > 0;
+    }
 }
 
