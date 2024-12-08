@@ -339,6 +339,7 @@
     const endTime = urlParams.get('endTime');
     const startPortName = urlParams.get('startPortName');
     const endPortName = urlParams.get('endPortName');
+    const stopPorts = JSON.parse(decodeURIComponent(urlParams.get('stopPortName')));
 
     const bookNowBtn = document.querySelector('.book-now-btn');
     bookNowBtn.addEventListener('click', (e) => {
@@ -380,10 +381,6 @@
         window.location.href = 'login.html';
     });
 
-    // No menuBtn now, so no toggling side menu is needed
-    // If needed in the future, you can reintroduce a button and logic
-
-    // Fetch trip details
     async function fetchTripDetail(id) {
         try {
             const response = await fetch(`/api/tripdetail/${id}`, { method: 'GET' });
@@ -405,6 +402,27 @@
         // Display start/end info if available
         if (startPortName && endPortName && startTime && endTime) {
             startEndInfo.textContent = `From ${startPortName} (${startTime}) to ${endPortName} (${endTime})`;
+
+            console.log(stopPorts);
+            if (Array.isArray(stopPorts) && stopPorts.length > 0) {
+                const stopsTitle = document.createElement('div');
+                stopsTitle.style.marginTop = '10px';
+                stopsTitle.innerHTML = '<strong>Intermediate Stops:</strong>';
+
+                const stopsList = document.createElement('ul');
+                stopsList.style.listStyleType = 'disc';
+                stopsList.style.paddingLeft = '20px';
+
+                stopPorts.forEach(stop => {
+                    const li = document.createElement('li');
+                    li.textContent = `${stop.portName}: Arrive at ${stop.arrivalTime}, Depart at ${stop.departureTime}`;
+                    stopsList.appendChild(li);
+                });
+
+                startEndInfo.insertAdjacentElement('afterend', stopsTitle);
+                stopsTitle.insertAdjacentElement('afterend', stopsList);
+            }
+
         } else {
             startEndInfo.textContent = 'No start/end info available.';
         }
@@ -449,12 +467,12 @@
                 const roomInfo = document.createElement('div');
                 roomInfo.className = 'room-info';
                 roomInfo.innerHTML = `
-                    <p><strong>Size:</strong> ${room.size} sq.ft</p>
-                    <p><strong>Bathrooms:</strong> ${room.bathroomNum}</p>
-                    <p><strong>Beds:</strong> ${room.bedNum}</p>
-                    <p><strong>Balconies:</strong> ${room.balcony}</p>
-                    <p><strong>Position:</strong> ${room.position}</p>
-                `;
+                <p><strong>Size:</strong> ${room.size} sq.ft</p>
+                <p><strong>Bathrooms:</strong> ${room.bathroomNum}</p>
+                <p><strong>Beds:</strong> ${room.bedNum}</p>
+                <p><strong>Balconies:</strong> ${room.balcony}</p>
+                <p><strong>Position:</strong> ${room.position}</p>
+            `;
                 roomCard.appendChild(roomInfo);
 
                 const price = document.createElement('div');
@@ -468,6 +486,7 @@
             stateroomsContainer.textContent = 'No staterooms available.';
         }
     }
+
 
     // Fetch detail on load
     fetchTripDetail(tripId);
