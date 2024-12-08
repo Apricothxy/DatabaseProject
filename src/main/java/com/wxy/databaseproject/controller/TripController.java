@@ -24,6 +24,7 @@ public class TripController {
     @GetMapping("/trip/getall")
     public ResponseEntity<List<Trip>> getAllTrips() {
         List<Trip> trips = tripService.getAllTrips();
+//        System.out.println(trips);
         return new ResponseEntity<>(trips, HttpStatus.OK);
     }
 

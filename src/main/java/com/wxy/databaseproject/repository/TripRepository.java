@@ -45,6 +45,7 @@ public class TripRepository {
         List<Trip> trips = jdbcTemplate.query(sql, tripRowMapper);
         for (Trip trip : trips) {
             setPortInfo(trip);
+            setCruiseInfo(trip);
         }
         return trips;
     }
@@ -109,7 +110,13 @@ public class TripRepository {
         trip.setEndPort(endPort);
         trip.setStopPort(stopPorts);
     }
-
+    private void setCruiseInfo(Trip trip) {
+        String sql = "SELECT cruise_id, cruise_name FROM wxy_cruise WHERE trip_id = ?";
+        jdbcTemplate.query(sql, new Object[]{trip.getTripId()}, rs -> {
+            trip.setCruiseId(rs.getInt("cruise_id"));
+            trip.setCruiseName(rs.getString("cruise_name"));
+        });
+    }
     private void insertTripPort(int tripId, Port port, String type) {
         String sql = "INSERT INTO wxy_trip_port (trip_id, port_id, type, start_date, end_date) VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
