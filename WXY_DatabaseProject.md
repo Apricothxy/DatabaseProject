@@ -43,7 +43,13 @@
 
   ​	To manage the information of the cruise company, we set the 'Administrator Login', where the administrator can manage the trip, cruise, and user.
 
-  
+- Logical Model
+
+![aa4a45cf8cf0d174b03104ad1d986e1](C:\Users\wyh_a\Documents\WeChat Files\wxid_n6lszog8lt3r12\FileStorage\Temp\aa4a45cf8cf0d174b03104ad1d986e1.png)
+
+- Relational Model
+
+  ![7bdc98d0f8c4eb3c08df25ec5712e60](C:\Users\wyh_a\Documents\WeChat Files\wxid_n6lszog8lt3r12\FileStorage\Temp\7bdc98d0f8c4eb3c08df25ec5712e60.png)
 
 ## Software, programming language and database used
 
@@ -317,9 +323,20 @@
   ALTER TABLE wxy_passenger
       ADD CONSTRAINT wxy_passenger_wxy_user_fk FOREIGN KEY ( user_id )
           REFERENCES wxy_user ( user_id );
+          
   ```
 
-  
+  ```mysql
+  CREATE INDEX idx_trip_id_cruise_name ON wxy_cruise (trip_id, cruise_name);
+  CREATE INDEX idx_trip_port_trip_id_port_id ON wxy_trip_port (trip_id, port_id);
+  CREATE INDEX idx_port_name ON wxy_port (port_name);
+  CREATE INDEX idx_user_name_password ON wxy_user (user_name, password);
+  CREATE INDEX idx_group_invoice ON wxy_invoice (group_id, invoice_id);
+  CREATE INDEX idx_group_payment ON wxy_payment (invoice_id, payment_id);
+  CREATE INDEX idx_passenger_package ON wxy_package (package_id, passenger_id);
+  ```
+
+
 
 ## Database Summary
 
@@ -416,7 +433,7 @@ Cruise Management: Admin can add Cruises
 
   We learned how to use multithreading to collaborate and complete large-scale projects.
 
-  Also this code includes too much lines that irrelevant to database, like 4k+ lines of frontend code:
+  Also this code includes too much lines that aparts from MySql, like 4k+ lines of frontend code so as to have a cool website look:
 
 ![image-20241208192302579](C:\Users\wyh_a\AppData\Roaming\Typora\typora-user-images\image-20241208192302579.png)
 
@@ -593,3 +610,55 @@ Cruise Management: Admin can add Cruises
   ###### A3)  Buss. Purpose
 
   Find the top 5 passengers with the highest spending amount (sorted by total spending amount).
+
+
+
+## Extra Features
+
+- Cache Feature: We store a bunch of data at Front end like logged in userID or trip details info etc. to decrease the times to invoke backend apis.
+
+- Index Feature:
+
+- - Index on cruise_name
+
+    ```mysql
+    CREATE INDEX idx_trip_id_cruise_name ON wxy_cruise (trip_id, cruise_name);
+    ```
+
+    We use trip_id to consult cruise_name very often, so we build a composite index.
+
+  - Index on tripId, portId
+
+    ```mysql
+    CREATE INDEX idx_trip_port_trip_id_port_id ON wxy_trip_port (trip_id, port_id);
+    ```
+
+  - Index on portName
+
+    ```mysql
+    CREATE INDEX idx_port_name ON wxy_port (port_name);
+    ```
+
+  - Username and password
+
+    ```mysql
+    CREATE INDEX idx_user_name_password ON wxy_user (user_name, password);
+    ```
+
+- - Invoice and Payment
+
+    ```mysql
+    CREATE INDEX idx_group_invoice ON wxy_invoice (group_id, invoice_id);
+    CREATE INDEX idx_group_payment ON wxy_payment (invoice_id, payment_id);
+    ```
+
+  - Passenger and package
+
+    ```mysql
+    CREATE INDEX idx_passenger_package ON wxy_package (package_id, passenger_id);
+    ```
+
+- Security check:
+  ![image-20241208200858787](C:\Users\wyh_a\AppData\Roaming\Typora\typora-user-images\image-20241208200858787.png)
+
+​	We enforce the old password and repeat new password when changing password, and the backend database will check whether the old password matches, and if match can only successfully change the password. Also, all passwords are encrypted.

@@ -16,6 +16,8 @@ CREATE TABLE wxy_cruise (
 
 CREATE UNIQUE INDEX wxy_cruise__idx ON wxy_cruise (trip_id ASC);
 
+
+
 CREATE TABLE wxy_entertainment (
     entertainment_id INT AUTO_INCREMENT NOT NULL COMMENT 'entertainment id',
     type             VARCHAR(20) NOT NULL COMMENT 'entertainment type',
@@ -257,3 +259,5 @@ ALTER TABLE wxy_trip_port
 ALTER TABLE wxy_passenger
     ADD CONSTRAINT wxy_passenger_wxy_user_fk FOREIGN KEY ( user_id )
         REFERENCES wxy_user ( user_id );
+
+
