@@ -942,7 +942,7 @@
                 if (trip.startPort && trip.endPort) {
                     route = `From ${trip.startPort.portName} (${trip.startPort.startDate}) to ${trip.endPort.portName} (${trip.endPort.endDate})`;
                 } else {
-                    route = trip.cruiseName ? trip.cruiseName : 'N/A';
+                    return;
                 }
 
                 const tr = document.createElement('tr');

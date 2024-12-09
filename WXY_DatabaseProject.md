@@ -1,16 +1,16 @@
-# <center>Principles of Database System</center>
+<h1><center>Principles of Database System</center></h1>
 
-# <center>CS-GY 6083B, Fall 2024</center>
+<h1><center>CS-GY 6083B, Fall 2024</center></h1>
 
-## <center>Final Project</center>
+<h2><center>Final Project</center></h2>
 
-## <center>Submission Date: Dec 8</center>
-
-
+<h2><center>Submission Date: Dec 8</center></h2>
 
 
 
-## Group Information:
+[TOC]
+
+## Group Information
 
 - `Yuheng Wu` NetID: `yw5372` NYUID: `N17059532`
 - `Xingyu Han` NetID: `xh2787` NYUID: `N19933026`
@@ -18,9 +18,9 @@
 
 
 
+## [Our Github Repository Link](https://github.com/Apricothxy/DatabaseProject)
 
 
-## Table of content
 
 1. ​	Execute Summary
 2. ​	Software, programming language and database used
@@ -31,7 +31,7 @@
 7. ​	Reflections
 8. ​	Business analysis
 
-- ## Execute Summary
+## Execute Summary
 
   ​	When the user tries to book tickets, the user needs to select 'Departure Location', 'Arrival Location', "Departure Date', and 'Arrival Date'. The filter will show all the trip that fits the requirements. 
 
@@ -45,17 +45,17 @@
 
   
 
-- ## Software, programming language and database used
+## Software, programming language and database used
 
-  ###### Software: IntelliJ IDEA, VScode, Oracle, Postman, JDK 22, Maven
+**Software: IntelliJ IDEA, VScode, Oracle, Postman, JDK 22, Maven**
 
-  ###### Programming Language: Java, HTML, CSS, JavaScript,  MySql, SQL
+**Programming Language: Java, HTML, CSS, JavaScript,  MySql, SQL**
 
-  ###### Database: MySql
+**Database: MySql**
 
   
 
-- ## DDL Code (MySql)
+## DDL Code (MySql)
 
   ```MySql
   use databaseproject;
@@ -321,13 +321,88 @@
 
   
 
-- ## Database Summary
+## Database Summary
 
-  ![image-20241208180923184](C:\Users\zhouw\AppData\Roaming\Typora\typora-user-images\image-20241208180923184.png)
+  ![image-20241208180923184](./images/databasesummary.png)
 
-- ## Web Application Interface Preview
+## Web Application Interface Preview
 
-- ## Security Features
+Welcome Page: Click Book Ticket Now and jump to login
+
+![image-20241208191800975](C:\Users\wyh_a\AppData\Roaming\Typora\typora-user-images\image-20241208191800975.png)
+
+![image-20241208191818899](C:\Users\wyh_a\AppData\Roaming\Typora\typora-user-images\image-20241208191818899.png)
+
+Login Page: Admin Login on the top right corner
+
+![image-20241208192541692](C:\Users\wyh_a\AppData\Roaming\Typora\typora-user-images\image-20241208192541692.png)
+
+Home Main Page and A smooth Hidden Sidebar:
+
+![image-20241208192644428](C:\Users\wyh_a\AppData\Roaming\Typora\typora-user-images\image-20241208192644428.png)
+
+![image-20241208192716460](C:\Users\wyh_a\AppData\Roaming\Typora\typora-user-images\image-20241208192716460.png)
+
+Account Page: Can also Change username and password
+
+![image-20241208192753400](C:\Users\wyh_a\AppData\Roaming\Typora\typora-user-images\image-20241208192753400.png)
+
+Add Passenger Page:
+
+![image-20241208192928217](C:\Users\wyh_a\AppData\Roaming\Typora\typora-user-images\image-20241208192928217.png)
+
+Now if we want to book tickets, in home page, clicking on the trip can show further details:
+
+![image-20241208193021533](C:\Users\wyh_a\AppData\Roaming\Typora\typora-user-images\image-20241208193021533.png)
+
+Trip details page: 
+
+![image-20241208193103872](C:\Users\wyh_a\AppData\Roaming\Typora\typora-user-images\image-20241208193103872.png)
+
+Click book to go to next page to choose packages and room for passengers. Age filter applies twice both in frontend and backend. Passengers in the same order automatically form a group.
+![image-20241208193213719](C:\Users\wyh_a\AppData\Roaming\Typora\typora-user-images\image-20241208193213719.png)
+
+After choosing, there is a summary to the things chosen.
+
+![image-20241208193359525](C:\Users\wyh_a\AppData\Roaming\Typora\typora-user-images\image-20241208193359525.png)
+
+We click Proceed to Payment and goes to payment page.![image-20241208193454006](C:\Users\wyh_a\AppData\Roaming\Typora\typora-user-images\image-20241208193454006.png)
+
+Note that user can still go back without Paying and pay in `My orders` in home page. We directly pay for this time. There goes to thank you page.
+
+![image-20241208193611407](C:\Users\wyh_a\AppData\Roaming\Typora\typora-user-images\image-20241208193611407.png)
+
+User can goes to `My orders` tab on home page to see their orders or pay unpaid invoices.
+
+![image-20241208194052339](C:\Users\wyh_a\AppData\Roaming\Typora\typora-user-images\image-20241208194052339.png)
+
+Admin Part:
+
+Admin Login:
+
+![image-20241208194131668](C:\Users\wyh_a\AppData\Roaming\Typora\typora-user-images\image-20241208194131668.png)
+
+User Management: Can see all users and click to see user's all passengers' info. Password can be seen through clicking the little eyes icon. Also, admin can add user here.
+
+![image-20241208194213712](C:\Users\wyh_a\AppData\Roaming\Typora\typora-user-images\image-20241208194213712.png)
+
+![image-20241208194235636](C:\Users\wyh_a\AppData\Roaming\Typora\typora-user-images\image-20241208194235636.png)
+
+Trip Management Page: Admin can add trips
+
+![image-20241208195551865](C:\Users\wyh_a\AppData\Roaming\Typora\typora-user-images\image-20241208195551865.png)
+
+![image-20241208195621631](C:\Users\wyh_a\AppData\Roaming\Typora\typora-user-images\image-20241208195621631.png)
+
+Cruise Management: Admin can add Cruises
+
+![image-20241208195637804](C:\Users\wyh_a\AppData\Roaming\Typora\typora-user-images\image-20241208195637804.png)
+
+![image-20241208195705449](C:\Users\wyh_a\AppData\Roaming\Typora\typora-user-images\image-20241208195705449.png)
+
+
+
+## Security Features
 
   - SQL injection protection: we use Java Springboot Jdbc features and prepareStatements to replace our DTO class variables to fill the "?" in our SQL String, so there is no possibility to attacked by Sql injection.
 
@@ -335,7 +410,7 @@
 
   - We use RSA asymmetric encryption to encrypted password.
 
-- ## Reflections
+## Reflections
 
   We learnt how to use RDBMSs like Java Springboot framework and we learnt design frontend with HTML, CSS and JavaScript, and manage large scale database.
 
@@ -343,13 +418,13 @@
 
   Also this code includes too much lines that irrelevant to database, like 4k+ lines of frontend code:
 
-  ![image-20241208182354405](C:\Users\zhouw\AppData\Roaming\Typora\typora-user-images\image-20241208182354405.png)
+![image-20241208192302579](C:\Users\wyh_a\AppData\Roaming\Typora\typora-user-images\image-20241208192302579.png)
 
   Also this is a strong prove that we have been frequently collaborate 😀:
 
-  ![image-20241208184726262](C:\Users\zhouw\AppData\Roaming\Typora\typora-user-images\image-20241208184726262.png)
+  ![image-20241208192332752](C:\Users\wyh_a\AppData\Roaming\Typora\typora-user-images\image-20241208192332752.png)
 
-- ## Business analysis
+## Business analysis
 
   #### Q1 Table joins with at least 3 tables in join.
 
@@ -377,7 +452,7 @@
 
   ###### A2) Result of the query
 
-  ![image-20241208182540571](C:\Users\zhouw\AppData\Roaming\Typora\typora-user-images\image-20241208182540571.png)
+  ![image-20241208182540571](./images/Q1res.png)
 
   ###### A3) Buss. Purpose
 
@@ -403,7 +478,7 @@
 
   ###### A2) Result of the query
 
-  ![image-20241208182913474](C:\Users\zhouw\AppData\Roaming\Typora\typora-user-images\image-20241208182913474.png)
+  ![image-20241208182913474](./images/Q2res.png)
 
   ###### A3) Buss. Purpose
 
@@ -428,7 +503,7 @@
 
   ###### A2) Result of the query
 
-  ![image-20241208183419429](C:\Users\zhouw\AppData\Roaming\Typora\typora-user-images\image-20241208183419429.png)
+  ![image-20241208183419429](./images/Q3res.png)
 
   ###### A3) Buss. Purpose
 
@@ -449,9 +524,9 @@
 
   ###### A2) Result of the query
 
-  ![image-20241208184330596](C:\Users\zhouw\AppData\Roaming\Typora\typora-user-images\image-20241208184330596.png)
+  ![image-20241208184330596](./images/Q4res.png)
 
-  ###### A3) **Buss. Purpose**
+  ###### A3) Buss. Purpose
 
   Find passenger id of passenger who reserve a room but not book any packages.
 
@@ -481,9 +556,9 @@
 
   ###### A2) Result of the query
 
-  ![image-20241208184748434](C:\Users\zhouw\AppData\Roaming\Typora\typora-user-images\image-20241208184748434.png)
+  ![image-20241208184748434](./images/Q5res.png)
 
-  ###### A3) Buss. Purpose
+  ###### A3) Business Purpose
 
   Find the total amount of the package ordered per passenger and show only passengers whose total amount is greater than $200.
 
@@ -513,7 +588,7 @@
 
   ###### A2) Result of the query
 
-  ![image-20241208185828893](C:\Users\zhouw\AppData\Roaming\Typora\typora-user-images\image-20241208185828893.png)
+  ![image-20241208185828893](./images/Q6res.png)
 
   ###### A3)  Buss. Purpose
 

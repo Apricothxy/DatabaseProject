@@ -31,13 +31,24 @@ public class InvoiceResponseService {
                 int groupId = (int) row.get("groupId");
                 int tripId = (int) row.get("tripId");
                 BigDecimal invoiceAmount = (BigDecimal) row.get("invoiceAmount");
-                long paymentId = (long) row.get("paymentId");
+
                 String paId = "";
-                if(paymentId == -1){
-                    paId = "Fail";
-                }else{
-                    paId = "1";
+                try {
+                    long paymentId = (long) row.get("paymentId");
+                    if(paymentId == -1){
+                        paId = "Fail";
+                    }else{
+                        paId = "1";
+                    }
+                } catch (ClassCastException e) {
+                    int paymentId = (int) row.get("paymentId");
+                    if(paymentId == -1){
+                        paId = "Fail";
+                    }else{
+                        paId = "1";
+                    }
                 }
+
                 response.setTripId(tripId);
                 response.setGroupId(groupId);
                 response.setInvoiceId(invoiceId);
