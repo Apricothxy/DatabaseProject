@@ -34,7 +34,6 @@ public class BookingService {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            // Step 1: Extract the tripId from the booking data.
             Integer tripId = null;
             for (Map<String, Object> record : bookingData) {
                 tripId = Integer.parseInt((String) record.get("tripId"));
@@ -51,12 +50,9 @@ public class BookingService {
                     throw new RuntimeException("Passenger " + passengerId + " is already in this trip " + tripId);
                 }
             }
-
-            // Step 2: Create a new group record for this trip.
             int groupId = groupRepository.createGroup(tripId);
             double totalPrice = 0.0;
 
-            // Step 3: For each passenger, insert their group, room, and package data.
             // If any step fails, an exception will be thrown, rolling back the entire transaction.
             for (Map<String, Object> record : bookingData) {
                 Integer passengerId = (Integer) record.get("passengerId");
@@ -78,7 +74,6 @@ public class BookingService {
                 }
             }
 
-            // Step 4: Create an invoice record for the entire group
             String invoiceId = invoiceRepository.createInvoice(groupId, totalPrice);
 
             // If we reach this point without exceptions, all operations are successful

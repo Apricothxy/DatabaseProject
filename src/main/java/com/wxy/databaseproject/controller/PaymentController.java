@@ -24,8 +24,6 @@ public class PaymentController {
     public ResponseEntity<?> createPayment(@RequestBody PaymentRequest paymentRequest){
         try {
             String paymentId = paymentService.createPayment(paymentRequest);
-
-            // 返回成功响应
             return ResponseEntity.ok(
                     Map.of(
                             "status", "success",
@@ -34,7 +32,6 @@ public class PaymentController {
                     )
             );
         } catch (Exception e) {
-            // 返回失败响应
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     Map.of(
                             "status", "fail",

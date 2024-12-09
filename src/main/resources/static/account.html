@@ -90,20 +90,15 @@
             color: #333;
         }
 
-        /* 公司信息样式 */
         .company-info {
             display: flex;
             align-items: center;
             gap: 10px; /* Logo 和公司名称之间的间距 */
         }
-
-        /* Logo 样式 */
         .logo {
             height: 40px; /* 固定高度 */
             width: auto; /* 保持宽高比 */
         }
-
-        /* 公司名称样式 */
         .company-name {
             font-size: 1rem;
             color: #333; /* 黑色文字 */
@@ -287,7 +282,7 @@
 </div>
 
 <script>
-    let userData = null; // 全局变量，用于存储用户数据
+    let userData = null;
 
     // Page navigation logic
     const menuItems = document.querySelectorAll('.menu-item');
@@ -305,7 +300,6 @@
 
             // Show the target sections
             sections.forEach(section => {
-                // 如果section的data-page匹配，则显示，否则隐藏
                 if (section.dataset.page === targetPage) {
                     section.style.display = 'block';
                 } else {
@@ -316,7 +310,6 @@
             // Update page title
             pageTitle.textContent = item.textContent;
 
-            // 当进入change-username页面时，如果有用户数据，则显示当前用户名
             if (targetPage === 'change-username' && userData) {
                 document.getElementById('currentUsername').value = userData.username || '-';
             }
@@ -331,7 +324,7 @@
     fetch('/api/user/' + userId)
         .then(response => response.json())
         .then(data => {
-            userData = data; // 存储用户数据
+            userData = data;
 
             // Display username
             document.getElementById('usernameDisplay').textContent = userData.username || '-';
@@ -350,9 +343,8 @@
     document.getElementById('submitUsernameChange').addEventListener('click', () => {
         const newUsername = document.getElementById('newUsername').value.trim();
         const confirmUsername = document.getElementById('confirmUsername').value.trim();
-        const messageSpan = document.getElementById('usernameMessage'); // 获取显示消息的元素
+        const messageSpan = document.getElementById('usernameMessage');
 
-        // 清空之前的消息
         messageSpan.textContent = '';
 
         if (!newUsername || !confirmUsername) {
@@ -367,36 +359,33 @@
             return;
         }
 
-        // 构造请求 URL
         const url = `/api/user/cname?userid=${encodeURIComponent(userId)}&newusername=${encodeURIComponent(newUsername)}`;
 
-        // 发起修改用户名请求
         fetch(url, {
             method: 'POST'
         })
-            .then(response => response.text()) // 获取后端返回的纯文本
+            .then(response => response.text())
             .then(result => {
-                // 显示成功或失败消息
+
                 messageSpan.textContent = result;
-                messageSpan.style.color = 'green'; // 成功时显示绿色
+                messageSpan.style.color = 'green';
             })
             .catch(error => {
                 console.error('Error changing username:', error);
                 messageSpan.textContent = 'An error occurred while changing username.';
-                messageSpan.style.color = 'red'; // 错误时显示红色
+                messageSpan.style.color = 'red';
             });
     });
 
 
 
-    // 修改密码提交事件
+
     document.getElementById('submitPasswordChange').addEventListener('click', () => {
         const oldPassword = document.getElementById('oldPassword').value;
         const newPassword = document.getElementById('newPassword').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
-        const messageSpan = document.getElementById('passwordMessage'); // 获取消息显示的 DOM 元素
+        const messageSpan = document.getElementById('passwordMessage');
 
-        // 清空之前的消息
         messageSpan.textContent = '';
 
         if (newPassword === confirmPassword) {
@@ -421,18 +410,15 @@
                 })
                 .then(data => {
                     console.log('Response:', data);
-                    // 将后端返回的消息显示在按钮旁边
                     messageSpan.textContent = data;
-                    messageSpan.style.color = 'green'; // 成功消息显示为绿色
+                    messageSpan.style.color = 'green';
                 })
                 .catch(error => {
                     console.error('Error changing password:', error.message);
-                    // 显示错误消息
                     messageSpan.textContent = error.message;
-                    messageSpan.style.color = 'red'; // 错误消息显示为红色
+                    messageSpan.style.color = 'red';
                 });
         } else {
-            // 如果新密码和确认密码不一致，显示错误消息
             messageSpan.textContent = 'Passwords do not match!';
             messageSpan.style.color = 'red';
         }

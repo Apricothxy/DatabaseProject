@@ -31,7 +31,7 @@ public class TripRepository {
         return t;
     };
 
-    // We'll directly map to Port in the query that joins wxy_trip_port and wxy_port
+    // directly map to Port in the query that joins wxy_trip_port and wxy_port
     private final RowMapper<Port> tripPortRowMapper = (rs, rowNum) -> {
         Port p = new Port();
         p.setTripId(rs.getInt("trip_id"));

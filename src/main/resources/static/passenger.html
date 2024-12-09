@@ -358,7 +358,6 @@
     addPassengerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        // 必填字段
         const fname = document.getElementById('fname').value.trim();
         const lname = document.getElementById('lname').value.trim();
         const birthDate = document.getElementById('birthDate').value;
@@ -371,11 +370,9 @@
         const email = document.getElementById('email').value.trim();
         const phone = document.getElementById('phone').value.trim();
 
-        // 非必填字段
         const mname = document.getElementById('mname').value.trim();
         const addressStreet2 = document.getElementById('addressStreet2').value.trim();
 
-        // 简单校验必填项
         if(!fname || !lname || !birthDate || !addressCountry || !addressState || !addressCity || !addressStreet1
             || !gender || !nationality || !email || !phone) {
             message.textContent = 'Please fill all required fields.';
@@ -397,7 +394,6 @@
             userId: Number(userId)
         };
 
-        // 只有在非空时才加入 mname 和 addressStreet2
         if(mname) formData.mname = mname;
         if(addressStreet2) formData.addressStreet2 = addressStreet2;
 
@@ -416,9 +412,7 @@
             const data = await res.json();
             if (data && data.passengerId) {
                 message.textContent = 'Passenger added successfully!';
-                // 清空表单
                 addPassengerForm.reset();
-                // 刷新列表
                 fetchPassengers();
             } else {
                 message.textContent = 'Failed to add passenger.';
@@ -429,7 +423,6 @@
         }
     });
 
-    // 初始加载乘客列表
     fetchPassengers();
 </script>
 </body>

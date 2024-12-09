@@ -81,7 +81,6 @@ public class TripService {
 
         // Build the Trip object
         Trip trip = new Trip();
-        // Set nights_num, can be calculated or passed in. Using a fixed value here.
         LocalDateTime startDate = LocalDateTime.parse(startPortStartStr, formatter);
         LocalDateTime endDate = LocalDateTime.parse(endPortEndStr, formatter);
         // Calculate the nights_num as the difference in days between the endPort end date and startPort start date
@@ -93,7 +92,7 @@ public class TripService {
 //        System.out.println(nights);
 
         if (nights < 0) {
-            nights = 0;  // If end date is before start date, default to 0 or handle error as needed
+            nights = 0;  // If end date is before start date, default
         }
         trip.setNights_num((int)nights);
 
